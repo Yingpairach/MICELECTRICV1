@@ -2257,4 +2257,10 @@ function showAuthTab(tab) {
   document.getElementById('tab-register').style.borderBottomColor = isLogin ? 'transparent' : 'var(--gold)';
   // Clear errors
   const loginErr = document.getElementById('login-error-msg');
-  const regEr
+  const regErr = document.getElementById('register-error-msg');
+  if (loginErr) loginErr.textContent = '';
+  if (regErr) regErr.textContent = '';
+}
+</script>
+</body>
+</html>
