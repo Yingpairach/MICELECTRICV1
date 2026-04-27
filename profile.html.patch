@@ -1,0 +1,31 @@
+544a545
+>         if (d.language) document.getElementById('f-lang').value = d.language;
+548a550
+>         if (d.licenseCountry) document.getElementById('f-license-country').value = d.licenseCountry;
+676a679,690
+>   // Channels — toggle the .selected class to match saved state
+>   if (prefs.channels) {
+>     ['email','sms','push'].forEach(c => {
+>       const el = document.getElementById('ch-' + c);
+>       if (el) el.classList.toggle('selected', !!prefs.channels[c]);
+>     });
+>   }
+>   // Language & region
+>   if (prefs.language) document.getElementById('pref-language').value = prefs.language;
+>   if (prefs.currency) document.getElementById('pref-currency').value = prefs.currency;
+>   if (prefs.timezone) document.getElementById('pref-timezone').value = prefs.timezone;
+>   if (prefs.dateFormat) document.getElementById('pref-dateformat').value = prefs.dateFormat;
+685a700
+>     language: document.getElementById('f-lang').value,
+689a705
+>     licenseCountry: document.getElementById('f-license-country').value,
+711a728,736
+>     channels: {
+>       email: document.getElementById('ch-email').classList.contains('selected'),
+>       sms:   document.getElementById('ch-sms').classList.contains('selected'),
+>       push:  document.getElementById('ch-push').classList.contains('selected'),
+>     },
+>     language:   document.getElementById('pref-language').value,
+>     currency:   document.getElementById('pref-currency').value,
+>     timezone:   document.getElementById('pref-timezone').value,
+>     dateFormat: document.getElementById('pref-dateformat').value,

@@ -542,10 +542,12 @@ onAuthStateChanged(auth, async user => {
         if (d.phone) document.getElementById('f-phone').value = d.phone;
         if (d.dob) document.getElementById('f-dob').value = d.dob;
         if (d.nationality) document.getElementById('f-nationality').value = d.nationality;
+        if (d.language) document.getElementById('f-lang').value = d.language;
         if (d.address) document.getElementById('f-address').value = d.address;
         if (d.idCard) document.getElementById('f-idcard').value = d.idCard;
         if (d.license) document.getElementById('f-license').value = d.license;
         if (d.licenseExp) document.getElementById('f-license-exp').value = d.licenseExp;
+        if (d.licenseCountry) document.getElementById('f-license-country').value = d.licenseCountry;
         if (d.prefs) loadPrefs(d.prefs);
       }
     }
@@ -674,6 +676,18 @@ function loadPrefs(prefs) {
   if (prefs.points !== undefined) document.getElementById('pref-points').checked = prefs.points;
   if (prefs.promo !== undefined) document.getElementById('pref-promo').checked = prefs.promo;
   if (prefs.news !== undefined) document.getElementById('pref-news').checked = prefs.news;
+  // Channels — toggle the .selected class to match saved state
+  if (prefs.channels) {
+    ['email','sms','push'].forEach(c => {
+      const el = document.getElementById('ch-' + c);
+      if (el) el.classList.toggle('selected', !!prefs.channels[c]);
+    });
+  }
+  // Language & region
+  if (prefs.language) document.getElementById('pref-language').value = prefs.language;
+  if (prefs.currency) document.getElementById('pref-currency').value = prefs.currency;
+  if (prefs.timezone) document.getElementById('pref-timezone').value = prefs.timezone;
+  if (prefs.dateFormat) document.getElementById('pref-dateformat').value = prefs.dateFormat;
 }
 
 window.saveProfile = async function() {
@@ -683,10 +697,12 @@ window.saveProfile = async function() {
     phone: document.getElementById('f-phone').value,
     dob: document.getElementById('f-dob').value,
     nationality: document.getElementById('f-nationality').value,
+    language: document.getElementById('f-lang').value,
     address: document.getElementById('f-address').value,
     idCard: document.getElementById('f-idcard').value,
     license: document.getElementById('f-license').value,
     licenseExp: document.getElementById('f-license-exp').value,
+    licenseCountry: document.getElementById('f-license-country').value,
   };
   try {
     await fetch(`${window._firebase_url}/users/${user.uid}.json`, {
@@ -709,6 +725,15 @@ window.savePrefs = async function() {
     points: document.getElementById('pref-points').checked,
     promo: document.getElementById('pref-promo').checked,
     news: document.getElementById('pref-news').checked,
+    channels: {
+      email: document.getElementById('ch-email').classList.contains('selected'),
+      sms:   document.getElementById('ch-sms').classList.contains('selected'),
+      push:  document.getElementById('ch-push').classList.contains('selected'),
+    },
+    language:   document.getElementById('pref-language').value,
+    currency:   document.getElementById('pref-currency').value,
+    timezone:   document.getElementById('pref-timezone').value,
+    dateFormat: document.getElementById('pref-dateformat').value,
   };
   try {
     await fetch(`${window._firebase_url}/users/${user.uid}/prefs.json`, {

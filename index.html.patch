@@ -1,0 +1,57 @@
+1679,1680c1679,1680
+< // NOTE: Secret key ต้องใช้ฝั่ง server เท่านั้น - ในที่นี้ใช้ test mode จำลองการทำงาน
+< const OMISE_SKEY = 'skey_test_676r112gmaxvuehbab2';
+---
+> // Secret key is NEVER kept client-side. Charging is performed in the Netlify function
+> // `netlify/functions/charge.js` using process.env.OMISE_SECRET_KEY.
+1834a1835
+>   el.style.color = ''; // reset in case a previous run set it to red on expiry
+1842,1843c1843,1845
+<       document.getElementById('qr-status').textContent = '❌ QR expired. Please try again.';
+<       el.textContent = '';
+---
+>       // There is no #qr-status element — show the expiry message in the timer slot itself
+>       el.textContent = '❌ QR expired. Please try again.';
+>       el.style.color = '#e74c3c';
+1897,1898c1899,1901
+<   const p = document.getElementById('pickup-date').value;
+<   const r = document.getElementById('return-date').value;
+---
+>   // Use the dates from the booking modal (b-pickup-date / b-return-date), not the search bar
+>   const p = document.getElementById('b-pickup-date').value;
+>   const r = document.getElementById('b-return-date').value;
+1901a1905,1919
+>   // Compute totals using the selected package (matches the QR amount the customer paid)
+>   let rental, insCost;
+>   if (selectedPackage) {
+>     rental = selectedPackage.duration === 'daily' ? selectedPackage.price * days : selectedPackage.price;
+>     insCost = (selectedPackage.insurance || 0) * days;
+>   } else {
+>     rental = selectedCar.price * days;
+>     insCost = 0;
+>   }
+>   const total = rental + insCost;
+> 
+>   // The form has b-firstname + b-surname (not b-name)
+>   const fn = document.getElementById('b-firstname').value;
+>   const sn = document.getElementById('b-surname').value;
+> 
+1904c1922
+<     name: document.getElementById('b-name').value,
+---
+>     name: `${fn} ${sn}`.trim(),
+1907a1926,1928
+>     license: document.getElementById('b-license').value || '-',
+>     emergency: document.getElementById('b-emergency').value || '-',
+>     address: document.getElementById('b-address').value || '-',
+1911c1932,1934
+<     insurance: document.getElementById('b-insurance').value,
+---
+>     packageId: selectedPackage?.id || null,
+>     packageCode: selectedPackage?.code || null,
+>     insurance: selectedPackage ? `${selectedPackage.code} (฿${selectedPackage.insurance||0}/day)` : 'none',
+1920c1943,1944
+<     total: selectedCar.price * days,
+---
+>     insuranceCost: insCost,
+>     total,
