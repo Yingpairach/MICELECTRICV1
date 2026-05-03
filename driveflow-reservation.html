@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRIVEFLOW EV — Luxury Electric Car Rental</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #050d1a;
+  --bg2:     #081422;
+  --surface: #0c1d35;
+  --sur2:    #0f2444;
+  --blue:    #1a6bff;
+  --blue2:   #3d8bff;
+  --cyan:    #00d4ff;
+  --cyan2:   #7fe8ff;
+  --text:    #e8f4ff;
+  --muted:   #5a7a9a;
+  --border:  rgba(0,212,255,0.12);
+  --danger:  #ff4e6a;
+  --success: #00e5a0;
+  --ease:    cubic-bezier(0.25,0.46,0.45,0.94);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 50% at 20% 20%,rgba(0,212,255,0.06) 0%,transparent 60%),
+             radial-gradient(ellipse 50% 60% at 80% 80%,rgba(26,107,255,0.08) 0%,transparent 60%);}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);
+  background-size:60px 60px;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:600;padding:22px 64px;display:flex;align-items:center;justify-content:space-between;transition:all .4s var(--ease);}
+nav.scrolled{background:rgba(5,13,26,.95);backdrop-filter:blur(16px);padding:14px 64px;border-bottom:1px solid var(--border);box-shadow:0 4px 40px rgba(0,212,255,.05);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--cyan));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 20px rgba(0,212,255,.3);}
+.logo-text{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:.05em;}
+.logo-text span{color:var(--cyan);}
+.logo-sub{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-top:1px;}
+.nav-center{display:flex;gap:32px;}
+.nav-link{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;color:var(--muted);text-decoration:none;transition:color .3s;position:relative;}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--cyan);transition:width .3s;}
+.nav-link:hover{color:var(--cyan);}
+.nav-link:hover::after{width:100%;}
+.nav-right{display:flex;gap:12px;align-items:center;}
+.lang-toggle{display:flex;gap:2px;background:rgba(0,212,255,.07);border:1px solid var(--border);border-radius:20px;padding:3px;}
+.lang-btn{font-size:10px;letter-spacing:.1em;font-weight:400;padding:5px 14px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .25s;font-family:'Outfit',sans-serif;}
+.lang-btn.active{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;box-shadow:0 0 12px rgba(0,212,255,.3);}
+.nav-cta{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;padding:10px 22px;border-radius:4px;cursor:pointer;font-family:'Outfit',sans-serif;box-shadow:0 0 20px rgba(0,212,255,.2);transition:all .3s;}
+.nav-cta:hover{box-shadow:0 0 32px rgba(0,212,255,.4);transform:translateY(-1px);}
+
+/* HERO */
+#hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;}
+.hero-ring{position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:800px;height:800px;border-radius:50%;border:1px solid rgba(0,212,255,.07);animation:rotate 30s linear infinite;}
+.hero-ring::before{content:'';position:absolute;inset:-40px;border-radius:50%;border:1px solid rgba(26,107,255,.05);}
+.hero-ring::after{content:'';position:absolute;inset:80px;border-radius:50%;border:1px solid rgba(0,212,255,.04);}
+@keyframes rotate{to{transform:translateY(-50%) rotate(360deg);}}
+.hero-pulse{position:absolute;right:200px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 2.5s ease infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,212,255,.5);}70%{box-shadow:0 0 0 40px rgba(0,212,255,0);}100%{box-shadow:0 0 0 0 rgba(0,212,255,0);}}
+.hero-content{position:relative;z-index:2;padding:130px 64px 80px;max-width:800px;animation:heroIn 1s var(--ease) both;}
+@keyframes heroIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px;}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(48px,7vw,88px);font-weight:700;line-height:1.05;color:#fff;margin-bottom:12px;}
+.hero-title .accent{background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic;}
+.hero-sub-th{font-size:15px;color:rgba(232,244,255,.4);margin-bottom:14px;font-weight:300;}
+.hero-sub{font-size:14px;color:var(--muted);line-height:1.8;max-width:480px;margin-bottom:48px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:60px;}
+.btn-glow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;padding:15px 36px;border-radius:4px;cursor:pointer;font-family:'Outfit',sans-serif;box-shadow:0 4px 32px rgba(0,212,255,.25);transition:all .3s var(--ease);}
+.btn-glow:hover{box-shadow:0 8px 48px rgba(0,212,255,.4);transform:translateY(-2px);}
+.btn-outline-blue{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:400;background:transparent;color:var(--cyan);border:1px solid rgba(0,212,255,.3);padding:15px 36px;border-radius:4px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .3s;}
+.btn-outline-blue:hover{border-color:var(--cyan);background:rgba(0,212,255,.06);}
+.hero-stats{display:flex;gap:48px;padding-top:36px;border-top:1px solid var(--border);}
+.hstat-val{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.hstat-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+.charge-bar-hero{position:absolute;right:64px;bottom:60px;width:190px;background:rgba(0,212,255,.05);border:1px solid var(--border);border-radius:4px;padding:16px 18px;font-size:11px;}
+.cbar-label{color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;font-size:9px;}
+.cbar-track{background:rgba(255,255,255,.05);border-radius:2px;height:6px;overflow:hidden;margin-bottom:6px;}
+.cbar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));width:82%;box-shadow:0 0 8px var(--cyan);animation:chg 3s ease infinite;}
+@keyframes chg{0%,100%{width:82%;}50%{width:88%;}}
+.cbar-pct{font-size:20px;font-family:'Playfair Display',serif;color:#fff;}
+.cbar-sub{font-size:9px;color:var(--muted);}
+
+/* SEARCH STRIP */
+#search-strip{position:relative;z-index:10;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 64px;}
+.search-form{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;}
+.sf-field{padding:22px 24px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;transition:background .2s;}
+.sf-field:hover{background:rgba(0,212,255,.03);}
+.sf-label{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);font-weight:400;}
+.sf-input{background:transparent;border:none;outline:none;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:300;width:100%;}
+.sf-input::placeholder{color:var(--muted);}
+.sf-input option{background:var(--surface);}
+.search-btn{background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;cursor:pointer;padding:0 36px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#fff;font-family:'Outfit',sans-serif;transition:all .3s;white-space:nowrap;}
+.search-btn:hover{box-shadow:0 0 32px rgba(0,212,255,.3);}
+
+/* FLEET */
+#fleet{position:relative;z-index:1;padding:100px 64px;background:var(--bg2);}
+.section-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.section-eyebrow::before{content:'';width:28px;height:1px;background:var(--cyan);}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:700;color:#fff;line-height:1.1;margin-bottom:8px;}
+.section-th{font-size:14px;color:var(--muted);margin-bottom:44px;font-weight:300;}
+.fleet-controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:14px;}
+.filter-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.pill{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;padding:8px 18px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--muted);transition:all .25s;border-radius:20px;font-family:'Outfit',sans-serif;}
+.pill:hover,.pill.active{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,.1);}
+.result-count{font-size:12px;color:var(--muted);}
+.result-count span{color:var(--cyan);font-weight:500;}
+.cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2px;}
+
+/* CAR CARD */
+.car-card{background:var(--surface);position:relative;overflow:hidden;cursor:pointer;transition:all .4s var(--ease);border:1px solid var(--border);animation:fadeUp .5s var(--ease) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.car-card:hover{border-color:rgba(0,212,255,.3);box-shadow:0 8px 48px rgba(0,212,255,.08);transform:translateY(-4px);}
+.car-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));opacity:0;transition:opacity .3s;}
+.car-card:hover::before{opacity:1;}
+.car-img{height:200px;background:linear-gradient(135deg,var(--bg) 0%,var(--sur2) 100%);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.car-silhouette{position:relative;width:220px;height:100px;transition:transform .5s var(--ease);}
+.car-card:hover .car-silhouette{transform:scale(1.05);}
+.c-body{position:absolute;bottom:16px;left:0;right:0;height:48px;border-radius:24px 24px 8px 8px;background:linear-gradient(135deg,rgba(26,107,255,.6),rgba(0,212,255,.4));box-shadow:0 0 30px rgba(0,212,255,.15);}
+.c-roof{position:absolute;bottom:44px;left:40px;right:40px;height:36px;border-radius:20px 20px 0 0;background:linear-gradient(135deg,rgba(26,107,255,.5),rgba(0,212,255,.3));}
+.c-wl,.c-wr{position:absolute;bottom:8px;width:22px;height:22px;border-radius:50%;background:var(--bg2);border:3px solid rgba(0,212,255,.5);box-shadow:0 0 10px rgba(0,212,255,.2);}
+.c-wl{left:20px;} .c-wr{right:20px;}
+.c-lf,.c-lr{position:absolute;bottom:32px;width:6px;height:3px;border-radius:2px;}
+.c-lf{right:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.c-lr{left:2px;background:rgba(255,100,100,.8);box-shadow:0 0 8px rgba(255,100,100,.6);}
+.c-glow{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:160px;height:20px;background:radial-gradient(ellipse,rgba(0,212,255,.2),transparent);transition:opacity .3s;opacity:.6;}
+.car-card:hover .c-glow{opacity:1;}
+.car-badge{position:absolute;top:14px;left:14px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;padding:5px 11px;border-radius:2px;}
+.b-avail{background:rgba(0,229,160,.15);color:var(--success);border:1px solid rgba(0,229,160,.2);}
+.b-rented{background:rgba(26,107,255,.15);color:var(--blue2);border:1px solid rgba(26,107,255,.2);}
+.b-maint{background:rgba(255,200,0,.1);color:#ffcc00;border:1px solid rgba(255,200,0,.15);}
+.car-range-badge{position:absolute;top:14px;right:14px;font-size:9px;color:var(--cyan);letter-spacing:.1em;background:rgba(0,212,255,.08);border:1px solid var(--border);padding:4px 10px;border-radius:2px;}
+.car-body-info{padding:22px 22px 18px;}
+.car-brand-tag{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px;}
+.car-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:16px;line-height:1.1;}
+.car-specs-row{display:flex;gap:0;margin-bottom:18px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 0;}
+.cspec{flex:1;text-align:center;}
+.cspec:not(:last-child){border-right:1px solid var(--border);}
+.cspec-val{font-size:16px;font-family:'Playfair Display',serif;font-weight:700;color:#fff;}
+.cspec-key{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.car-footer{display:flex;align-items:center;justify-content:space-between;}
+.price-from{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+.car-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.car-price-unit{font-size:11px;color:var(--muted);}
+.btn-book-car{font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;padding:10px 20px;border-radius:3px;cursor:pointer;font-family:'Outfit',sans-serif;box-shadow:0 0 16px rgba(0,212,255,.15);transition:all .3s;}
+.btn-book-car:hover{box-shadow:0 0 28px rgba(0,212,255,.35);transform:translateY(-1px);}
+.btn-book-car:disabled{background:rgba(255,255,255,.06);box-shadow:none;color:var(--muted);cursor:not-allowed;transform:none;}
+.no-cars{grid-column:1/-1;text-align:center;padding:80px;color:var(--muted);}
+.no-cars-icon{font-size:40px;margin-bottom:16px;opacity:.3;}
+
+/* WHY */
+#why{padding:100px 64px;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.why-card{background:var(--surface);padding:40px 36px;border:1px solid var(--border);position:relative;overflow:hidden;transition:all .3s;}
+.why-card:hover{border-color:rgba(0,212,255,.25);background:var(--sur2);}
+.why-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));opacity:0;transition:opacity .3s;}
+.why-card:hover::after{opacity:1;}
+.why-icon{font-size:32px;margin-bottom:20px;}
+.why-num{position:absolute;top:20px;right:24px;font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:rgba(0,212,255,.05);line-height:1;}
+.why-title-th{font-size:13px;color:rgba(0,212,255,.5);margin-bottom:4px;font-weight:300;}
+.why-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:12px;}
+.why-desc{font-size:13px;color:var(--muted);line-height:1.8;}
+
+/* MANAGE */
+#manage{padding:100px 64px;background:var(--bg2);position:relative;z-index:1;}
+.manage-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.manage-form-box{background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--cyan);padding:40px;box-shadow:0 0 60px rgba(0,212,255,.05);}
+.booking-found-card{background:var(--bg);border:1px solid var(--border);padding:28px;position:relative;overflow:hidden;margin-top:20px;}
+.booking-found-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--blue),var(--cyan));}
+.bfc-ref{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.bfc-status{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:20px;}
+.status-dot{width:6px;height:6px;border-radius:50%;}
+.bfc-active{background:rgba(0,229,160,.1);color:var(--success);}
+.bfc-active .status-dot{background:var(--success);box-shadow:0 0 6px var(--success);}
+.bfc-cancelled{background:rgba(255,78,106,.1);color:var(--danger);}
+.bfc-cancelled .status-dot{background:var(--danger);}
+.bfc-details{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.bfd-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.bfd-val{font-size:15px;color:#fff;font-weight:400;}
+.bfc-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-sm-action{font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:9px 18px;border:1px solid;cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;background:transparent;border-radius:2px;}
+.btn-extend-sm{border-color:var(--blue2);color:var(--blue2);}
+.btn-extend-sm:hover{background:rgba(26,107,255,.1);}
+.btn-cancel-sm{border-color:var(--danger);color:var(--danger);}
+.btn-cancel-sm:hover{background:rgba(255,78,106,.1);}
+.manage-right h3{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#fff;margin-bottom:8px;}
+.manage-right .sub-th{font-size:14px;color:var(--muted);margin-bottom:28px;}
+.faq-list{display:flex;flex-direction:column;gap:2px;}
+.faq-item{background:var(--surface);border:1px solid var(--border);overflow:hidden;}
+.faq-q{padding:18px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text);font-weight:400;transition:background .2s;}
+.faq-q:hover{background:var(--sur2);}
+.faq-icon{color:var(--cyan);font-size:16px;transition:transform .3s;}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;font-size:12px;color:var(--muted);line-height:1.8;transition:max-height .3s var(--ease),padding .3s;padding:0 20px;}
+.faq-item.open .faq-a{max-height:200px;padding:0 20px 18px;}
+
+/* BOOKING MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(5,13,26,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;animation:mfIn .3s ease;}
+@keyframes mfIn{from{opacity:0;}to{opacity:1;}}
+.modal{background:var(--surface);border:1px solid var(--border);width:100%;max-width:660px;max-height:92vh;overflow-y:auto;position:relative;animation:msl .4s var(--ease);box-shadow:0 0 80px rgba(0,212,255,.1);}
+@keyframes msl{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.modal-glow-bar{height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--blue));background-size:200% 100%;animation:shim 2s linear infinite;}
+@keyframes shim{0%{background-position:0% 0;}100%{background-position:200% 0;}}
+.modal-header{padding:32px 36px 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.modal-car-info{display:flex;gap:14px;align-items:center;padding:16px 36px;background:rgba(0,212,255,.04);border-bottom:1px solid var(--border);margin-top:20px;}
+.modal-car-icon{font-size:28px;}
+.modal-car-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;}
+.modal-car-plate{font-size:10px;letter-spacing:.2em;color:var(--cyan);margin-top:2px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;}
+.modal-title-th{font-size:12px;color:var(--muted);margin-top:4px;}
+.modal-close{background:rgba(255,255,255,.05);border:1px solid var(--border);cursor:pointer;color:var(--muted);width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:4px;transition:all .2s;flex-shrink:0;}
+.modal-close:hover{color:var(--danger);border-color:var(--danger);}
+.modal-body{padding:28px 36px;}
+.step-bar{display:flex;gap:0;margin-bottom:28px;background:rgba(0,0,0,.3);border-radius:4px;padding:3px;}
+.step-tab{flex:1;text-align:center;padding:10px 8px;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-radius:3px;transition:all .25s;}
+.step-tab.active{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;box-shadow:0 0 12px rgba(0,212,255,.2);}
+.step-tab.done{color:var(--cyan);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.form-row.single{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:7px;}
+.form-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:400;}
+.form-input{background:rgba(255,255,255,.04);border:1px solid var(--border);padding:11px 14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:300;color:#fff;transition:border-color .2s;width:100%;border-radius:2px;}
+.form-input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,.08);}
+.form-input::placeholder{color:var(--muted);}
+select.form-input option{background:var(--surface);}
+.booking-summary{background:var(--bg);border:1px solid var(--border);padding:22px 24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.booking-summary::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--blue),var(--cyan));}
+.bs-title{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;}
+.bs-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(0,212,255,.06);}
+.bs-row:last-of-type{border-bottom:none;}
+.bs-label{font-size:11px;color:var(--muted);}
+.bs-val{font-size:13px;color:#fff;font-weight:400;}
+.bs-total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;margin-top:8px;border-top:1px solid var(--border);}
+.bs-total-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);}
+.bs-total-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.conf-wrap{text-align:center;padding:20px 0;}
+.conf-ring{width:80px;height:80px;border-radius:50%;background:rgba(0,229,160,.1);border:2px solid var(--success);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 20px;box-shadow:0 0 30px rgba(0,229,160,.2);}
+.conf-ref{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.conf-msg{font-size:14px;color:var(--text);margin-bottom:4px;}
+.conf-msg-th{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.conf-details{display:flex;justify-content:center;gap:40px;background:var(--bg);border:1px solid var(--border);padding:18px 32px;border-radius:2px;}
+.cd-val{font-size:15px;color:#fff;font-weight:500;margin-bottom:4px;}
+.cd-key{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+.modal-footer{padding:0 36px 28px;display:flex;gap:10px;justify-content:flex-end;}
+.btn-mok{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;padding:13px 28px;border-radius:3px;cursor:pointer;font-family:'Outfit',sans-serif;box-shadow:0 0 20px rgba(0,212,255,.15);transition:all .3s;}
+.btn-mok:hover{box-shadow:0 0 32px rgba(0,212,255,.35);}
+.btn-mcancel{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;background:transparent;color:var(--muted);border:1px solid var(--border);padding:13px 20px;border-radius:3px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
+.btn-mcancel:hover{border-color:var(--muted);color:var(--text);}
+
+/* ADJUST MODAL */
+#modal-adjust .modal{max-width:480px;}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 64px 36px;position:relative;z-index:1;}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--border);}
+.footer-brand-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:4px;}
+.footer-brand-name span{color:var(--cyan);}
+.footer-tagline{font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.7;}
+.footer-charge{background:rgba(0,212,255,.05);border:1px solid var(--border);border-radius:3px;padding:14px;width:160px;}
+.fc-label{font-size:9px;letter-spacing:.2em;color:var(--cyan);margin-bottom:8px;text-transform:uppercase;}
+.fc-bar{background:rgba(255,255,255,.05);border-radius:2px;height:4px;overflow:hidden;margin-bottom:6px;}
+.fc-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));width:100%;box-shadow:0 0 6px var(--cyan);}
+.fc-pct{font-size:18px;font-family:'Playfair Display',serif;color:#fff;}
+.fc-sub{font-size:9px;color:var(--muted);}
+.footer-col h4{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;}
+.footer-col a{display:block;font-size:12px;color:var(--muted);text-decoration:none;margin-bottom:10px;transition:color .2s;}
+.footer-col a:hover{color:var(--cyan);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);}
+.footer-dots{display:flex;gap:6px;}
+.fdot{width:6px;height:6px;border-radius:50%;background:var(--border);}
+.fdot:first-child{background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--cyan);padding:14px 20px;font-size:12px;color:var(--text);display:none;z-index:9999;box-shadow:0 8px 40px rgba(0,212,255,.1);max-width:300px;border-radius:2px;}
+.toast.show{display:block;animation:tIn .3s var(--ease);}
+.toast.error{border-left-color:var(--danger);}
+.toast.success{border-left-color:var(--success);}
+@keyframes tIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+.hidden{display:none!important;}
+
+/* PKG MINI */
+.pkg-summary-box{background:var(--bg);border:1px solid var(--border);padding:16px 20px;margin-top:14px;}
+.pkg-mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;}
+.pkg-mini-val{font-size:16px;color:#fff;font-family:'Playfair Display',serif;font-weight:700;}
+.pkg-mini-key{font-size:9px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.pkg-mini-footer{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);}
+
+@media(max-width:1024px){
+  nav,#fleet,#why,#manage,footer{padding-left:28px;padding-right:28px;}
+  .hero-content{padding:100px 28px 60px;}
+  .search-form{grid-template-columns:1fr 1fr;}
+  .sf-field{padding:16px 16px;}
+  .search-btn{grid-column:1/-1;padding:16px;}
+  .why-grid{grid-template-columns:1fr;}
+  .manage-inner{grid-template-columns:1fr;gap:48px;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
+  .hero-ring,.charge-bar-hero{display:none;}
+}
+@media(max-width:640px){
+  .hero-title{font-size:40px;}
+  .nav-center{display:none;}
+  .hero-stats{gap:24px;flex-wrap:wrap;}
+  .cars-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .modal-body,.modal-header,.modal-footer,.modal-car-info{padding-left:20px;padding-right:20px;}
+  .conf-details{flex-direction:column;gap:16px;}
+  #search-strip{padding:0 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="logo" href="#hero">
+    <div class="logo-icon">⚡</div>
+    <div>
+      <div class="logo-text">DRIVE<span>FLOW</span></div>
+      <div class="logo-sub" data-en="Electric Luxury" data-th="รถหรูไฟฟ้า">Electric Luxury</div>
+    </div>
+  </a>
+  <div class="nav-center">
+    <a class="nav-link" href="#fleet" data-en="Fleet" data-th="รถยนต์">Fleet</a>
+    <a class="nav-link" href="#why" data-en="Why EV" data-th="ทำไม EV">Why EV</a>
+    <a class="nav-link" href="#manage" data-en="My Booking" data-th="การจองของฉัน">My Booking</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('th')">ไทย</button>
+    </div>
+    <button class="nav-cta" onclick="scrollToFleet()" data-en="Book Now" data-th="จองเลย">Book Now</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-pulse"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span><span data-en="100% Electric Fleet · Thailand" data-th="ยานยนต์ไฟฟ้า 100% · ประเทศไทย">100% Electric Fleet · Thailand</span></div>
+    <h1 class="hero-title"><span data-en="Drive the" data-th="ขับขี่">Drive the</span><br><span class="accent" data-en="Future." data-th="อนาคต">Future.</span></h1>
+    <p class="hero-sub-th" data-en="" data-th="สัมผัสประสบการณ์รถยนต์ไฟฟ้าระดับพรีเมียม">สัมผัสประสบการณ์รถยนต์ไฟฟ้าระดับพรีเมียม</p>
+    <p class="hero-sub" data-en="Premium electric vehicles. Zero emissions. Effortless power. Choose from our curated fleet of the world's finest EVs — available for daily, weekly or extended rental across Thailand." data-th="รถยนต์ไฟฟ้าพรีเมียม ไม่มีมลพิษ พลังงานไร้ขีดจำกัด เลือกจากยานยนต์ไฟฟ้าชั้นนำของโลก พร้อมให้เช่าทั่วประเทศไทย">Premium electric vehicles. Zero emissions. Effortless power.</p>
+    <div class="hero-btns">
+      <button class="btn-glow" onclick="scrollToFleet()" data-en="Explore Fleet" data-th="ดูรถทั้งหมด">Explore Fleet</button>
+      <button class="btn-outline-blue" onclick="document.getElementById('manage').scrollIntoView({behavior:'smooth'})" data-en="Manage Booking" data-th="จัดการการจอง">Manage Booking</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hstat-val" id="stat-fleet">0</div><div class="hstat-label" data-en="Premium EVs" data-th="รถยนต์ไฟฟ้า">Premium EVs</div></div>
+      <div><div class="hstat-val">0%</div><div class="hstat-label" data-en="Emissions" data-th="มลพิษ">Emissions</div></div>
+      <div><div class="hstat-val">24/7</div><div class="hstat-label" data-en="Support" data-th="บริการ">Support</div></div>
+    </div>
+  </div>
+  <div class="charge-bar-hero">
+    <div class="cbar-label" data-en="Fleet Charge Status" data-th="สถานะชาร์จ">Fleet Charge Status</div>
+    <div class="cbar-track"><div class="cbar-fill"></div></div>
+    <div class="cbar-pct">82%</div>
+    <div class="cbar-sub" data-en="avg. charge level" data-th="ระดับชาร์จเฉลี่ย">avg. charge level</div>
+  </div>
+</section>
+
+<!-- SEARCH STRIP -->
+<div id="search-strip">
+  <div class="search-form">
+    <div class="sf-field">
+      <div class="sf-label" data-en="Drive Type" data-th="ประเภทขับเคลื่อน">Drive Type</div>
+      <select class="sf-input" id="filter-drive">
+        <option value="" data-en="All Types" data-th="ทุกประเภท">All Types</option>
+        <option value="RWD">RWD</option><option value="FWD">FWD</option><option value="AWD">AWD</option>
+      </select>
+    </div>
+    <div class="sf-field">
+      <div class="sf-label" data-en="Min Range (km)" data-th="ระยะทางขั้นต่ำ">Min Range (km)</div>
+      <input class="sf-input" type="number" id="filter-range" placeholder="e.g. 400">
+    </div>
+    <div class="sf-field">
+      <div class="sf-label" data-en="Package" data-th="แพ็กเกจ">Package</div>
+      <select class="sf-input" id="filter-package"><option value="">All Packages</option></select>
+    </div>
+    <div class="sf-field">
+      <div class="sf-label" data-en="Start Date" data-th="วันที่เริ่มต้น">Start Date</div>
+      <input class="sf-input" type="date" id="filter-date">
+    </div>
+    <button class="search-btn" onclick="applyFilters()" data-en="Search" data-th="ค้นหา">Search</button>
+  </div>
+</div>
+
+<!-- FLEET -->
+<section id="fleet">
+  <div class="section-eyebrow"><span data-en="Available Now" data-th="พร้อมให้เช่า">Available Now</span></div>
+  <h2 class="section-title" data-en="Our Electric Fleet" data-th="ยานยนต์ไฟฟ้าของเรา">Our Electric Fleet</h2>
+  <p class="section-th" data-en="Premium EVs ready for your journey" data-th="รถยนต์ไฟฟ้าพรีเมียมพร้อมพาคุณสู่การเดินทาง">Premium EVs ready for your journey</p>
+  <div class="fleet-controls">
+    <div class="filter-pills">
+      <button class="pill active" onclick="filterBrand('all',this)" data-en="All" data-th="ทั้งหมด">All</button>
+      <button class="pill" onclick="filterBrand('Tesla',this)">Tesla</button>
+      <button class="pill" onclick="filterBrand('BMW',this)">BMW</button>
+      <button class="pill" onclick="filterBrand('Mercedes',this)">Mercedes</button>
+      <button class="pill" onclick="filterBrand('Porsche',this)">Porsche</button>
+    </div>
+    <div class="result-count" id="result-count"></div>
+  </div>
+  <div class="cars-grid" id="cars-grid"></div>
+</section>
+
+<!-- WHY EV -->
+<section id="why">
+  <div class="section-eyebrow"><span data-en="The EV Advantage" data-th="ข้อดีของรถยนต์ไฟฟ้า">The EV Advantage</span></div>
+  <h2 class="section-title" style="margin-bottom:48px;" data-en="Why Electric?" data-th="ทำไมต้องไฟฟ้า?">Why Electric?</h2>
+  <div class="why-grid">
+    <div class="why-card"><div class="why-num">01</div><div class="why-icon">⚡</div><div class="why-title-th" data-en="" data-th="พลังงานทันที">พลังงานทันที</div><div class="why-title" data-en="Instant Torque" data-th="แรงบิดทันที">Instant Torque</div><div class="why-desc" data-en="Electric motors deliver 100% torque from zero RPM — acceleration unlike anything you've felt in a combustion car." data-th="มอเตอร์ไฟฟ้าส่งแรงบิด 100% ตั้งแต่ 0 รอบ ประสบการณ์เร่งที่ไม่เหมือนรถสันดาป">Electric motors deliver 100% torque from zero RPM — acceleration unlike anything you've felt in a combustion car.</div></div>
+    <div class="why-card"><div class="why-num">02</div><div class="why-icon">🌏</div><div class="why-title-th" data-en="" data-th="รักษ์โลก">รักษ์โลก</div><div class="why-title" data-en="Zero Emissions" data-th="ไม่มีมลพิษ">Zero Emissions</div><div class="why-desc" data-en="Drive guilt-free. Our fleet produces zero tailpipe emissions — contributing to cleaner air in Bangkok and across Thailand." data-th="ขับขี่อย่างมีความรับผิดชอบ ไม่ปล่อยไอเสีย ช่วยลดมลพิษในกรุงเทพฯ">Drive guilt-free. Our fleet produces zero tailpipe emissions — contributing to cleaner air in Bangkok.</div></div>
+    <div class="why-card"><div class="why-num">03</div><div class="why-icon">🔇</div><div class="why-title-th" data-en="" data-th="เงียบสงบ">เงียบสงบ</div><div class="why-title" data-en="Whisper Quiet" data-th="เงียบพริบตา">Whisper Quiet</div><div class="why-desc" data-en="No engine noise. Pure cabin serenity. Hear the road, your music, your conversations — the way driving was meant to feel." data-th="ไม่มีเสียงเครื่องยนต์ ห้องโดยสารเงียบสงบ ได้ยินทุกเสียงที่ควรได้ยิน">No engine noise. Pure cabin serenity. Hear the road, your music, your conversations.</div></div>
+  </div>
+</section>
+
+<!-- MANAGE BOOKING -->
+<section id="manage">
+  <div class="manage-inner">
+    <div class="manage-left">
+      <div class="section-eyebrow" style="margin-bottom:14px;"><span data-en="Reservation Management" data-th="จัดการการจอง">Reservation Management</span></div>
+      <h2 class="section-title" style="margin-bottom:8px;" data-en="Manage Your Booking" data-th="จัดการการจองของคุณ">Manage Your Booking</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:32px;line-height:1.8;" data-en="Enter your booking reference and ID card number to view, extend or cancel your reservation." data-th="กรอกรหัสการจองและหมายเลขบัตรประชาชนเพื่อดู ต่ออายุ หรือยกเลิก">Enter your booking reference and ID card number to view, extend or cancel your reservation.</p>
+      <div class="manage-form-box">
+        <div class="form-row single" style="margin-bottom:14px;">
+          <div class="form-group">
+            <label class="form-label" data-en="Booking Reference" data-th="รหัสการจอง">Booking Reference</label>
+            <input class="form-input" id="mgmt-ref" type="text" placeholder="BK-0001">
+          </div>
+        </div>
+        <div class="form-row single" style="margin-bottom:20px;">
+          <div class="form-group">
+            <label class="form-label" data-en="ID Card Number" data-th="หมายเลขบัตรประชาชน">ID Card Number</label>
+            <input class="form-input" id="mgmt-idcard" type="text" placeholder="1-XXXX-XXXXX-XX-X">
+          </div>
+        </div>
+        <button class="btn-mok" style="width:100%;" onclick="lookupBooking()" data-en="Find My Booking" data-th="ค้นหาการจอง">Find My Booking</button>
+        <div id="manage-result"></div>
+      </div>
+    </div>
+    <div class="manage-right">
+      <h3 data-en="Common Questions" data-th="คำถามที่พบบ่อย">Common Questions</h3>
+      <p class="sub-th" data-en="" data-th="ข้อมูลที่เป็นประโยชน์สำหรับการจอง">ข้อมูลที่เป็นประโยชน์สำหรับการจอง</p>
+      <div class="faq-list" id="faq-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">DRIVE<span>FLOW</span></div>
+      <div class="footer-tagline" data-en="Thailand's premier electric vehicle rental. Drive clean. Drive smart." data-th="บริการเช่ารถยนต์ไฟฟ้าชั้นนำของไทย">Thailand's premier electric vehicle rental. Drive clean. Drive smart.</div>
+      <div class="footer-charge"><div class="fc-label" data-en="Fleet Ready" data-th="พร้อมบริการ">Fleet Ready</div><div class="fc-bar"><div class="fc-fill"></div></div><div class="fc-pct">100%</div><div class="fc-sub" data-en="charged & ready" data-th="ชาร์จเต็มพร้อมแล้ว">charged & ready</div></div>
+    </div>
+    <div class="footer-col"><h4 data-en="Fleet" data-th="ยานยนต์">Fleet</h4><a href="#fleet">Tesla Model 3</a><a href="#fleet">BMW i4 M50</a><a href="#fleet">Mercedes EQS</a><a href="#fleet">Porsche Taycan</a></div>
+    <div class="footer-col"><h4 data-en="Services" data-th="บริการ">Services</h4><a href="#" data-en="Daily Rental" data-th="เช่ารายวัน">Daily Rental</a><a href="#" data-en="Weekly Rental" data-th="เช่ารายสัปดาห์">Weekly Rental</a><a href="#" data-en="Airport Transfer" data-th="รับ-ส่งสนามบิน">Airport Transfer</a><a href="#" data-en="Onsite Delivery" data-th="ส่งถึงที่">Onsite Delivery</a></div>
+    <div class="footer-col"><h4 data-en="Contact" data-th="ติดต่อ">Contact</h4><a href="#">+66 2-XXX-XXXX</a><a href="#">hello@driveflow.th</a><a href="#" data-en="Bangkok, Thailand" data-th="กรุงเทพฯ">Bangkok, Thailand</a><a href="#">LINE: @driveflow</a></div>
+  </div>
+  <div class="footer-bottom">
+    <span data-en="© 2026 DRIVEFLOW. All rights reserved." data-th="© 2026 DRIVEFLOW สงวนลิขสิทธิ์">© 2026 DRIVEFLOW. All rights reserved.</span>
+    <div class="footer-dots"><div class="fdot"></div><div class="fdot"></div><div class="fdot"></div></div>
+  </div>
+</footer>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="modal-booking">
+  <div class="modal">
+    <div class="modal-glow-bar"></div>
+    <div class="modal-header">
+      <div><div class="modal-title" data-en="Reserve Your EV" data-th="จองรถยนต์ไฟฟ้า">Reserve Your EV</div><div class="modal-title-th" data-en="" data-th="กรอกข้อมูลเพื่อทำการจอง">กรอกข้อมูลเพื่อทำการจอง</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-car-info" id="modal-car-info"></div>
+    <div class="modal-body">
+      <div class="step-bar">
+        <div class="step-tab active" id="stab-0" data-en="1 · Package" data-th="1 · แพ็กเกจ">1 · Package</div>
+        <div class="step-tab" id="stab-1" data-en="2 · Details" data-th="2 · ข้อมูล">2 · Details</div>
+        <div class="step-tab" id="stab-2" data-en="3 · Confirm" data-th="3 · ยืนยัน">3 · Confirm</div>
+        <div class="step-tab" id="stab-3" data-en="✓ Done" data-th="✓ เสร็จ">✓ Done</div>
+      </div>
+      <!-- Step 0 -->
+      <div id="step-0">
+        <div class="form-row single" style="margin-bottom:14px;"><div class="form-group"><label class="form-label" data-en="Select Package" data-th="เลือกแพ็กเกจ">Select Package</label><select class="form-input" id="bk-package" onchange="onPkgChange()"></select></div></div>
+        <div class="form-row"><div class="form-group"><label class="form-label" data-en="Pickup Date" data-th="วันรับรถ">Pickup Date</label><input class="form-input" type="date" id="bk-start" onchange="onPkgChange()"></div><div class="form-group"><label class="form-label" data-en="Return Date" data-th="วันคืนรถ">Return Date</label><input class="form-input" type="date" id="bk-end" readonly style="opacity:.5;"></div></div>
+        <div class="form-row single"><div class="form-group"><label class="form-label" data-en="Pickup Location" data-th="สถานที่รับรถ">Pickup Location</label><input class="form-input" type="text" id="bk-pickup" placeholder="e.g. Suvarnabhumi Airport"></div></div>
+        <div id="pkg-mini"></div>
+      </div>
+      <!-- Step 1 -->
+      <div id="step-1" class="hidden">
+        <div class="form-row"><div class="form-group"><label class="form-label" data-en="First Name" data-th="ชื่อ">First Name</label><input class="form-input" type="text" id="bk-fname" placeholder="ชื่อ / First name"></div><div class="form-group"><label class="form-label" data-en="Surname" data-th="นามสกุล">Surname</label><input class="form-input" type="text" id="bk-sname" placeholder="นามสกุล / Surname"></div></div>
+        <div class="form-row"><div class="form-group"><label class="form-label" data-en="ID Card" data-th="บัตรประชาชน">ID Card</label><input class="form-input" type="text" id="bk-idcard" placeholder="1-XXXX-XXXXX-XX-X"></div><div class="form-group"><label class="form-label" data-en="Mobile" data-th="เบอร์โทร">Mobile</label><input class="form-input" type="tel" id="bk-mobile" placeholder="08X-XXX-XXXX"></div></div>
+        <div class="form-row"><div class="form-group"><label class="form-label" data-en="Driving License" data-th="ใบขับขี่">Driving License</label><input class="form-input" type="text" id="bk-license" placeholder="License number"></div><div class="form-group"><label class="form-label" data-en="Emergency Contact" data-th="เบอร์ฉุกเฉิน">Emergency Contact</label><input class="form-input" type="tel" id="bk-emergency" placeholder="08X-XXX-XXXX"></div></div>
+        <div class="form-row single"><div class="form-group"><label class="form-label" data-en="Address" data-th="ที่อยู่">Address</label><input class="form-input" type="text" id="bk-address" placeholder="ที่อยู่ / Address"></div></div>
+      </div>
+      <!-- Step 2 -->
+      <div id="step-2" class="hidden"><div class="booking-summary" id="booking-summary-box"></div></div>
+      <!-- Step 3 -->
+      <div id="step-3" class="hidden"><div class="conf-wrap" id="conf-wrap"></div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-mcancel" id="modal-back-btn" onclick="modalBack()">Back</button>
+      <button class="btn-mok" id="modal-next-btn" onclick="modalNext()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADJUSTMENT MODAL -->
+<div class="modal-overlay" id="modal-adjust">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-glow-bar"></div>
+    <div class="modal-header" style="padding-bottom:24px;"><div class="modal-title" id="adj-title">Adjustment</div><button class="modal-close" onclick="closeAdjModal()">✕</button></div>
+    <div class="modal-body" id="adj-body"></div>
+    <div class="modal-footer"><button class="btn-mcancel" onclick="closeAdjModal()" data-en="Cancel" data-th="ยกเลิก">Cancel</button><button class="btn-mok" id="adj-confirm-btn">Confirm</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// SUPABASE INTEGRATION NOTE:
+// This demo uses in-memory data. To connect to Supabase:
+//   1. npm install @supabase/supabase-js
+//   2. const sb = createClient('YOUR_URL','YOUR_ANON_KEY')
+//   3. Replace db.cars → await sb.from('cars').select('*')
+//   4. Replace db.bookings inserts → await sb.from('bookings').insert([...])
+//   See: supabase_schema.sql for full table definitions
+// ─────────────────────────────────────────────
+
+const db = {
+  cars: [
+    {id:1,brand:'Tesla',    model:'Model 3',    plate:'กข 1234',status:'available',  dtype:'RWD',hp:350, torque:420, range_km:530,ac_charging:'11kW AC', dc_charging:'170kW DC',color:'Pearl White'},
+    {id:2,brand:'BMW',      model:'i4 M50',     plate:'คง 5678',status:'available',  dtype:'AWD',hp:544, torque:795, range_km:510,ac_charging:'11kW AC', dc_charging:'205kW DC',color:'Frozen Black'},
+    {id:3,brand:'Mercedes', model:'EQS 580',    plate:'จฉ 9012',status:'maintenance',dtype:'AWD',hp:649, torque:950, range_km:770,ac_charging:'11kW AC', dc_charging:'200kW DC',color:'Obsidian Black'},
+    {id:4,brand:'Porsche',  model:'Taycan 4S',  plate:'ชซ 3456',status:'available',  dtype:'AWD',hp:571, torque:650, range_km:484,ac_charging:'11kW AC', dc_charging:'270kW DC',color:'Gentian Blue'},
+    {id:5,brand:'Tesla',    model:'Model S',    plate:'ฌญ 7890',status:'rented',     dtype:'AWD',hp:670, torque:1020,range_km:652,ac_charging:'11kW AC', dc_charging:'250kW DC',color:'Midnight Silver'},
+    {id:6,brand:'BMW',      model:'iX xDrive50',plate:'ฎฏ 1122',status:'available',  dtype:'AWD',hp:523, torque:765, range_km:630,ac_charging:'11kW AC', dc_charging:'200kW DC',color:'Sophisto Grey'},
+  ],
+  packages:[
+    {id:1,code:'PKG-1DAY', duration_days:1, price:1500, deposit:3000, pickup_time:'09:00',return_time:'18:00',onsite_delivery:false,insurance:true, insurance_price:300},
+    {id:2,code:'PKG-3DAY', duration_days:3, price:3800, deposit:5000, pickup_time:'09:00',return_time:'18:00',onsite_delivery:true, insurance:true, insurance_price:800},
+    {id:3,code:'PKG-7DAY', duration_days:7, price:7500, deposit:8000, pickup_time:'08:00',return_time:'20:00',onsite_delivery:true, insurance:true, insurance_price:1500},
+    {id:4,code:'PKG-14DAY',duration_days:14,price:13000,deposit:10000,pickup_time:'08:00',return_time:'20:00',onsite_delivery:true, insurance:true, insurance_price:2500},
+  ],
+  bookings:[
+    {id:'BK-0001',car_id:5,package_id:2,start_date:'2026-03-20',end_date:'2026-03-23',pickup_location:'Suvarnabhumi Airport',total_price:4600,deposit_paid:5000,status:'active',first_name:'Somchai',surname:'Jaidee',id_card:'1-1020-12345-67-8',mobile:'081-234-5678'},
+  ],
+  nextNum:2,
+};
+
+let lang='en', currentCar=null, modalStep=0, brandFilter='all', adjType='', adjRef='';
+
+// ── LANG ──────────────────────────────────────
+function setLang(l) {
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',(l==='en'&&b.textContent==='EN')||(l==='th'&&b.textContent==='ไทย')));
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    const v=el.getAttribute('data-'+l);
+    if(v!==null&&v!=='')el.textContent=v;
+  });
+  renderCars();buildPkgDD();buildFAQ();
+}
+const T=(en,th)=>lang==='th'?th:en;
+
+// ── SCROLL / NAV ──────────────────────────────
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>40));
+function scrollToFleet(){document.getElementById('fleet').scrollIntoView({behavior:'smooth'});}
+
+// ── INIT ──────────────────────────────────────
+window.addEventListener('load',()=>{
+  // counter animation
+  let v=0,tgt=db.cars.filter(c=>c.status!=='deleted').length;
+  const ti=setInterval(()=>{v=Math.min(v+1,tgt);document.getElementById('stat-fleet').textContent=v;if(v>=tgt)clearInterval(ti);},60);
+  document.getElementById('filter-date').valueAsDate=new Date();
+  buildPkgDD(); renderCars(); buildFAQ();
+});
+
+function buildPkgDD(){
+  document.getElementById('filter-package').innerHTML=
+    `<option value="">${T('All Packages','ทุกแพ็กเกจ')}</option>`+
+    db.packages.map(p=>`<option value="${p.id}">${p.code} — ${p.duration_days}${T('d','วัน')} ฿${p.price.toLocaleString()}</option>`).join('');
+}
+
+// ── FLEET ──────────────────────────────────────
+function filterBrand(b,el){
+  brandFilter=b;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');renderCars();
+}
+function applyFilters(){renderCars();document.getElementById('fleet').scrollIntoView({behavior:'smooth'});}
+
+function renderCars(){
+  const driveF=document.getElementById('filter-drive')?.value||'';
+  const rangeF=+(document.getElementById('filter-range')?.value||0);
+  let cars=db.cars.filter(c=>c.status!=='deleted');
+  if(brandFilter!=='all')cars=cars.filter(c=>c.brand===brandFilter);
+  if(driveF)cars=cars.filter(c=>c.dtype===driveF);
+  if(rangeF)cars=cars.filter(c=>c.range_km>=rangeF);
+  document.getElementById('result-count').innerHTML=`<span>${cars.length}</span> ${T('vehicles found','คันที่พบ')}`;
+  const minP=db.packages.length?Math.min(...db.packages.map(p=>p.price)):0;
+  if(!cars.length){
+    document.getElementById('cars-grid').innerHTML=`<div class="no-cars"><div class="no-cars-icon">⚡</div>${T('No vehicles match your filters.','ไม่พบรถที่ตรงกับเงื่อนไข')}</div>`;return;
+  }
+  document.getElementById('cars-grid').innerHTML=cars.map((c,i)=>{
+    const avail=c.status==='available';
+    const slabel={available:T('Available','ว่าง'),rented:T('Rented','ไม่ว่าง'),maintenance:T('Maintenance','ซ่อมบำรุง')}[c.status]||c.status;
+    const scls={available:'b-avail',rented:'b-rented',maintenance:'b-maint'}[c.status]||'b-rented';
+    return `<div class="car-card${avail?'':' unavailable'}" style="animation-delay:${i*.07}s">
+      <div class="car-img">
+        <div class="car-silhouette"><div class="c-roof"></div><div class="c-body"></div><div class="c-wl"></div><div class="c-wr"></div><div class="c-lf"></div><div class="c-lr"></div></div>
+        <div class="c-glow"></div>
+        <span class="car-badge ${scls}">${slabel}</span>
+        <span class="car-range-badge">⚡ ${c.range_km}km</span>
+      </div>
+      <div class="car-body-info">
+        <div class="car-brand-tag">${c.brand}</div>
+        <div class="car-name">${c.model}</div>
+        <div class="car-specs-row">
+          <div class="cspec"><div class="cspec-val">${c.hp}</div><div class="cspec-key">HP</div></div>
+          <div class="cspec"><div class="cspec-val">${c.torque}</div><div class="cspec-key">Nm</div></div>
+          <div class="cspec"><div class="cspec-val">${c.dtype}</div><div class="cspec-key">${T('Drive','ขับ')}</div></div>
+          <div class="cspec"><div class="cspec-val">${c.dc_charging.split(' ')[0]}</div><div class="cspec-key">DC Fast</div></div>
+        </div>
+        <div class="car-footer">
+          <div><div class="price-from">${T('From','เริ่มต้น')}</div><div class="car-price">฿${minP.toLocaleString()}</div><div class="car-price-unit">/ ${T('day','วัน')}</div></div>
+          <button class="btn-book-car" ${avail?'':'disabled'} onclick="openModal(${c.id})">${avail?T('Reserve','จอง'):T('Unavailable','ไม่ว่าง')}</button>
+        </div>
+      </div></div>`;
+  }).join('');
+}
+
+// ── BOOKING MODAL ──────────────────────────────
+function openModal(cid){
+  currentCar=cid; modalStep=0;
+  const car=db.cars.find(c=>c.id===cid);
+  document.getElementById('modal-car-info').innerHTML=`<div class="modal-car-icon">⚡</div><div><div class="modal-car-name">${car.brand} ${car.model}</div><div class="modal-car-plate">${car.plate} · ${car.dtype} · ${car.range_km}km ${T('range','ระยะทาง')}</div></div>`;
+  const pkgSel=document.getElementById('bk-package');
+  pkgSel.innerHTML=db.packages.map(p=>`<option value="${p.id}">${p.code} — ${p.duration_days}${T('d','วัน')} · ฿${p.price.toLocaleString()}</option>`).join('');
+  document.getElementById('bk-start').valueAsDate=new Date();
+  onPkgChange(); setStep(0);
+  document.getElementById('modal-booking').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal-booking').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('modal-booking').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+
+function onPkgChange(){
+  const pkg=db.packages.find(p=>p.id===+document.getElementById('bk-package').value);
+  const s=document.getElementById('bk-start').value;
+  if(pkg&&s){const d=new Date(s);d.setDate(d.getDate()+pkg.duration_days);document.getElementById('bk-end').value=d.toISOString().split('T')[0];}
+  if(pkg){document.getElementById('pkg-mini').innerHTML=`<div class="pkg-summary-box"><div class="pkg-mini-grid">
+    <div><div class="pkg-mini-val">${pkg.duration_days}</div><div class="pkg-mini-key">${T('Days','วัน')}</div></div>
+    <div><div class="pkg-mini-val">฿${pkg.price.toLocaleString()}</div><div class="pkg-mini-key">${T('Rental','เช่า')}</div></div>
+    <div><div class="pkg-mini-val">฿${pkg.deposit.toLocaleString()}</div><div class="pkg-mini-key">${T('Deposit','มัดจำ')}</div></div>
+    <div><div class="pkg-mini-val" style="color:var(--cyan)">${pkg.insurance?'✓':'✗'}</div><div class="pkg-mini-key">${T('Insured','ประกัน')}</div></div>
+  </div><div class="pkg-mini-footer">${T('Pickup','รับรถ')}: ${pkg.pickup_time} · ${T('Return','คืน')}: ${pkg.return_time} · ${T('Delivery','ส่งถึงที่')}: ${pkg.onsite_delivery?T('Yes','ใช่'):T('No','ไม่')}</div></div>`;}
+}
+
+function setStep(s){
+  modalStep=s;
+  [0,1,2,3].forEach(i=>{
+    document.getElementById('step-'+i).classList.toggle('hidden',i!==s);
+    const t=document.getElementById('stab-'+i);
+    t.classList.remove('active','done');
+    if(i===s)t.classList.add('active'); else if(i<s)t.classList.add('done');
+  });
+  const bb=document.getElementById('modal-back-btn'),nb=document.getElementById('modal-next-btn');
+  bb.style.display=''; nb.style.display='';
+  bb.textContent=s===0?T('Cancel','ยกเลิก'):T('Back','ย้อนกลับ');
+  bb.onclick=s===0?closeModal:modalBack;
+  nb.textContent=s===2?T('Confirm Booking','ยืนยันการจอง'):s===3?T('Close','ปิด'):T('Continue','ต่อไป');
+  nb.onclick=s===3?closeModal:modalNext;
+  if(s===3)bb.style.display='none';
+  if(s===2)buildSummary();
+}
+function modalBack(){if(modalStep>0)setStep(modalStep-1);}
+function modalNext(){
+  if(modalStep===0){
+    if(!document.getElementById('bk-start').value){showToast(T('Please select a start date','กรุณาเลือกวันที่'),'error');return;}
+    setStep(1);
+  }else if(modalStep===1){
+    if(!document.getElementById('bk-fname').value.trim()||!document.getElementById('bk-sname').value.trim()||!document.getElementById('bk-idcard').value.trim()||!document.getElementById('bk-mobile').value.trim()){
+      showToast(T('Please fill in all required fields','กรุณากรอกข้อมูลที่จำเป็น'),'error');return;
+    }
+    setStep(2);
+  }else if(modalStep===2){confirmBooking();}
+}
+
+function buildSummary(){
+  const car=db.cars.find(c=>c.id===currentCar);
+  const pkg=db.packages.find(p=>p.id===+document.getElementById('bk-package').value);
+  const fD=d=>d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'-';
+  const total=pkg?pkg.price+(pkg.insurance?pkg.insurance_price:0):0;
+  document.getElementById('booking-summary-box').innerHTML=`
+    <div class="bs-title">${T('Booking Summary','สรุปการจอง')}</div>
+    <div class="bs-row"><span class="bs-label">${T('Vehicle','รถยนต์')}</span><span class="bs-val">${car.brand} ${car.model}</span></div>
+    <div class="bs-row"><span class="bs-label">${T('Customer','ผู้เช่า')}</span><span class="bs-val">${document.getElementById('bk-fname').value} ${document.getElementById('bk-sname').value}</span></div>
+    <div class="bs-row"><span class="bs-label">${T('Package','แพ็กเกจ')}</span><span class="bs-val">${pkg?pkg.code:'-'}</span></div>
+    <div class="bs-row"><span class="bs-label">${T('Period','ระยะเวลา')}</span><span class="bs-val">${fD(document.getElementById('bk-start').value)} → ${fD(document.getElementById('bk-end').value)}</span></div>
+    <div class="bs-row"><span class="bs-label">${T('Pickup','รับรถที่')}</span><span class="bs-val">${document.getElementById('bk-pickup').value||'-'}</span></div>
+    <div class="bs-row"><span class="bs-label">${T('Rental Fee','ค่าเช่า')}</span><span class="bs-val">฿${pkg?pkg.price.toLocaleString():'-'}</span></div>
+    ${pkg&&pkg.insurance?`<div class="bs-row"><span class="bs-label">${T('Insurance','ประกัน')}</span><span class="bs-val">฿${pkg.insurance_price.toLocaleString()}</span></div>`:''}
+    <div class="bs-row"><span class="bs-label">${T('Deposit','เงินมัดจำ')}</span><span class="bs-val">฿${pkg?pkg.deposit.toLocaleString():'-'}</span></div>
+    <div class="bs-total-row"><span class="bs-total-label">${T('Total Charge','ยอดรวม')}</span><span class="bs-total-val">฿${total.toLocaleString()}</span></div>`;
+}
+
+function confirmBooking(){
+  const car=db.cars.find(c=>c.id===currentCar);
+  const pkg=db.packages.find(p=>p.id===+document.getElementById('bk-package').value);
+  const ref='BK-'+String(db.nextNum++).padStart(4,'0');
+  const total=pkg?pkg.price+(pkg.insurance?pkg.insurance_price:0):0;
+  const fD=d=>d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'-';
+  const start=document.getElementById('bk-start').value;
+  db.bookings.push({id:ref,car_id:currentCar,package_id:pkg?.id,start_date:start,end_date:document.getElementById('bk-end').value,
+    pickup_location:document.getElementById('bk-pickup').value,total_price:total,deposit_paid:pkg?.deposit||0,
+    status:'active',first_name:document.getElementById('bk-fname').value,surname:document.getElementById('bk-sname').value,
+    id_card:document.getElementById('bk-idcard').value,mobile:document.getElementById('bk-mobile').value});
+  if(car)car.status='rented';
+  document.getElementById('conf-wrap').innerHTML=`
+    <div class="conf-ring">✓</div>
+    <div class="conf-ref">${ref}</div>
+    <div class="conf-msg">${T('Booking Confirmed!','การจองสำเร็จ!')}</div>
+    <div class="conf-msg-th">${T('Your EV is reserved. We will contact you shortly.','รถยนต์ไฟฟ้าของคุณถูกจองแล้ว เราจะติดต่อกลับในไม่ช้า')}</div>
+    <div class="conf-details">
+      <div class="cd-item"><div class="cd-val">${car.brand} ${car.model}</div><div class="cd-key">${T('Vehicle','รถยนต์')}</div></div>
+      <div class="cd-item"><div class="cd-val">${fD(start)}</div><div class="cd-key">${T('Pickup','รับรถ')}</div></div>
+      <div class="cd-item"><div class="cd-val">฿${total.toLocaleString()}</div><div class="cd-key">${T('Total','ยอดรวม')}</div></div>
+    </div>`;
+  setStep(3); renderCars();
+}
+
+// ── MANAGE ────────────────────────────────────
+function lookupBooking(){
+  const ref=document.getElementById('mgmt-ref').value.trim().toUpperCase();
+  const idc=document.getElementById('mgmt-idcard').value.trim();
+  const res=document.getElementById('manage-result');
+  if(!ref||!idc){showToast(T('Please enter both fields','กรุณากรอกทั้งสองช่อง'),'error');return;}
+  const b=db.bookings.find(x=>x.id===ref&&x.id_card===idc);
+  if(!b){res.innerHTML=`<div style="margin-top:18px;padding:14px;background:rgba(255,78,106,.07);border:1px solid rgba(255,78,106,.15);font-size:13px;color:var(--danger);">${T('No booking found. Please check your reference and ID card.','ไม่พบการจอง กรุณาตรวจสอบข้อมูล')}</div>`;return;}
+  const car=db.cars.find(c=>c.id===b.car_id);
+  const pkg=db.packages.find(p=>p.id===b.package_id);
+  const fD=d=>d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'-';
+  const sCls={active:'bfc-active',extended:'bfc-active',cancelled:'bfc-cancelled',early_return:'bfc-cancelled',completed:'bfc-active'}[b.status]||'bfc-active';
+  const acts=b.status==='active'?`
+    <button class="btn-sm-action btn-extend-sm" onclick="openAdj('extend','${b.id}')">${T('Extend Rental','ต่อระยะเวลา')}</button>
+    <button class="btn-sm-action btn-cancel-sm" onclick="openAdj('cancel','${b.id}')">${T('Cancel Booking','ยกเลิกการจอง')}</button>`:
+    `<span style="font-size:12px;color:var(--muted);">${T('No actions available.','ไม่สามารถดำเนินการได้')}</span>`;
+  res.innerHTML=`<div class="booking-found-card">
+    <div class="bfc-ref">${b.id}</div>
+    <div class="bfc-status ${sCls}"><span class="status-dot"></span>${b.status.toUpperCase()}</div>
+    <div class="bfc-details">
+      <div><div class="bfd-label">${T('Customer','ผู้เช่า')}</div><div class="bfd-val">${b.first_name} ${b.surname}</div></div>
+      <div><div class="bfd-label">${T('Vehicle','รถยนต์')}</div><div class="bfd-val">${car?car.brand+' '+car.model:'-'}</div></div>
+      <div><div class="bfd-label">${T('Package','แพ็กเกจ')}</div><div class="bfd-val">${pkg?pkg.code:'-'}</div></div>
+      <div><div class="bfd-label">${T('Total','ยอดรวม')}</div><div class="bfd-val">฿${(b.total_price||0).toLocaleString()}</div></div>
+      <div><div class="bfd-label">${T('Start','วันเริ่ม')}</div><div class="bfd-val">${fD(b.start_date)}</div></div>
+      <div><div class="bfd-label">${T('End','วันสิ้นสุด')}</div><div class="bfd-val">${fD(b.end_date)}</div></div>
+    </div>
+    <div class="bfc-actions">${acts}</div></div>`;
+}
+
+// ── ADJUSTMENTS ───────────────────────────────
+function openAdj(type,id){
+  adjType=type; adjRef=id;
+  document.getElementById('adj-title').textContent=type==='extend'?T('Extend Rental','ต่อระยะเวลาเช่า'):T('Cancel Booking','ยกเลิกการจอง');
+  let body='';
+  if(type==='extend'){body=`<div class="form-group" style="margin-bottom:14px;"><label class="form-label">${T('Additional Days','จำนวนวันที่เพิ่ม')}</label><input class="form-input" type="number" id="adj-days" min="1" value="1"></div><div class="form-group"><label class="form-label">${T('Reason (optional)','เหตุผล (ไม่บังคับ)')}</label><input class="form-input" type="text" id="adj-reason" placeholder="${T('e.g. Trip extended','เช่น ขยายทริป')}"></div>`;}
+  else{body=`<div style="background:rgba(255,78,106,.07);border:1px solid rgba(255,78,106,.15);padding:14px;margin-bottom:14px;font-size:13px;color:var(--danger);">⚠ ${T('Cancellation cannot be undone.','การยกเลิกไม่สามารถย้อนกลับได้')}</div><div class="form-group"><label class="form-label">${T('Reason','เหตุผล')}</label><input class="form-input" type="text" id="adj-reason" placeholder="${T('Reason...','เหตุผล...')}"></div>`;}
+  document.getElementById('adj-body').innerHTML=body;
+  document.getElementById('adj-confirm-btn').textContent=T('Confirm','ยืนยัน');
+  document.getElementById('adj-confirm-btn').onclick=confirmAdj;
+  document.getElementById('modal-adjust').classList.add('open');
+}
+function closeAdjModal(){document.getElementById('modal-adjust').classList.remove('open');}
+document.getElementById('modal-adjust').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdjModal();});
+
+function confirmAdj(){
+  const b=db.bookings.find(x=>x.id===adjRef); if(!b)return;
+  if(adjType==='extend'){
+    const d=+document.getElementById('adj-days').value||1;
+    const e=new Date(b.end_date); e.setDate(e.getDate()+d);
+    b.end_date=e.toISOString().split('T')[0]; b.status='extended';
+    showToast(T(`Extended by ${d} day(s)`,`ต่อ ${d} วัน`),'success');
+  }else{
+    b.status='cancelled';
+    const car=db.cars.find(c=>c.id===b.car_id); if(car)car.status='available';
+    showToast(T('Booking cancelled','ยกเลิกการจองแล้ว'),'success'); renderCars();
+  }
+  closeAdjModal(); lookupBooking();
+}
+
+// ── FAQ ───────────────────────────────────────
+function buildFAQ(){
+  const faqs=[
+    [T('What documents do I need?','ต้องใช้เอกสารอะไรบ้าง?'),T('Thai ID card or passport, valid driving license, and deposit. International customers need an IDP.','บัตรประชาชนหรือพาสปอร์ต ใบขับขี่ที่ยังใช้งานได้ และเงินมัดจำ ชาวต่างชาติต้องมีใบขับขี่นานาชาติ')],
+    [T('How does charging work?','การชาร์จไฟทำงานอย่างไร?'),T('All vehicles delivered fully charged. AC charging cable included. We provide a map of nearby fast-charging stations.','รถทุกคันส่งมอบพร้อมชาร์จเต็ม มีสาย AC ให้ พร้อมแผนที่สถานีชาร์จด่วนใกล้เคียง')],
+    [T('Can I cancel my booking?','ยกเลิกการจองได้ไหม?'),T('Yes. 48+ hours before pickup: full deposit refund. Within 48 hours: 50% deposit forfeiture.','ได้ ยกเลิกก่อน 48 ชั่วโมง: คืนมัดจำทั้งหมด ภายใน 48 ชั่วโมง: เสียมัดจำ 50%')],
+    [T('Is insurance included?','มีประกันภัยรวมไหม?'),T('Yes. All packages include comprehensive insurance covering collision, theft, and roadside assistance.','ใช่ ทุกแพ็กเกจรวมประกันภัยครอบคลุม การชน การโจรกรรม และบริการช่วยเหลือฉุกเฉิน')],
+    [T('Do you offer airport delivery?','มีบริการส่งรถสนามบินไหม?'),T('Yes. Selected packages include delivery to Suvarnabhumi and Don Mueang airports.','ใช่ แพ็กเกจบางรายการรวมบริการส่งรถถึงสนามบินสุวรรณภูมิและดอนเมือง')],
+  ];
+  document.getElementById('faq-list').innerHTML=faqs.map((f,i)=>`<div class="faq-item" id="faq-${i}"><div class="faq-q" onclick="document.getElementById('faq-${i}').classList.toggle('open')"><span>${f[0]}</span><span class="faq-icon">+</span></div><div class="faq-a">${f[1]}</div></div>`).join('');
+}
+
+// ── TOAST ─────────────────────────────────────
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+</script>
+</body>
+</html>
