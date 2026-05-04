@@ -8,12 +8,12 @@
 <style>
   @font-face {
     font-family: 'AudiType';
-    src: url('https://mistyboyz.github.io/Calabura/AudiType-Normal_03.ttf') format('truetype');
+    src: url('http://micelectriccar.com/AudiType-Normal_03.ttf') format('truetype');
     font-weight: 400; font-style: normal;
   }
   @font-face {
     font-family: 'AudiType';
-    src: url('https://mistyboyz.github.io/Calabura/AudiType-Bold_03.ttf') format('truetype');
+    src: url('http://micelectriccar.com/AudiType-Bold_03.ttf') format('truetype');
     font-weight: 700 900; font-style: normal;
   }
   :root {
@@ -57,7 +57,7 @@
   .nav-btn:hover { background:var(--gold-light); }
 
   .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:8rem 3rem 4rem; position:relative; overflow:hidden;
-    background-image: url('https://mistyboyz.github.io/Calabura/audi1.jpg');
+    background-image: url('http://micelectriccar.com/audi1.jpg');
     background-size: cover; background-position: center right; background-repeat: no-repeat; }
   .hero-overlay { position:absolute; inset:0; background:linear-gradient(to right, rgba(10,10,10,0.92) 40%, rgba(10,10,10,0.3) 100%); z-index:0; }
   body.light .hero-overlay { background:linear-gradient(to right, rgba(247,245,240,0.92) 40%, rgba(247,245,240,0.2) 100%); }
@@ -687,7 +687,7 @@
   </div>
   <div style="border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem">
     <span style="font-size:.78rem;color:var(--text3)">© 2026 <span style="color:var(--gold)">Mic : Electric Car</span> · All rights reserved.</span>
-    <span style="font-size:.75rem;color:var(--text3)">Secured by Omise · Powered by Firebase</span>
+    <span style="font-size:.75rem;color:var(--text3)">Secured by Omise · Powered by Supabase</span>
   </div>
 </footer>
 
@@ -737,7 +737,7 @@ async function findMyBooking() {
 
   result.innerHTML = '<p style="color:var(--text3);font-size:.82rem">⏳ Searching...</p>';
   try {
-    const FIREBASE_URL_FIND = 'https://calabura-ea686-default-rtdb.asia-southeast1.firebasedatabase.app';
+    const FIREBASE_URL_FIND = 'https://fmoiykmqjhlcfvzgpvvj.supabase.co';
     const res = await fetch(`${FIREBASE_URL_FIND}/bookings/${ref}.json`);
     if (!res.ok) throw new Error();
     const b = await res.json();
@@ -939,9 +939,9 @@ function toggleTheme() {
 
 // ============ FIREBASE CONFIG ============
 // TODO: เปลี่ยน YOUR_PROJECT_ID เป็น Project ID ของคุณจาก Firebase Console
-const FIREBASE_URL = 'https://calabura-ea686-default-rtdb.asia-southeast1.firebasedatabase.app';
+const FIREBASE_URL = 'https://fmoiykmqjhlcfvzgpvvj.supabase.co';
 
-const BASE_IMG = 'https://mistyboyz.github.io/Calabura/';
+const BASE_IMG = 'http://micelectriccar.com/';
 
 // Default cars (used only if Firebase not configured yet)
 const DEFAULT_CARS = [
@@ -1475,7 +1475,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 const firebaseConfig = {
   apiKey: "AIzaSyDUx5yv-SLA6umvbreE06lqZKIvTH3AUx0",
   authDomain: "calabura-ea686.firebaseapp.com",
-  databaseURL: "https://calabura-ea686-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL: "https://fmoiykmqjhlcfvzgpvvj.supabase.co",
   projectId: "calabura-ea686",
   storageBucket: "calabura-ea686.firebasestorage.app",
   messagingSenderId: "952055824613",
@@ -1676,9 +1676,9 @@ window.doLogout = async function() {
 <script src="https://cdn.omise.co/omise.js"></script>
 <script>
 const OMISE_PKEY = 'pkey_test_676r11218omn703jx12';
-// Secret key is NEVER kept client-side. Charging is performed in the Netlify function
-// `netlify/functions/charge.js` using process.env.OMISE_SECRET_KEY.
-const FIREBASE_URL_PAY = 'https://calabura-ea686-default-rtdb.asia-southeast1.firebasedatabase.app';
+// NOTE: Secret key ต้องใช้ฝั่ง server เท่านั้น - ในที่นี้ใช้ test mode จำลองการทำงาน
+const OMISE_SKEY = 'skey_test_676r112gmaxvuehbab2';
+const FIREBASE_URL_PAY = 'https://fmoiykmqjhlcfvzgpvvj.supabase.co';
 
 function togglePaymentFields() {
   const method = document.getElementById('b-payment').value;
@@ -1763,7 +1763,7 @@ async function processPayment() {
           }
           const total = rental + insCost;
 
-          const chargeRes = await fetch('https://mic-electric-car.netlify.app/.netlify/functions/charge', {
+          const chargeRes = await fetch('http://micelectriccar.com/.netlify/functions/charge', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1832,7 +1832,6 @@ function startQRTimer(seconds) {
   clearInterval(qrTimerInterval);
   let s = seconds;
   const el = document.getElementById('qr-timer');
-  el.style.color = ''; // reset in case a previous run set it to red on expiry
   qrTimerInterval = setInterval(() => {
     s--;
     const m = Math.floor(s/60);
@@ -1840,9 +1839,8 @@ function startQRTimer(seconds) {
     el.textContent = `⏱ ${m}:${sec.toString().padStart(2,'0')} remaining`;
     if (s <= 0) {
       clearInterval(qrTimerInterval);
-      // There is no #qr-status element — show the expiry message in the timer slot itself
-      el.textContent = '❌ QR expired. Please try again.';
-      el.style.color = '#e74c3c';
+      document.getElementById('qr-status').textContent = '❌ QR expired. Please try again.';
+      el.textContent = '';
     }
   }, 1000);
 }
@@ -1896,42 +1894,21 @@ async function submitSlip() {
   errEl.style.display = 'none';
 
   const ref = 'DN' + Date.now().toString().slice(-6);
-  // Use the dates from the booking modal (b-pickup-date / b-return-date), not the search bar
-  const p = document.getElementById('b-pickup-date').value;
-  const r = document.getElementById('b-return-date').value;
+  const p = document.getElementById('pickup-date').value;
+  const r = document.getElementById('return-date').value;
   let days = 1;
   if (p && r) { const d=(new Date(r)-new Date(p))/86400000; if(d>0) days=d; }
 
-  // Compute totals using the selected package (matches the QR amount the customer paid)
-  let rental, insCost;
-  if (selectedPackage) {
-    rental = selectedPackage.duration === 'daily' ? selectedPackage.price * days : selectedPackage.price;
-    insCost = (selectedPackage.insurance || 0) * days;
-  } else {
-    rental = selectedCar.price * days;
-    insCost = 0;
-  }
-  const total = rental + insCost;
-
-  // The form has b-firstname + b-surname (not b-name)
-  const fn = document.getElementById('b-firstname').value;
-  const sn = document.getElementById('b-surname').value;
-
   const booking = {
     ref, days,
-    name: `${fn} ${sn}`.trim(),
+    name: document.getElementById('b-name').value,
     phone: document.getElementById('b-phone').value,
     email: document.getElementById('b-email').value,
     idCard: document.getElementById('b-id').value || '-',
-    license: document.getElementById('b-license').value || '-',
-    emergency: document.getElementById('b-emergency').value || '-',
-    address: document.getElementById('b-address').value || '-',
     payment: 'promptpay',
     paymentSlip: window._slipBase64,
     slipRef: document.getElementById('slip-ref').value || '-',
-    packageId: selectedPackage?.id || null,
-    packageCode: selectedPackage?.code || null,
-    insurance: selectedPackage ? `${selectedPackage.code} (฿${selectedPackage.insurance||0}/day)` : 'none',
+    insurance: document.getElementById('b-insurance').value,
     carId: selectedCar.id,
     carName: selectedCar.name,
     carModel: selectedCar.model,
@@ -1940,8 +1917,7 @@ async function submitSlip() {
     returnLocation: typeof selectedReturn !== 'undefined' && selectedReturn ? selectedReturn.name : 'Same as pickup',
     pickupDate: p, returnDate: r,
     pricePerDay: selectedCar.price,
-    insuranceCost: insCost,
-    total,
+    total: selectedCar.price * days,
     status: 'pending_verification',
     createdAt: new Date().toISOString()
   };
@@ -2228,7 +2204,7 @@ window.saveOnboarding = async function() {
       createdAt: user.metadata.creationTime,
       lastLogin: user.metadata.lastSignInTime
     };
-    const FIREBASE_URL_OB = 'https://calabura-ea686-default-rtdb.asia-southeast1.firebasedatabase.app';
+    const FIREBASE_URL_OB = 'https://fmoiykmqjhlcfvzgpvvj.supabase.co';
     await fetch(`${FIREBASE_URL_OB}/users/${user.uid}.json`, {
       method: 'PUT', headers: {'Content-Type':'application/json'},
       body: JSON.stringify(profileData)
@@ -2257,10 +2233,4 @@ function showAuthTab(tab) {
   document.getElementById('tab-register').style.borderBottomColor = isLogin ? 'transparent' : 'var(--gold)';
   // Clear errors
   const loginErr = document.getElementById('login-error-msg');
-  const regErr = document.getElementById('register-error-msg');
-  if (loginErr) loginErr.textContent = '';
-  if (regErr) regErr.textContent = '';
-}
-</script>
-</body>
-</html>
+  const regEr
