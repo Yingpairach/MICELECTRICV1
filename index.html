@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mic : Electric Car — Car Booking</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'AudiType';
+    src: url('https://mistyboyz.github.io/Calabura/AudiType-Normal_03.ttf') format('truetype');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'AudiType';
+    src: url('https://mistyboyz.github.io/Calabura/AudiType-Bold_03.ttf') format('truetype');
+    font-weight: 700 900; font-style: normal;
+  }
+  :root {
+    --bg: #0a0a0a; --bg2: #141414; --text: #f5f3ef;
+    --text2: rgba(245,243,239,0.6); --text3: #6b6760;
+    --gold: #c9a84c; --gold-light: #e8c97a;
+    --border: rgba(201,168,76,0.2); --card: #141414;
+    --input-bg: rgba(245,243,239,0.05); --nav-bg: rgba(10,10,10,0.88);
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  body.light {
+    --bg: #f7f5f0; --bg2: #ffffff; --text: #1a1a1a;
+    --text2: rgba(26,26,26,0.6); --text3: #999;
+    --border: rgba(180,140,50,0.25); --card: #ffffff;
+    --input-bg: rgba(0,0,0,0.04); --nav-bg: rgba(247,245,240,0.95);
+    --shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; transition:background .3s,color .3s; }
+
+  nav { position:fixed; top:0; width:100%; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1rem 2.5rem; background:var(--nav-bg); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); gap:1rem; transition:background .3s; }
+  .logo { display:flex; align-items:center; gap:.5rem; white-space:nowrap; }
+  .logo-text { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--text); }
+  .logo-text span { color:var(--gold); }
+  nav ul { list-style:none; display:flex; gap:1.5rem; }
+  nav ul a { color:var(--text2); text-decoration:none; font-size:.85rem; font-weight:500; letter-spacing:.05em; text-transform:uppercase; transition:color .2s; }
+  nav ul a:hover { color:var(--gold); }
+  .nav-controls { display:flex; align-items:center; gap:.5rem; flex-shrink:0; }
+
+  .lang-wrapper { position:relative; }
+  .lang-btn { background:var(--input-bg); border:1px solid var(--border); color:var(--text); padding:.42rem .8rem; font-family:'DM Sans',sans-serif; font-size:.8rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:.3rem; transition:all .2s; white-space:nowrap; }
+  .lang-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .lang-dropdown { display:none; position:absolute; top:calc(100% + 6px); right:0; background:var(--card); border:1px solid var(--border); min-width:140px; box-shadow:var(--shadow); z-index:300; }
+  .lang-dropdown.open { display:block; }
+  .lang-option { display:flex; align-items:center; gap:.6rem; padding:.55rem 1rem; cursor:pointer; font-size:.85rem; color:var(--text2); transition:all .15s; }
+  .lang-option:hover,.lang-option.active { background:rgba(201,168,76,.1); color:var(--gold); }
+
+  .theme-btn { background:var(--input-bg); border:1px solid var(--border); color:var(--text); width:34px; height:34px; cursor:pointer; font-size:.95rem; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  .theme-btn:hover { border-color:var(--gold); }
+  .nav-btn { background:var(--gold); color:#0a0a0a; border:none; padding:.48rem 1.1rem; font-family:'DM Sans',sans-serif; font-weight:700; font-size:.8rem; cursor:pointer; text-transform:uppercase; letter-spacing:.05em; transition:background .2s; white-space:nowrap; }
+  .nav-btn:hover { background:var(--gold-light); }
+
+  .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:8rem 3rem 4rem; position:relative; overflow:hidden;
+    background-image: url('https://mistyboyz.github.io/Calabura/audi1.jpg');
+    background-size: cover; background-position: center right; background-repeat: no-repeat; }
+  .hero-overlay { position:absolute; inset:0; background:linear-gradient(to right, rgba(10,10,10,0.92) 40%, rgba(10,10,10,0.3) 100%); z-index:0; }
+  body.light .hero-overlay { background:linear-gradient(to right, rgba(247,245,240,0.92) 40%, rgba(247,245,240,0.2) 100%); }
+  .hero > *:not(.hero-graphic):not(.hero-overlay) { position:relative; z-index:1; }
+  .hero-eyebrow { font-size:.75rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem; font-weight:600; }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.8rem,6vw,6rem); font-weight:900; line-height:1.05; max-width:700px; animation:fadeUp .8s ease both; color:var(--text); }
+  .hero h1 em { color:var(--gold); font-style:italic; }
+  .hero-sub { margin-top:1.5rem; max-width:460px; color:var(--text2); font-size:1rem; line-height:1.7; animation:fadeUp .8s .15s ease both; }
+  .hero-cta { display:flex; gap:1rem; margin-top:2.5rem; animation:fadeUp .8s .3s ease both; }
+  .btn-primary { background:var(--gold); color:#0a0a0a; border:none; padding:.9rem 2.2rem; font-family:'DM Sans',sans-serif; font-weight:700; font-size:.95rem; cursor:pointer; transition:all .2s; }
+  .btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); }
+  .btn-outline { background:transparent; color:var(--text); border:1px solid var(--border); padding:.9rem 2rem; font-family:'DM Sans',sans-serif; font-weight:500; font-size:.95rem; cursor:pointer; transition:all .2s; }
+  .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+  .hero-graphic { position:absolute; right:-5%; top:50%; transform:translateY(-50%); font-size:20rem; opacity:.04; pointer-events:none; }
+
+  .stats-bar { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--bg2); transition:background .3s; }
+  .stat { padding:2.5rem 2rem; text-align:center; border-right:1px solid var(--border); }
+  .stat:last-child { border-right:none; }
+  .stat-num { font-family:'AudiType',serif; font-size:2.5rem; font-weight:900; color:var(--gold); }
+  .stat-label { color:var(--text3); font-size:.85rem; margin-top:.3rem; }
+
+  .booking-section { padding:5rem 3rem; background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); transition:background .3s; }
+
+  /* LOCATION SELECTOR */
+  .loc-selector { display:flex; align-items:center; gap:.8rem; background:var(--input-bg); border:1px solid var(--border); padding:.85rem 1rem; cursor:pointer; transition:all .2s; }
+  .loc-selector:hover { border-color:var(--gold); }
+  .loc-icon { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; flex-shrink:0; }
+  .pickup-dot { background:rgba(46,204,113,.2); color:#2ecc71; border:1px solid rgba(46,204,113,.4); }
+  .return-dot { background:rgba(231,76,60,.2); color:#e74c3c; border:1px solid rgba(231,76,60,.4); }
+  .loc-text { flex:1; min-width:0; }
+  .loc-name { font-size:.9rem; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .loc-sub { font-size:.75rem; color:var(--text3); margin-top:.1rem; }
+  .loc-arrow { color:var(--text3); font-size:1.2rem; flex-shrink:0; }
+
+  /* LOCATION LIST ITEMS */
+  .loc-item { display:flex; align-items:center; gap:1rem; padding:1rem 1.5rem; cursor:pointer; transition:background .15s; border-bottom:1px solid rgba(201,168,76,.05); }
+  .loc-item:hover { background:rgba(201,168,76,.06); }
+  .loc-item.selected { background:rgba(201,168,76,.1); }
+  .loc-item-icon { width:40px; height:40px; background:var(--bg3); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+  .loc-item-info { flex:1; }
+  .loc-item-name { font-size:.9rem; font-weight:600; }
+  .loc-item-detail { font-size:.75rem; color:var(--text3); margin-top:.15rem; }
+  .loc-item-tag { font-size:.68rem; padding:.15rem .5rem; border:1px solid var(--border); color:var(--text3); margin-left:.4rem; }
+  .loc-category { padding:.6rem 1.5rem; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); font-weight:600; background:rgba(201,168,76,.04); border-bottom:1px solid var(--border); }
+  .section-title { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; margin-bottom:2rem; color:var(--text); }
+  .section-title span { color:var(--gold); }
+  .booking-form { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.2rem; align-items:end; }
+  .form-group { display:flex; flex-direction:column; gap:.5rem; }
+  .form-group label { font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .form-group input,.form-group select { background:var(--input-bg); border:1px solid var(--border); color:var(--text); padding:.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s; appearance:none; }
+  .form-group select option { background:var(--card); color:var(--text); }
+  .form-group input:focus,.form-group select:focus { border-color:var(--gold); }
+  .form-group input::placeholder { color:var(--text3); }
+  .btn-search { background:var(--gold); color:#0a0a0a; border:none; padding:.85rem 2rem; font-family:'DM Sans',sans-serif; font-weight:700; font-size:.95rem; cursor:pointer; white-space:nowrap; transition:all .2s; height:fit-content; }
+  .btn-search:hover { background:var(--gold-light); }
+
+  .fleet-section { padding:5rem 3rem; background:var(--bg); transition:background .3s; }
+  .fleet-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:2.5rem; }
+  .car-card { background:var(--card); border:1px solid var(--border); padding:1.8rem; transition:all .3s; cursor:pointer; position:relative; overflow:hidden; display:flex; flex-direction:column; }
+  .car-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform .3s; }
+  .car-card:hover { border-color:rgba(201,168,76,.5); transform:translateY(-4px); box-shadow:var(--shadow); }
+  .car-card:hover::before { transform:scaleX(1); }
+  .car-emoji { font-size:3.5rem; margin-bottom:1rem; display:block; }
+  .car-img-wrap { width:100%; height:160px; overflow:hidden; margin-bottom:1.2rem; background:rgba(201,168,76,0.05); }
+  .car-img { width:100%; height:100%; object-fit:cover; transition:transform .4s; display:block; }
+  .car-card:hover .car-img { transform:scale(1.05); }
+  .car-category { font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:.4rem; }
+  .car-name { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; margin-bottom:.3rem; color:var(--text); }
+  .car-model { color:var(--text3); font-size:.9rem; margin-bottom:1.2rem; }
+  .car-features { display:flex; gap:.8rem; flex-wrap:wrap; margin-bottom:1.5rem; min-height:3.5rem; align-content:flex-start; }
+  .tag { font-size:.75rem; padding:.3rem .7rem; background:rgba(201,168,76,.1); border:1px solid var(--border); color:var(--text2); }
+  .car-price { display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid var(--border); padding-top:1.2rem; margin-top:auto; }
+  .price-amount { font-family:'AudiType',serif; font-size:2rem; font-weight:900; color:var(--gold); }
+  .price-unit { font-size:.8rem; color:var(--text3); font-family:'AudiType',serif; }
+  .btn-book { background:transparent; color:var(--gold); border:1px solid var(--gold); padding:.5rem 1.2rem; font-family:'DM Sans',sans-serif; font-weight:600; font-size:.85rem; cursor:pointer; transition:all .2s; }
+  .btn-book:hover { background:var(--gold); color:#0a0a0a; }
+
+  .modal-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.8); backdrop-filter:blur(6px); justify-content:center; align-items:center; padding:1rem; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--card); border:1px solid var(--border); max-width:560px; width:100%; max-height:90vh; overflow-y:auto; padding:2.5rem; animation:slideUp .3s ease; transition:background .3s; }
+  .modal-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:2rem; }
+  .modal-header h2 { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:var(--text); }
+  .modal-close { background:none; border:1px solid var(--border); color:var(--text); width:36px; height:36px; cursor:pointer; font-size:1.1rem; transition:all .2s; }
+  .modal-close:hover { border-color:var(--gold); color:var(--gold); }
+  .modal-form { display:flex; flex-direction:column; gap:1.2rem; }
+  .modal-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .modal-summary { background:rgba(201,168,76,.07); border:1px solid var(--border); padding:1.2rem; margin-bottom:.5rem; }
+  .summary-row { display:flex; justify-content:space-between; font-size:.9rem; padding:.3rem 0; border-bottom:1px solid rgba(201,168,76,.1); color:var(--text); font-family:'AudiType',serif; }
+  .summary-row:last-child { border-bottom:none; font-weight:700; color:var(--gold); }
+  .summary-label { color:var(--text3); font-family:'AudiType',serif; }
+  .success-msg { display:none; text-align:center; padding:2rem; }
+  .success-msg.show { display:block; }
+  .success-icon { font-size:3.5rem; margin-bottom:1rem; }
+  .success-msg h3 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:.8rem; color:var(--text); }
+  .success-msg p { color:var(--text3); line-height:1.6; }
+  .booking-id { display:inline-block; margin-top:1.2rem; background:rgba(201,168,76,.1); border:1px solid var(--border); padding:.5rem 1.2rem; font-size:1.1rem; letter-spacing:.1em; color:var(--gold); font-family:'AudiType',serif; }
+  footer { text-align:center; padding:2.5rem; color:var(--text3); font-size:.85rem; border-top:1px solid var(--border); background:var(--bg2); transition:background .3s; }
+  footer span { color:var(--gold); }
+
+  /* ===== TOAST ===== */
+  #toast-container { position:fixed; bottom:2rem; right:2rem; z-index:999; display:flex; flex-direction:column; gap:.6rem; }
+  .toast { display:flex; align-items:center; gap:.8rem; padding:.9rem 1.3rem; min-width:260px; max-width:360px; border:1px solid; font-size:.88rem; font-weight:500; animation:toastIn .3s ease; backdrop-filter:blur(8px); }
+  .toast.success { background:rgba(46,204,113,.12); border-color:rgba(46,204,113,.4); color:#2ecc71; }
+  .toast.error   { background:rgba(231,76,60,.12);  border-color:rgba(231,76,60,.4);  color:#e74c3c; }
+  .toast.info    { background:rgba(201,168,76,.12); border-color:rgba(201,168,76,.4); color:var(--gold); }
+  .toast-icon { font-size:1.1rem; flex-shrink:0; }
+  .toast.hide { animation:toastOut .3s ease forwards; }
+  @keyframes toastIn  { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes toastOut { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(30px)} }
+
+  /* ===== SKELETON ===== */
+  .skeleton { background:linear-gradient(90deg,var(--bg3,#1e1e1e) 25%,rgba(201,168,76,.08) 50%,var(--bg3,#1e1e1e) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; }
+  @keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
+  .car-card.loading .car-img-wrap { background:var(--card); }
+  .skel-box { border-radius:0; }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal { opacity:0; transform:translateY(32px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-delay-1 { transition-delay:.1s; }
+  .reveal-delay-2 { transition-delay:.2s; }
+  .reveal-delay-3 { transition-delay:.3s; }
+
+  /* ===== FORM VALIDATION ===== */
+  .form-group input.valid   { border-color:#2ecc71 !important; }
+  .form-group input.invalid { border-color:#e74c3c !important; }
+  .field-msg { font-size:.72rem; margin-top:.25rem; height:.9rem; }
+  .field-msg.ok  { color:#2ecc71; }
+  .field-msg.err { color:#e74c3c; }
+
+  /* ===== 3D TILT ===== */
+  .car-card { transform-style:preserve-3d; will-change:transform; }
+  .tilt-inner { transform:translateZ(10px); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+  @media(max-width:1200px){ .fleet-grid{ grid-template-columns:repeat(3,1fr); } }
+  @media(max-width:768px){ nav{padding:.8rem 1.2rem} nav ul{display:none} .hero{padding:6rem 1.5rem 3rem} .booking-section,.fleet-section{padding:3rem 1.5rem} .stats-bar{grid-template-columns:repeat(2,1fr)} .modal{padding:1.5rem} .modal-row{grid-template-columns:1fr} .fleet-grid{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+<div id="toast-container"></div>
+<nav>
+  <div class="logo"><div class="logo-text">Mic : <span>Electric Car</span></div></div>
+  <ul>
+    <li><a href="#fleet" data-i18n="nav_fleet">รถทั้งหมด</a></li>
+    <li><a href="#booking" data-i18n="nav_booking">จองรถ</a></li>
+    <li><a href="#" data-i18n="nav_contact">ติดต่อเรา</a></li>
+  </ul>
+  <div class="nav-controls">
+    <div class="lang-wrapper">
+      <button class="lang-btn" onclick="toggleLangMenu()" id="lang-btn">🌐 TH ▾</button>
+      <div class="lang-dropdown" id="lang-dropdown">
+        <div class="lang-option active" onclick="setLang('th')">🇹🇭 ภาษาไทย</div>
+        <div class="lang-option" onclick="setLang('en')">🇬🇧 English</div>
+        <div class="lang-option" onclick="setLang('zh')">🇨🇳 中文</div>
+        <div class="lang-option" onclick="setLang('ja')">🇯🇵 日本語</div>
+        <div class="lang-option" onclick="setLang('ko')">🇰🇷 한국어</div>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+    <!-- User bar (shown after login) -->
+    <div id="user-bar" style="display:none;align-items:center;gap:.5rem">
+      <a href="profile.html" style="display:flex;align-items:center;gap:.5rem;background:var(--input-bg);border:1px solid var(--border);padding:.35rem .8rem .35rem .45rem;text-decoration:none;transition:border .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div id="user-avatar" style="width:26px;height:26px;background:var(--gold);color:#0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0">U</div>
+        <span id="user-name" style="font-size:.8rem;color:var(--text);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+      </a>
+      <button onclick="doLogout()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:.35rem .75rem;font-family:'DM Sans',sans-serif;font-size:.78rem;cursor:pointer;white-space:nowrap;transition:all .2s" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">Sign Out</button>
+    </div>
+    <!-- Sign In button (shown when logged out) -->
+    <button class="nav-btn" onclick="document.getElementById('auth-screen').style.display='flex';showAuthTab('login')" id="nav-auth-btn">Sign In</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-graphic">🚗</div>
+  <p class="hero-eyebrow" data-i18n="hero_eyebrow">บริการเช่ารถพรีเมียม · กรุงเทพฯ</p>
+  <h1 data-i18n="hero_title">ขับทุกเส้นทาง<br>ด้วย<em>สไตล์</em>ของคุณ</h1>
+  <p class="hero-sub" data-i18n="hero_sub">เลือกจากรถหลากหลายรุ่น จองง่าย รับรถทันที ราคาโปร่งใส ไม่มีค่าธรรมเนียมซ่อนเร้น</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})" data-i18n="cta_book">เริ่มจองรถ</button>
+    <button class="btn-outline" onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})" data-i18n="cta_fleet">ดูรถทั้งหมด</button>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">500+</div><div class="stat-label" data-i18n="stat1">รถพร้อมให้เช่า</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label" data-i18n="stat2">บริการตลอดเวลา</div></div>
+  <div class="stat"><div class="stat-num">50K+</div><div class="stat-label" data-i18n="stat3">ลูกค้าพึงพอใจ</div></div>
+  <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label" data-i18n="stat4">คะแนนรีวิว</div></div>
+</div>
+
+<section class="booking-section" id="booking">
+  <h2 class="section-title"><span data-i18n="search_pre">Reserve a</span> <span data-i18n="search_span" style="color:var(--gold)">Vehicle</span></h2>
+
+  <!-- LOCATION SELECTOR -->
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin-bottom:1.5rem">
+    <!-- PICKUP -->
+    <div>
+      <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">📍 Pickup Location</label>
+      <div class="loc-selector" id="pickup-selector" onclick="openLocModal('pickup')">
+        <div class="loc-icon pickup-dot">P</div>
+        <div class="loc-text">
+          <div class="loc-name" id="pickup-name">Select pickup point</div>
+          <div class="loc-sub" id="pickup-sub">Click to choose location</div>
+        </div>
+        <div class="loc-arrow">›</div>
+      </div>
+    </div>
+    <!-- SWAP BUTTON -->
+    <button onclick="swapLocations()" title="Swap locations" style="background:var(--input-bg);border:1px solid var(--border);color:var(--gold);width:38px;height:38px;cursor:pointer;font-size:1.1rem;transition:all .2s;flex-shrink:0;margin-top:1.3rem" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">⇄</button>
+    <!-- RETURN -->
+    <div>
+      <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">🏁 Return Location</label>
+      <div class="loc-selector" id="return-selector" onclick="openLocModal('return')">
+        <div class="loc-icon return-dot">R</div>
+        <div class="loc-text">
+          <div class="loc-name" id="return-name">Same as pickup</div>
+          <div class="loc-sub" id="return-sub">Click to change</div>
+        </div>
+        <div class="loc-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATE / TIME / TYPE ROW -->
+  <div class="booking-form">
+    <div class="form-group">
+      <label data-i18n="label_pickup_date">📅 Pickup Date</label>
+      <input type="date" id="pickup-date">
+    </div>
+    <div class="form-group">
+      <label data-i18n="label_time">⏰ Pickup Time</label>
+      <select id="pickup-time">
+        <option>08:00</option><option>09:00</option><option>10:00</option>
+        <option>11:00</option><option>12:00</option><option>13:00</option>
+        <option>14:00</option><option>15:00</option><option>16:00</option>
+        <option>17:00</option><option>18:00</option><option>19:00</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label data-i18n="label_return">📅 Return Date</label>
+      <input type="date" id="return-date">
+    </div>
+    <div class="form-group">
+      <label>⏰ Return Time</label>
+      <select id="return-time">
+        <option>08:00</option><option>09:00</option><option>10:00</option>
+        <option>11:00</option><option>12:00</option><option>13:00</option>
+        <option>14:00</option><option>15:00</option><option>16:00</option>
+        <option>17:00</option><option>18:00</option><option>19:00</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label data-i18n="label_type">🚗 Car Type</label>
+      <select id="sel-type" onchange="searchCars()">
+        <option value="all" data-i18n="type_all">All Types</option>
+        <option value="type_eco" data-i18n="type_eco">Eco Car</option>
+        <option value="type_sedan" data-i18n="type_sedan">Sedan</option>
+        <option value="SUV">SUV</option>
+        <option value="Sports">Sports</option>
+        <option value="type_lux" data-i18n="type_lux">Luxury</option>
+      </select>
+    </div>
+    <div class="form-group" style="justify-content:flex-end">
+      <button class="btn-search" onclick="searchCars()" data-i18n="btn_search">🔍 Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION MODAL -->
+<div id="loc-modal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);justify-content:center;align-items:center;padding:1rem">
+  <div style="background:var(--card);border:1px solid var(--border);max-width:600px;width:100%;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;animation:slideUp .25s ease">
+    <!-- Modal Header -->
+    <div style="padding:1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700" id="loc-modal-title">Select Location</h3>
+        <p style="font-size:.8rem;color:var(--text3);margin-top:.2rem" id="loc-modal-sub">Choose your pickup point</p>
+      </div>
+      <button onclick="closeLocModal()" style="background:none;border:1px solid var(--border);color:var(--text);width:34px;height:34px;cursor:pointer;font-size:1rem;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">✕</button>
+    </div>
+    <!-- Search -->
+    <div style="padding:1rem 1.5rem;border-bottom:1px solid var(--border)">
+      <input id="loc-search" type="text" placeholder="🔍 Search location..." oninput="filterLocations(this.value)"
+        style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s"
+        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <!-- Location List -->
+    <div style="overflow-y:auto;flex:1;padding:.5rem 0" id="loc-list"></div>
+  </div>
+</div>
+
+<section class="fleet-section" id="fleet">
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--text);line-height:1.1;margin-bottom:.5rem"><span data-i18n="fleet_pre">Our Electric</span> <span data-i18n="fleet_span" style="color:var(--gold)">Fleet</span></h2>
+    <p style="font-size:.88rem;color:var(--text3)" data-i18n="fleet_sub">Premium EVs ready for your journey</p>
+  </div>
+  <div class="fleet-grid" id="fleet-grid"></div>
+</section>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="max-width:680px;padding:0;overflow:hidden">
+
+    <!-- MODAL HEADER -->
+    <div style="padding:1.5rem 1.8rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700">Reserve Your EV</h2>
+        <p style="font-size:.78rem;color:var(--text3);margin-top:.2rem">กรอกข้อมูลเพื่อทำการจอง</p>
+      </div>
+      <button onclick="closeModal()" style="background:none;border:1px solid var(--border);color:var(--text);width:32px;height:32px;cursor:pointer;font-size:1rem;flex-shrink:0;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">✕</button>
+    </div>
+
+    <!-- CAR INFO BAR -->
+    <div style="padding:.9rem 1.8rem;background:rgba(201,168,76,.06);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem">
+      <span style="font-size:1.4rem">⚡</span>
+      <div>
+        <div id="modal-car-name" style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700"></div>
+        <div id="modal-car-model" style="font-size:.75rem;color:var(--gold)"></div>
+      </div>
+    </div>
+
+    <!-- STEP TABS -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)">
+      <div id="stab-1" onclick="goStep(1)" style="padding:.7rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid var(--gold);color:var(--gold);transition:all .2s">1 · Package</div>
+      <div id="stab-2" onclick="goStep(2)" style="padding:.7rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);transition:all .2s">2 · Details</div>
+      <div id="stab-3" style="padding:.7rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:default;border-bottom:2px solid transparent;color:var(--text3)">3 · Confirm</div>
+      <div id="stab-4" style="padding:.7rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:default;border-bottom:2px solid transparent;color:var(--text3)">✓ Done</div>
+    </div>
+
+    <!-- MODAL BODY -->
+    <div style="padding:1.8rem;max-height:65vh;overflow-y:auto">
+
+      <!-- ===== STEP 1: PACKAGE ===== -->
+      <div id="modal-step1">
+        <!-- Package Selector -->
+        <div style="margin-bottom:1.2rem">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">📦 Select Package</label>
+          <div id="pkg-selector-wrap" style="display:flex;flex-direction:column;gap:.5rem"></div>
+          <div id="pkg-none-msg" style="display:none;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.85rem 1rem;font-size:.82rem;color:var(--text3)">
+            ไม่มี package สำหรับรถคันนี้ — จะคิดราคา ฿<span id="pkg-fallback-price">0</span>/วัน
+          </div>
+        </div>
+        <!-- Hidden insurance field (kept for compatibility) -->
+        <input type="hidden" id="b-insurance" value="none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem">
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Pickup Date</label>
+            <input type="date" id="b-pickup-date" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none" oninput="updateStep1Summary()">
+          </div>
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Return Date</label>
+            <input type="date" id="b-return-date" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none" oninput="updateStep1Summary()">
+          </div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Pickup Location</label>
+          <div id="s1-pickup-display" onclick="openLocModal('pickup')" style="display:flex;align-items:center;gap:.8rem;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.8rem 1rem;cursor:pointer;transition:border .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:1rem">📍</span>
+            <span id="s1-pickup-text" style="font-size:.88rem;color:var(--text3)">Click to select pickup point</span>
+            <span style="margin-left:auto;color:var(--text3)">›</span>
+          </div>
+        </div>
+        <!-- Summary bar -->
+        <div id="step1-summary" style="background:rgba(255,255,255,.04);border:1px solid var(--border);padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;text-align:center;margin-bottom:1.5rem">
+          <div><div id="s1-days" style="font-family:'AudiType',sans-serif;font-size:1.4rem;font-weight:900;color:var(--text)">—</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)">Days</div></div>
+          <div><div id="s1-rental" style="font-family:'AudiType',sans-serif;font-size:1.4rem;font-weight:900;color:var(--text)">—</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)">Rental</div></div>
+          <div><div id="s1-insurance-cost" style="font-family:'AudiType',sans-serif;font-size:1.4rem;font-weight:900;color:var(--text)">—</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)">Insurance</div></div>
+          <div><div style="font-size:.9rem;color:#2ecc71;font-weight:700">✓</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)">Insured</div></div>
+        </div>
+        <div id="step1-err" style="color:#e74c3c;font-size:.82rem;margin-bottom:.8rem;display:none"></div>
+        <div style="display:flex;justify-content:flex-end;gap:.8rem">
+          <button onclick="closeModal()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:.75rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer">Cancel</button>
+          <button onclick="nextStep(1)" style="background:var(--gold);color:#0a0a0a;border:none;padding:.75rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: DETAILS ===== -->
+      <div id="modal-step2" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">First Name</label>
+            <input type="text" id="b-firstname" placeholder="ชื่อ / First name" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Surname</label>
+            <input type="text" id="b-surname" placeholder="นามสกุล / Surname" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">ID Card</label>
+            <input type="text" id="b-id" placeholder="1-XXXX-XXXXX-XX-X" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Mobile</label>
+            <input type="tel" id="b-phone" placeholder="08X-XXX-XXXX" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Driving License</label>
+            <input type="text" id="b-license" placeholder="License number" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+          <div>
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Emergency Contact</label>
+            <input type="tel" id="b-emergency" placeholder="08X-XXX-XXXX" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+          <div style="grid-column:1/-1">
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Email</label>
+            <input type="email" id="b-email" placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+          <div style="grid-column:1/-1">
+            <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Address</label>
+            <input type="text" id="b-address" placeholder="ที่อยู่ / Address" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+          </div>
+        </div>
+        <div id="step2-err" style="color:#e74c3c;font-size:.82rem;margin-bottom:.8rem;display:none"></div>
+        <div style="display:flex;justify-content:space-between;gap:.8rem">
+          <button onclick="goStep(1)" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:.75rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer">← Back</button>
+          <button onclick="nextStep(2)" style="background:var(--gold);color:#0a0a0a;border:none;padding:.75rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: CONFIRM ===== -->
+      <div id="modal-step3" style="display:none">
+        <div style="border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem">
+          <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem">Booking Summary</div>
+          <div id="booking-summary-rows"></div>
+        </div>
+        <!-- Payment Method -->
+        <div style="margin-bottom:1.2rem">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Payment Method</label>
+          <select id="b-payment" onchange="togglePaymentFields()" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+            <option value="credit_card">💳 Credit / Debit Card</option>
+            <option value="promptpay">📱 PromptPay QR</option>
+            <option value="pay_at_pickup">✅ Pay at Pickup</option>
+          </select>
+        </div>
+        <!-- Credit Card -->
+        <div id="credit-card-fields" style="background:rgba(201,168,76,.05);border:1px solid var(--border);padding:1.2rem;margin-bottom:1rem">
+          <p style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem">💳 Card Details</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+            <div style="grid-column:1/-1">
+              <label style="font-size:.7rem;color:var(--text3);display:block;margin-bottom:.3rem">Card Number</label>
+              <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCardNumber(this)" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+            </div>
+            <div>
+              <label style="font-size:.7rem;color:var(--text3);display:block;margin-bottom:.3rem">Expiry (MM/YY)</label>
+              <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+            </div>
+            <div>
+              <label style="font-size:.7rem;color:var(--text3);display:block;margin-bottom:.3rem">CVV</label>
+              <input type="text" id="card-cvv" placeholder="123" maxlength="4" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+            </div>
+            <div style="grid-column:1/-1">
+              <label style="font-size:.7rem;color:var(--text3);display:block;margin-bottom:.3rem">Name on Card</label>
+              <input type="text" id="card-name" placeholder="JOHN SMITH" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+            </div>
+          </div>
+          <p style="font-size:.72rem;color:var(--text3);margin-top:.8rem">🔒 Secured by Omise · Test: 4242 4242 4242 4242</p>
+        </div>
+        <!-- PromptPay -->
+        <div id="promptpay-fields" style="display:none;background:rgba(201,168,76,.05);border:1px solid var(--border);padding:1.2rem;margin-bottom:1rem;text-align:center">
+          <p style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.6rem">📱 PromptPay QR</p>
+          <p style="font-size:.85rem;color:var(--text2)">QR Code จะถูก Generate หลังยืนยัน<br>สแกนและชำระภายใน 10 นาที</p>
+        </div>
+        <div id="pay-error" style="color:#e74c3c;font-size:.82rem;margin-bottom:.8rem;display:none"></div>
+        <div style="display:flex;justify-content:space-between;gap:.8rem">
+          <button onclick="goStep(2)" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:.75rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer">← Back</button>
+          <button id="pay-btn" onclick="processPayment()" style="background:var(--gold);color:#0a0a0a;border:none;padding:.75rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">CONFIRM BOOKING →</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 4: DONE ===== -->
+      <div id="modal-step4" style="display:none;text-align:center;padding:1rem 0">
+        <div style="width:64px;height:64px;border:3px solid #2ecc71;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#2ecc71;margin:0 auto 1.2rem">✓</div>
+        <div id="booking-ref" style="font-family:'AudiType',sans-serif;font-size:2.2rem;font-weight:900;color:var(--gold);margin-bottom:.5rem"></div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem">Booking Confirmed!</h3>
+        <p style="font-size:.82rem;color:var(--text3);margin-bottom:1.5rem">Your EV is reserved. We will contact you shortly.</p>
+        <div id="done-summary" style="background:rgba(255,255,255,.04);border:1px solid var(--border);padding:1rem 1.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center;margin-bottom:1.5rem"></div>
+        <button onclick="closeModal()" style="background:var(--gold);color:#0a0a0a;border:none;padding:.75rem 2.5rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer">CLOSE</button>
+      </div>
+
+    </div><!-- end modal body -->
+  </div>
+</div>
+
+<!-- WHY ELECTRIC SECTION -->
+<section style="padding:5rem 3rem;background:var(--bg2);border-top:1px solid var(--border);transition:background .3s">
+  <div style="max-width:1200px;margin:0 auto">
+    <!-- Header -->
+    <div style="margin-bottom:3rem">
+      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+        <div style="width:2rem;height:1px;background:var(--gold)"></div>
+        <span style="font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:600">The EV Advantage</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--text);line-height:1.1">Why Electric?</h2>
+    </div>
+
+    <!-- Cards Grid -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)">
+
+      <!-- Card 1 -->
+      <div style="background:var(--bg);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s" onmouseover="this.style.background='rgba(201,168,76,.05)'" onmouseout="this.style.background='var(--bg)'">
+        <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'AudiType',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(255,255,255,.04);line-height:1">01</div>
+        <div style="font-size:2rem;margin-bottom:1.2rem">⚡</div>
+        <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.5rem" data-i18n="ev1_sub">พลังงานทันที</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.8rem" data-i18n="ev1_title">Instant Torque</h3>
+        <p style="font-size:.85rem;color:var(--text3);line-height:1.7" data-i18n="ev1_desc">Electric motors deliver 100% torque from zero RPM — acceleration unlike anything you've felt in a combustion car.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:var(--bg);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s" onmouseover="this.style.background='rgba(201,168,76,.05)'" onmouseout="this.style.background='var(--bg)'">
+        <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'AudiType',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(255,255,255,.04);line-height:1">02</div>
+        <div style="font-size:2rem;margin-bottom:1.2rem">🌍</div>
+        <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.5rem" data-i18n="ev2_sub">รักษ์โลก</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.8rem" data-i18n="ev2_title">Zero Emissions</h3>
+        <p style="font-size:.85rem;color:var(--text3);line-height:1.7" data-i18n="ev2_desc">Drive guilt-free. Our fleet produces zero tailpipe emissions — contributing to cleaner air in Bangkok and across Thailand.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:var(--bg);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s" onmouseover="this.style.background='rgba(201,168,76,.05)'" onmouseout="this.style.background='var(--bg)'">
+        <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'AudiType',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(255,255,255,.04);line-height:1">03</div>
+        <div style="font-size:2rem;margin-bottom:1.2rem">🔇</div>
+        <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.5rem" data-i18n="ev3_sub">เงียบสงบ</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.8rem" data-i18n="ev3_title">Whisper Quiet</h3>
+        <p style="font-size:.85rem;color:var(--text3);line-height:1.7" data-i18n="ev3_desc">No engine noise. Pure cabin serenity. Hear the road, your music, your conversations — the way driving was meant to feel.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:var(--bg);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s" onmouseover="this.style.background='rgba(201,168,76,.05)'" onmouseout="this.style.background='var(--bg)'">
+        <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'AudiType',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(255,255,255,.04);line-height:1">04</div>
+        <div style="font-size:2rem;margin-bottom:1.2rem">💰</div>
+        <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.5rem" data-i18n="ev4_sub">ประหยัดค่าใช้จ่าย</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.8rem" data-i18n="ev4_title">Lower Running Costs</h3>
+        <p style="font-size:.85rem;color:var(--text3);line-height:1.7" data-i18n="ev4_desc">Electricity costs a fraction of petrol. Enjoy premium driving while saving significantly on every kilometer.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:var(--bg);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s" onmouseover="this.style.background='rgba(201,168,76,.05)'" onmouseout="this.style.background='var(--bg)'">
+        <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'AudiType',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(255,255,255,.04);line-height:1">05</div>
+        <div style="font-size:2rem;margin-bottom:1.2rem">🚀</div>
+        <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.5rem" data-i18n="ev5_sub">ล้ำสมัย</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.8rem" data-i18n="ev5_title">Cutting-Edge Tech</h3>
+        <p style="font-size:.85rem;color:var(--text3);line-height:1.7" data-i18n="ev5_desc">Advanced driver assistance, OTA updates, and smart connectivity — experience the future of mobility today.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:var(--bg);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s" onmouseover="this.style.background='rgba(201,168,76,.05)'" onmouseout="this.style.background='var(--bg)'">
+        <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'AudiType',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(255,255,255,.04);line-height:1">06</div>
+        <div style="font-size:2rem;margin-bottom:1.2rem">🏆</div>
+        <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.5rem" data-i18n="ev6_sub">ประสบการณ์พรีเมียม</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.8rem" data-i18n="ev6_title">Premium Experience</h3>
+        <p style="font-size:.85rem;color:var(--text3);line-height:1.7" data-i18n="ev6_desc">Meticulously maintained vehicles, 24/7 roadside support, and concierge delivery right to your door.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MANAGE BOOKING + FAQ SECTION -->
+<section style="padding:5rem 3rem;background:var(--bg);border-top:1px solid var(--border);transition:background .3s">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+
+    <!-- LEFT: Manage Your Booking -->
+    <div>
+      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+        <div style="width:2rem;height:1px;background:var(--gold)"></div>
+        <span style="font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:600">Reservation Management</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--text);line-height:1.15;margin-bottom:.8rem">Manage Your<br>Booking</h2>
+      <p style="font-size:.85rem;color:var(--text3);line-height:1.6;margin-bottom:2rem">Enter your booking reference and ID card number to view, extend or cancel your reservation.</p>
+
+      <div style="border:1px solid var(--border);padding:1.8rem;background:var(--bg2)">
+        <div style="margin-bottom:1.2rem">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">Booking Reference</label>
+          <input type="text" id="find-ref" placeholder="DN000000" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.85rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s;box-sizing:border-box" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.5rem">ID Card Number</label>
+          <input type="text" id="find-id" placeholder="X XXXX XXXXX XX X" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:.85rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s;box-sizing:border-box" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <button onclick="findMyBooking()" style="width:100%;background:var(--gold);color:#0a0a0a;border:none;padding:1rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;letter-spacing:.05em;transition:background .2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">FIND MY BOOKING</button>
+        <div id="find-result" style="margin-top:1rem"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Common Questions (FAQ) -->
+    <div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--text);margin-bottom:.4rem">Common Questions</h2>
+      <p style="font-size:.82rem;color:var(--text3);margin-bottom:1.8rem">ข้อมูลที่เป็นประโยชน์สำหรับการจอง</p>
+
+      <div id="faq-list">
+        <!-- FAQ items rendered by JS -->
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--bg2);border-top:1px solid var(--border);padding:3rem;transition:background .3s">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem">
+    <!-- Brand -->
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin-bottom:.5rem">Mic : <span style="color:var(--gold)">Electric Car</span></div>
+      <p style="font-size:.8rem;color:var(--text3);line-height:1.6;margin-bottom:1.2rem" data-i18n="footer">บริการเช่ารถพรีเมียม กรุงเทพฯ</p>
+    </div>
+    <!-- Services -->
+    <div>
+      <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem">Services</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <span style="font-size:.82rem;color:var(--text3)">Daily Rental</span>
+        <span style="font-size:.82rem;color:var(--text3)">Weekly Rental</span>
+        <span style="font-size:.82rem;color:var(--text3)">Airport Transfer</span>
+        <span style="font-size:.82rem;color:var(--text3)">Hotel Delivery</span>
+        <span style="font-size:.82rem;color:var(--text3)">Corporate Rental</span>
+      </div>
+    </div>
+    <!-- Contact -->
+    <div>
+      <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem">Contact</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <span style="font-size:.82rem;color:var(--text3)">📞 02-XXX-XXXX</span>
+        <span style="font-size:.82rem;color:var(--text3)">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e9818c858586a984808ac48c858c8a9d9b808a8a889bc78a8684">[email&#160;protected]</a></span>
+        <span style="font-size:.82rem;color:var(--text3)">📍 Bangkok, Thailand</span>
+        <span style="font-size:.82rem;color:var(--text3)">💬 LINE: @micelectriccar</span>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem">
+    <span style="font-size:.78rem;color:var(--text3)">© 2026 <span style="color:var(--gold)">Mic : Electric Car</span> · All rights reserved.</span>
+    <span style="font-size:.75rem;color:var(--text3)">Secured by Omise · Powered by Supabase</span>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ============ FAQ ============
+const FAQS = [
+  { q:'What documents do I need?', a:'Thai ID card or passport, valid driving license, and deposit. International customers need an IDP.' },
+  { q:'How does charging work?', a:'All vehicles are delivered fully charged. AC charging cable included. We provide a map of nearby fast-charging stations.' },
+  { q:'Can I cancel my booking?', a:'Yes. 48+ hours before pickup: full deposit refund. Within 48 hours: 50% deposit forfeiture.' },
+  { q:'Is insurance included?', a:'Yes. All packages include comprehensive insurance covering collision, theft, and roadside assistance.' },
+  { q:'Do you offer airport delivery?', a:'Yes. Selected packages include delivery to Suvarnabhumi and Don Mueang airports.' },
+  { q:'What is the minimum rental period?', a:'Minimum rental period is 1 day (24 hours). Weekly rates are available for 7+ days.' },
+];
+
+function renderFAQ() {
+  document.getElementById('faq-list').innerHTML = FAQS.map((f,i) => `
+    <div style="border:1px solid var(--border);margin-bottom:.5rem;overflow:hidden">
+      <div onclick="toggleFAQ(${i})" style="padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .15s" id="faq-header-${i}" onmouseover="this.style.background='rgba(201,168,76,.04)'" onmouseout="this.style.background='transparent'">
+        <span style="font-size:.88rem;font-weight:600;color:var(--text)">${f.q}</span>
+        <span id="faq-icon-${i}" style="color:var(--gold);font-size:1rem;transition:transform .2s;flex-shrink:0;margin-left:.8rem">+</span>
+      </div>
+      <div id="faq-body-${i}" style="display:none;padding:0 1.2rem 1rem;font-size:.82rem;color:var(--text3);line-height:1.6;border-top:1px solid var(--border)">${f.a}</div>
+    </div>`).join('');
+}
+
+function toggleFAQ(i) {
+  const body = document.getElementById(`faq-body-${i}`);
+  const icon = document.getElementById(`faq-icon-${i}`);
+  const isOpen = body.style.display === 'block';
+  // Close all
+  FAQS.forEach((_,j) => {
+    document.getElementById(`faq-body-${j}`).style.display = 'none';
+    document.getElementById(`faq-icon-${j}`).textContent = '+';
+  });
+  if (!isOpen) {
+    body.style.display = 'block';
+    icon.textContent = '×';
+  }
+}
+
+// ============ FIND MY BOOKING ============
+async function findMyBooking() {
+  const ref = document.getElementById('find-ref').value.trim().toUpperCase();
+  const idCard = document.getElementById('find-id').value.trim();
+  const result = document.getElementById('find-result');
+  if (!ref || !idCard) { result.innerHTML = '<p style="color:#e74c3c;font-size:.82rem">Please fill in both fields.</p>'; return; }
+
+  result.innerHTML = '<p style="color:var(--text3);font-size:.82rem">⏳ Searching...</p>';
+  try {
+    const data = await sbFetch('bookings', `select=*&ref=eq.${encodeURIComponent(ref)}&limit=1`);
+    if (!data || data.length === 0) {
+      result.innerHTML = '<p style="color:#e74c3c;font-size:.82rem">❌ Booking not found. Please check your reference number.</p>';
+      return;
+    }
+    const b = data[0];
+    const bIdCard = b.id_card || b.idCard;
+    if (bIdCard && bIdCard !== idCard) {
+      result.innerHTML = '<p style="color:#e74c3c;font-size:.82rem">❌ ID card does not match.</p>';
+      return;
+    }
+    result.innerHTML = bookingResultHTML({
+      ref: b.ref,
+      status: b.status,
+      carName: b.car_name || b.carName,
+      name: b.name,
+      pickupDate: b.pickup_date || b.pickupDate,
+      returnDate: b.return_date || b.returnDate,
+      total: b.total
+    });
+  } catch(e) {
+    result.innerHTML = '<p style="color:#e74c3c;font-size:.82rem">❌ Error searching. Please try again.</p>';
+  }
+}
+
+function bookingResultHTML(b) {
+  const statusColors = { pending:'#f39c12', paid:'var(--gold)', confirmed:'#2ecc71', active:'#00bcd4', completed:'#3498db', cancelled:'#e74c3c' };
+  return `<div style="background:var(--bg3);border:1px solid var(--border);padding:1.2rem;margin-top:.5rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem">
+      <span style="font-family:'AudiType',sans-serif;font-weight:700;color:var(--gold)"># ${b.ref}</span>
+      <span style="font-size:.72rem;font-weight:700;padding:.2rem .6rem;border:1px solid ${statusColors[b.status]||'var(--border)'};color:${statusColors[b.status]||'var(--text3)'}">${(b.status||'').toUpperCase()}</span>
+    </div>
+    <div style="font-size:.82rem;display:grid;grid-template-columns:1fr 1fr;gap:.4rem;color:var(--text2)">
+      <div><span style="color:var(--text3)">Car:</span> ${b.carName||'—'}</div>
+      <div><span style="color:var(--text3)">Customer:</span> ${b.name||'—'}</div>
+      <div><span style="color:var(--text3)">Pickup:</span> ${b.pickupDate||'—'}</div>
+      <div><span style="color:var(--text3)">Return:</span> ${b.returnDate||'—'}</div>
+      <div><span style="color:var(--text3)">Total:</span> <strong style="color:var(--gold)">฿${(b.total||0).toLocaleString()}</strong></div>
+    </div>
+  </div>`;
+}
+
+// ============ FOOTER FLEET ============
+function renderFooterFleet() {
+  const footerFleet = document.getElementById('footer-fleet');
+  if (!footerFleet) return;
+  footerFleet.innerHTML = cars.slice(0,5).map(c=>`<span style="font-size:.82rem;color:var(--text3)">${c.name}</span>`).join('');
+}
+
+// Init
+renderFAQ();
+setTimeout(renderFooterFleet, 2000); // Wait for cars to load
+</script>
+
+<script>
+const T = {
+  th:{ nav_fleet:'รถทั้งหมด',nav_booking:'จองรถ',nav_contact:'ติดต่อเรา',nav_book:'จองเลย',
+    hero_eyebrow:'บริการเช่ารถพรีเมียม · กรุงเทพฯ',
+    hero_title:'ขับทุกเส้นทาง<br>ด้วย<em>สไตล์</em>ของคุณ',
+    hero_sub:'เลือกจากรถหลากหลายรุ่น จองง่าย รับรถทันที ราคาโปร่งใส ไม่มีค่าธรรมเนียมซ่อนเร้น',
+    cta_book:'เริ่มจองรถ',cta_fleet:'ดูรถทั้งหมด',
+    stat1:'รถพร้อมให้เช่า',stat2:'บริการตลอดเวลา',stat3:'ลูกค้าพึงพอใจ',stat4:'คะแนนรีวิว',
+    search_pre:'ค้นหา',search_span:'รถว่าง',
+    label_pickup:'📍 สถานที่รับรถ',label_pickup_date:'📅 วันที่รับรถ',label_time:'⏰ เวลารับรถ',label_return:'📅 วันที่คืนรถ',label_type:'🚗 ประเภทรถ',
+    loc1:'สนามบินสุวรรณภูมิ',loc2:'สนามบินดอนเมือง',loc3:'สยามพารากอน',loc4:'เซ็นทรัลเวิลด์',loc5:'ส่งถึงที่พัก',
+    type_all:'ทุกประเภท',type_eco:'อีโค่คาร์',type_sedan:'ซีดาน',type_lux:'ลักซ์ชัวรี่',type_sports:'สปอร์ต',
+    btn_search:'🔍 ค้นหารถ',fleet_pre:'ยานยนต์ไฟฟ้า',fleet_span:'ของเรา',fleet_sub:'รถ EV พรีเมียมพร้อมพาคุณเดินทาง',
+    car_book:'จองเลย',per_day:'ต่อวัน',
+    form_name:'ชื่อ-นามสกุล',form_phone:'เบอร์โทรศัพท์',form_email:'อีเมล',form_id:'เลขบัตรประชาชน',form_pay:'วิธีชำระเงิน',form_ins:'ประกันภัย',
+    pay1:'บัตรเครดิต/เดบิต',pay2:'โอนเงิน',pay3:'ชำระที่รับรถ',
+    ins1:'ประกันชั้น 1 (+฿300/วัน)',ins2:'ประกันชั้น 2+ (+฿150/วัน)',ins3:'ไม่เพิ่มประกัน',
+    btn_confirm:'ยืนยันการจอง →',btn_back:'กลับหน้าหลัก',
+    ok_title:'จองสำเร็จแล้ว!',ok_msg:'ขอบคุณที่เลือกใช้บริการ Mic : Electric Car<br>เราจะส่งรายละเอียดไปยังอีเมลของคุณ',
+    footer:'บริการเช่ารถพรีเมียม กรุงเทพฯ',
+    ev1_sub:'พลังงานทันที',ev1_title:'Instant Torque',ev1_desc:'มอเตอร์ไฟฟ้าให้แรงบิด 100% ตั้งแต่ 0 RPM — เร่งได้ทันทีแบบที่คุณไม่เคยรู้สึกมาก่อน',
+    ev2_sub:'รักษ์โลก',ev2_title:'Zero Emissions',ev2_desc:'ขับได้อย่างสบายใจ รถของเราไม่มีไอเสีย ช่วยให้อากาศสะอาดขึ้นในกรุงเทพฯ และทั่วไทย',
+    ev3_sub:'เงียบสงบ',ev3_title:'Whisper Quiet',ev3_desc:'ไม่มีเสียงเครื่องยนต์ เงียบสนิทในห้องโดยสาร ได้ยินเสียงเพลง เสียงสนทนา อย่างที่การขับขี่ควรจะเป็น',
+    ev4_sub:'ประหยัดค่าใช้จ่าย',ev4_title:'ค่าใช้จ่ายต่ำกว่า',ev4_desc:'ค่าไฟถูกกว่าน้ำมันมาก ขับรถพรีเมียมแต่ประหยัดค่าใช้จ่ายในทุกกิโลเมตร',
+    ev5_sub:'ล้ำสมัย',ev5_title:'เทคโนโลยีล่าสุด',ev5_desc:'ระบบช่วยขับขี่ขั้นสูง อัปเดตแบบ OTA และการเชื่อมต่อสมาร์ท — สัมผัสอนาคตของการเดินทางวันนี้',
+    ev6_sub:'ประสบการณ์พรีเมียม',ev6_title:'บริการระดับพรีเมียม',ev6_desc:'รถที่ดูแลอย่างพิถีพิถัน บริการช่วยเหลือ 24 ชม. และส่งรถถึงประตูบ้านของคุณ',
+    s_car:'รถ',s_price:'ราคา/วัน',s_days:'จำนวนวัน',s_total:'รวมทั้งหมด',
+    day_unit:'วัน',alert:'กรุณากรอกข้อมูลให้ครบถ้วน',flag:'🌐 TH' },
+  en:{ nav_fleet:'Fleet',nav_booking:'Book',nav_contact:'Contact',nav_book:'Book Now',
+    hero_eyebrow:'Premium Car Rental · Bangkok',
+    hero_title:'Drive Every Road<br>with <em>Your Style</em>',
+    hero_sub:'Choose from a wide range of vehicles. Easy booking, instant pickup, transparent pricing.',
+    cta_book:'Book a Car',cta_fleet:'View Fleet',
+    stat1:'Cars Available',stat2:'24/7 Service',stat3:'Happy Customers',stat4:'Review Score',
+    search_pre:'Find an ',search_span:'Available Car',
+    label_pickup:'📍 Pickup Location',label_pickup_date:'📅 Pickup Date',label_time:'⏰ Pickup Time',label_return:'📅 Return Date',label_type:'🚗 Car Type',
+    loc1:'Suvarnabhumi Airport',loc2:'Don Mueang Airport',loc3:'Siam Paragon',loc4:'CentralWorld',loc5:'Hotel Delivery',
+    type_all:'All Types',type_eco:'Eco Car',type_sedan:'Sedan',type_lux:'Luxury',type_sports:'Sports',
+    btn_search:'🔍 Search Cars',fleet_pre:'Our Electric',fleet_span:'Fleet',fleet_sub:'Premium EVs ready for your journey',
+    car_book:'Book Now',per_day:'per day',
+    form_name:'Full Name',form_phone:'Phone',form_email:'Email',form_id:'Passport / ID No.',form_pay:'Payment',form_ins:'Insurance',
+    pay1:'Credit / Debit Card',pay2:'Bank Transfer',pay3:'Pay at Pickup',
+    ins1:'Full Coverage (+฿300/day)',ins2:'Basic (+฿150/day)',ins3:'No Extra Insurance',
+    btn_confirm:'Confirm Booking →',btn_back:'Back to Home',
+    ok_title:'Booking Confirmed!',ok_msg:'Thank you for choosing Mic : Electric Car.<br>Details will be sent to your email.',
+    footer:'Premium Car Rental Bangkok',
+    ev1_sub:'Instant Power',ev1_title:'Instant Torque',ev1_desc:'Electric motors deliver 100% torque from zero RPM — acceleration unlike anything you\'ve felt in a combustion car.',
+    ev2_sub:'Eco Friendly',ev2_title:'Zero Emissions',ev2_desc:'Drive guilt-free. Our fleet produces zero tailpipe emissions — contributing to cleaner air in Bangkok and across Thailand.',
+    ev3_sub:'Silence',ev3_title:'Whisper Quiet',ev3_desc:'No engine noise. Pure cabin serenity. Hear the road, your music, your conversations — the way driving was meant to feel.',
+    ev4_sub:'Save Money',ev4_title:'Lower Running Costs',ev4_desc:'Electricity costs a fraction of petrol. Enjoy premium driving while saving significantly on every kilometer.',
+    ev5_sub:'Innovation',ev5_title:'Cutting-Edge Tech',ev5_desc:'Advanced driver assistance, OTA updates, and smart connectivity — experience the future of mobility today.',
+    ev6_sub:'Premium',ev6_title:'Premium Experience',ev6_desc:'Meticulously maintained vehicles, 24/7 roadside support, and concierge delivery right to your door.',
+    s_car:'Car',s_price:'Price/Day',s_days:'Days',s_total:'Total',
+    day_unit:'day(s)',alert:'Please fill in all required fields.',flag:'🌐 EN' },
+  zh:{ nav_fleet:'车队',nav_booking:'预订',nav_contact:'联系我们',nav_book:'立即预订',
+    hero_eyebrow:'豪华租车服务 · 曼谷',
+    hero_title:'驾驭每条路<br>展现<em>您的风格</em>',
+    hero_sub:'多种车型，便捷预订，即时取车，价格透明，无隐藏费用。',
+    cta_book:'立即预订',cta_fleet:'查看车队',
+    stat1:'可用车辆',stat2:'全天候服务',stat3:'满意客户',stat4:'评分',
+    search_pre:'查找',search_span:'可用车辆',
+    label_pickup:'📍 取车地点',label_pickup_date:'📅 取车日期',label_time:'⏰ 取车时间',label_return:'📅 还车日期',label_type:'🚗 车型',
+    loc1:'素万那普机场',loc2:'廊曼机场',loc3:'暹罗百丽宫',loc4:'中央世界',loc5:'酒店配送',
+    type_all:'全部类型',type_eco:'经济型',type_sedan:'轿车',type_lux:'豪华型',type_sports:'跑车',
+    btn_search:'🔍 搜索',fleet_pre:'我们的电动',fleet_span:'车队',fleet_sub:'顶级电动汽车随时为您服务',
+    car_book:'立即预订',per_day:'每天',
+    form_name:'姓名',form_phone:'电话',form_email:'电子邮件',form_id:'证件号码',form_pay:'支付方式',form_ins:'保险',
+    pay1:'信用卡/借记卡',pay2:'银行转账',pay3:'取车时支付',
+    ins1:'全险 (+฿300/天)',ins2:'基础险 (+฿150/天)',ins3:'不需额外保险',
+    btn_confirm:'确认预订 →',btn_back:'返回首页',
+    ok_title:'预订成功！',ok_msg:'感谢您选择 Mic : Electric Car。<br>详情将发送至您的电子邮件。',
+    footer:'豪华租车服务 曼谷',
+    s_car:'车辆',s_price:'价格/天',s_days:'天数',s_total:'合计',
+    day_unit:'天',alert:'请填写所有必填信息。',flag:'🌐 中文' },
+  ja:{ nav_fleet:'車両一覧',nav_booking:'予約',nav_contact:'お問い合わせ',nav_book:'今すぐ予約',
+    hero_eyebrow:'プレミアムレンタカー · バンコク',
+    hero_title:'すべての道を<br><em>あなたのスタイル</em>で',
+    hero_sub:'多彩な車種、簡単予約、即時受け取り、透明な料金体系。',
+    cta_book:'車を予約する',cta_fleet:'車両を見る',
+    stat1:'利用可能な車両',stat2:'24時間対応',stat3:'満足いただいたお客様',stat4:'評価',
+    search_pre:'',search_span:'空き車両を検索',
+    label_pickup:'📍 受け取り場所',label_pickup_date:'📅 受け取り日',label_time:'⏰ 受け取り時間',label_return:'📅 返却日',label_type:'🚗 車種',
+    loc1:'スワンナプーム空港',loc2:'ドンムアン空港',loc3:'サイアムパラゴン',loc4:'セントラルワールド',loc5:'ホテル配送',
+    type_all:'すべて',type_eco:'エコカー',type_sedan:'セダン',type_lux:'ラグジュアリー',type_sports:'スポーツ',
+    btn_search:'🔍 検索',fleet_pre:'私たちの電気',fleet_span:'フリート',fleet_sub:'プレミアムEVがあなたの旅に',
+    car_book:'予約する',per_day:'1日あたり',
+    form_name:'氏名',form_phone:'電話番号',form_email:'メール',form_id:'パスポート番号',form_pay:'支払い方法',form_ins:'保険',
+    pay1:'クレジット/デビットカード',pay2:'銀行振込',pay3:'受け取り時支払い',
+    ins1:'完全保険 (+฿300/日)',ins2:'基本保険 (+฿150/日)',ins3:'追加保険なし',
+    btn_confirm:'予約を確認する →',btn_back:'ホームに戻る',
+    ok_title:'予約完了！',ok_msg:'Mic : Electric Car をご利用いただきありがとうございます。<br>詳細をメールにお送りします。',
+    footer:'プレミアムレンタカー バンコク',
+    s_car:'車両',s_price:'料金/日',s_days:'日数',s_total:'合計',
+    day_unit:'日',alert:'すべての必須項目を入力してください。',flag:'🌐 日本語' },
+  ko:{ nav_fleet:'차량',nav_booking:'예약',nav_contact:'문의하기',nav_book:'지금 예약',
+    hero_eyebrow:'프리미엄 렌터카 · 방콕',
+    hero_title:'모든 길을<br><em>당신의 스타일</em>로',
+    hero_sub:'다양한 차종, 간편 예약, 즉시 픽업, 투명한 요금 — 숨겨진 비용 없음.',
+    cta_book:'차량 예약',cta_fleet:'차량 보기',
+    stat1:'이용 가능 차량',stat2:'24시간 서비스',stat3:'만족 고객',stat4:'리뷰 점수',
+    search_pre:'',search_span:'이용 가능 차량 검색',
+    label_pickup:'📍 픽업 장소',label_pickup_date:'📅 픽업 날짜',label_time:'⏰ 픽업 시간',label_return:'📅 반납 날짜',label_type:'🚗 차종',
+    loc1:'수완나품 공항',loc2:'돈므앙 공항',loc3:'시암 파라곤',loc4:'센트럴 월드',loc5:'호텔 배달',
+    type_all:'전체',type_eco:'경제형',type_sedan:'세단',type_lux:'럭셔리',type_sports:'스포츠',
+    btn_search:'🔍 검색',fleet_pre:'우리의 전기',fleet_span:'차량',fleet_sub:'프리미엄 EV가 여행을 준비합니다',
+    car_book:'예약하기',per_day:'하루',
+    form_name:'성명',form_phone:'전화번호',form_email:'이메일',form_id:'여권 번호',form_pay:'결제 방법',form_ins:'보험',
+    pay1:'신용/체크카드',pay2:'계좌이체',pay3:'픽업 시 결제',
+    ins1:'완전보험 (+฿300/일)',ins2:'기본보험 (+฿150/일)',ins3:'추가 보험 없음',
+    btn_confirm:'예약 확인 →',btn_back:'홈으로 돌아가기',
+    ok_title:'예약 완료!',ok_msg:'Mic : Electric Car를 이용해 주셔서 감사합니다.<br>이메일로 상세 내용을 보내드리겠습니다.',
+    footer:'프리미엄 렌터카 방콕',
+    s_car:'차량',s_price:'요금/일',s_days:'일수',s_total:'합계',
+    day_unit:'일',alert:'모든 필수 항목을 입력해 주세요.',flag:'🌐 한국어' }
+};
+
+let lang = 'en', dark = true;
+
+function applyLang(l) {
+  const t = T[l];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (t[k] !== undefined) el.innerHTML = t[k];
+  });
+  document.getElementById('lang-btn').innerHTML = t.flag + ' ▾';
+  document.querySelectorAll('.lang-option').forEach((el,i) => {
+    el.classList.toggle('active', ['th','en','zh','ja','ko'][i] === l);
+  });
+  renderFleet();
+}
+
+function setLang(l) {
+  lang = l;
+  applyLang(l);
+  document.getElementById('lang-dropdown').classList.remove('open');
+}
+
+function toggleLangMenu() {
+  document.getElementById('lang-dropdown').classList.toggle('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.lang-wrapper')) document.getElementById('lang-dropdown').classList.remove('open');
+});
+
+function toggleTheme() {
+  dark = !dark;
+  document.body.classList.toggle('light', !dark);
+  document.getElementById('theme-btn').textContent = dark ? '🌙' : '☀️';
+}
+
+// ============ SUPABASE CONFIG ============
+const SUPABASE_URL = 'https://fmoiykmqjhlcfvzgpvvj.supabase.co';
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'; // TODO: Replace with your anon/public key from Supabase Dashboard → Settings → API
+
+const BASE_IMG = 'https://mistyboyz.github.io/Calabura/';
+
+// Helper: Supabase REST fetch
+async function sbFetch(table, params = '') {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  if (!res.ok) throw new Error(`Supabase error on ${table}: ${res.status}`);
+  return res.json();
+}
+
+async function sbPost(table, body) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Supabase POST error on ${table}: ${errText}`);
+  }
+  return res.json();
+}
+
+async function sbPatch(table, matchParam, body) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${matchParam}`, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error(`Supabase PATCH error: ${res.status}`);
+  return res.json();
+}
+
+let cars = [];
+let carPackages = {}; // { carId: [pkg, pkg, ...] }
+let allPackages = [];
+
+async function loadCarsFromFirebase() { // kept same name for compatibility
+  try {
+    const data = await sbFetch('cars', 'select=*&order=id.asc');
+    if (data && data.length > 0) {
+      cars = data.map(c => ({
+        ...c,
+        features: Array.isArray(c.features) ? c.features : (c.features ? JSON.parse(c.features) : [])
+      }));
+    } else {
+      cars = [];
+    }
+  } catch(e) {
+    console.error('Failed to load cars:', e);
+    cars = [];
+  }
+  renderFleet();
+}
+
+// Load packages + bindings from Supabase
+async function loadPackagesFromFirebase() { // kept same name for compatibility
+  try {
+    const [pkgData, bindData] = await Promise.all([
+      sbFetch('packages', 'select=*'),
+      sbFetch('pkg_bindings', 'select=*')
+    ]);
+    allPackages = pkgData || [];
+    carPackages = {};
+    if (bindData && bindData.length > 0) {
+      bindData.forEach(b => {
+        const pkg = allPackages.find(p => String(p.id) === String(b.pkg_id || b.pkgId));
+        if (!pkg) return;
+        const key = String(b.car_id || b.carId);
+        if (!carPackages[key]) carPackages[key] = [];
+        carPackages[key].push(pkg);
+      });
+    }
+  } catch(e) {
+    console.error('Failed to load packages:', e);
+    allPackages = [];
+    carPackages = {};
+  }
+  renderFleet();
+}
+
+let selectedCar = null;
+let selectedPackage = null; // package user picks
+
+// Track booked and maintenance car IDs
+let bookedCarIds = new Set();
+let maintenanceCarIds = new Set();
+
+async function loadBookedCars() {
+  try {
+    // Check active bookings from Supabase
+    const blockedStatuses = ['paid','pending','confirmed','active'];
+    const statusFilter = blockedStatuses.map(s => `status.eq.${s}`).join(',');
+    const bookings = await sbFetch('bookings', `select=car_id,status&or=(${statusFilter})`);
+    if (bookings && bookings.length > 0) {
+      bookedCarIds = new Set(bookings.map(b => String(b.car_id || b.carId)));
+    } else {
+      bookedCarIds = new Set();
+    }
+    // Check maintenance (cars table status field)
+    const maintenanceCars = await sbFetch('cars', `select=id&status=eq.maintenance`);
+    if (maintenanceCars && maintenanceCars.length > 0) {
+      maintenanceCarIds = new Set(maintenanceCars.map(m => String(m.id)));
+    } else {
+      maintenanceCarIds = new Set();
+    }
+  } catch(e) {
+    console.error('loadBookedCars error:', e);
+    bookedCarIds = new Set();
+    maintenanceCarIds = new Set();
+  }
+}
+
+async function renderFleet(filterKey) {
+  const t = T[lang];
+  // Load booked cars first
+  await loadBookedCars();
+
+  const sel = filterKey || document.getElementById('sel-type')?.value || 'all';
+  let filtered = cars;
+  if (sel !== 'all') {
+    filtered = cars.filter(c => {
+      const carKey = c.catKey || '';
+      const carCat = c.cat || '';
+      return carKey === sel || carCat === sel;
+    });
+  }
+  if (filtered.length === 0) {
+    document.getElementById('fleet-grid').innerHTML = cars.length === 0
+      ? `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text3);font-size:1.1rem">🚗 No cars available at the moment. Please check back later.</div>`
+      : `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text3);font-size:1.1rem">🚗 No cars found in this category</div>`;
+    return;
+  }
+  document.getElementById('fleet-grid').innerHTML = filtered.map(c => {
+    const cat = c.catKey ? (t[c.catKey]||c.cat) : c.cat;
+    const isBooked = bookedCarIds.has(String(c.id));
+    const isMaintenance = maintenanceCarIds.has(String(c.id));
+    const isUnavailable = isBooked || isMaintenance;
+
+    let overlayHTML = '';
+    if (isMaintenance) {
+      overlayHTML = `<div style="position:absolute;inset:0;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem">
+        <span style="font-size:1.5rem">🔧</span>
+        <span style="font-size:.75rem;font-weight:700;color:#f39c12;letter-spacing:.1em;text-transform:uppercase">Under Maintenance</span>
+      </div>`;
+    } else if (isBooked) {
+      overlayHTML = `<div style="position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#e74c3c;letter-spacing:.1em;text-transform:uppercase">⛔ Not Available</div>`;
+    }
+
+    const pkgsForCard = carPackages[String(c.id)] || [];
+    const hasPackage = pkgsForCard.length > 0;
+    const isNoPackage = !hasPackage && !isUnavailable;
+
+    let btnHTML = '';
+    if (isMaintenance) {
+      btnHTML = `<button disabled style="opacity:.5;cursor:not-allowed;background:transparent;color:#f39c12;border:1px solid #f39c12;padding:.5rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.85rem">🔧 Maintenance</button>`;
+    } else if (isBooked) {
+      btnHTML = `<button disabled style="opacity:.5;cursor:not-allowed;background:transparent;color:var(--text3);border:1px solid var(--text3);padding:.5rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.85rem">Unavailable</button>`;
+    } else if (isNoPackage) {
+      btnHTML = `<button disabled style="opacity:.45;cursor:not-allowed;background:transparent;color:var(--text3);border:1px solid var(--border);padding:.5rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.85rem">Not Available</button>`;
+    } else if (window.currentUser) {
+      btnHTML = `<button class="btn-book" onclick="openModal(${c.id})">${t.car_book}</button>`;
+    } else {
+      btnHTML = `<button class="btn-book btn-signin-prompt" onclick="document.getElementById('auth-screen').style.display='flex';showAuthTab('login')" style="background:var(--gold);color:#0a0a0a;border-color:var(--gold)">🔑 Sign In to Book</button>`;
+    }
+
+    // Price block — only show if has package
+    const priceBlock = hasPackage ? (()=>{
+      const minPkg = pkgsForCard.reduce((a,b) => a.price < b.price ? a : b);
+      const durLabel = {daily:'/ day', weekly:'/ week', monthly:'/ month', custom:'/ package'}[minPkg.duration] || '/ package';
+      const moreLabel = pkgsForCard.length > 1 ? ` <span style="font-size:.65rem;color:var(--gold)">+${pkgsForCard.length-1} more</span>` : '';
+      return `<div><span class="price-amount">฿${minPkg.price.toLocaleString()}</span><div class="price-unit">${durLabel}${moreLabel}</div></div>`;
+    })() : `<div style="font-size:.8rem;color:var(--text3)">—</div>`;
+
+    const cardOpacity = (isUnavailable || isNoPackage) ? 'opacity:.55;' : '';
+    const noPackageOverlay = isNoPackage ? `
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center">
+        <span style="font-size:.8rem;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Unavailable</span>
+      </div>` : '';
+
+    return `<div class="car-card" style="${cardOpacity}">
+      <div class="car-img-wrap" style="position:relative">
+        <img src="${c.img}" alt="${c.name}" class="car-img" onerror="this.parentElement.innerHTML='<span class=car-emoji>🚗</span>'">
+        ${overlayHTML}
+        ${noPackageOverlay}
+      </div>
+      <div class="car-category">${cat}</div>
+      <div class="car-name">${c.name}</div>
+      <div class="car-model">${c.model}</div>
+      <div class="car-features">${c.features.map(f=>`<span class="tag">${f}</span>`).join('')}</div>
+      <div class="car-price">
+        ${priceBlock}
+        ${btnHTML}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openModal(id) {
+  selectedCar = cars.find(c=>c.id===id);
+  if (!selectedCar) return;
+  document.getElementById('modal-car-name').textContent = selectedCar.name;
+  document.getElementById('modal-car-model').textContent = selectedCar.model;
+
+  // Pre-fill dates
+  const p = document.getElementById('pickup-date').value;
+  const r = document.getElementById('return-date').value;
+  if (p) document.getElementById('b-pickup-date').value = p;
+  if (r) document.getElementById('b-return-date').value = r;
+
+  // Pre-fill pickup location
+  if (selectedPickup) {
+    document.getElementById('s1-pickup-text').textContent = selectedPickup.name;
+    document.getElementById('s1-pickup-text').style.color = 'var(--text)';
+  }
+
+  // Auto-fill from logged in user
+  if (window.currentUser) {
+    const emailEl = document.getElementById('b-email');
+    if (emailEl) { emailEl.value = window.currentUser.email || ''; emailEl.readOnly = true; emailEl.style.opacity = '.7'; }
+    if (window.currentUser.displayName) {
+      const parts = window.currentUser.displayName.split(' ');
+      const fn = document.getElementById('b-firstname');
+      const sn = document.getElementById('b-surname');
+      if (fn && !fn.value) fn.value = parts[0] || '';
+      if (sn && !sn.value) sn.value = parts.slice(1).join(' ') || '';
+    }
+  }
+
+  renderPackageSelector(id);
+  updateStep1Summary();
+  goStep(1);
+  document.getElementById('modal').classList.add('open');
+}
+
+function renderPackageSelector(carId) {
+  const pkgs = carPackages[String(carId)] || [];
+  const wrap = document.getElementById('pkg-selector-wrap');
+  const noneMsg = document.getElementById('pkg-none-msg');
+  selectedPackage = null;
+
+  if (!pkgs.length) {
+    wrap.innerHTML = '';
+    wrap.style.display = 'none';
+    noneMsg.style.display = 'block';
+    document.getElementById('pkg-fallback-price').textContent = (selectedCar?.price||0).toLocaleString();
+    return;
+  }
+
+  wrap.style.display = 'flex';
+  noneMsg.style.display = 'none';
+
+  const durLabel = {daily:'/ วัน',weekly:'/ สัปดาห์',monthly:'/ เดือน',custom:'/ package'};
+  // Sort by price ascending
+  const sorted = [...pkgs].sort((a,b) => a.price - b.price);
+
+  wrap.innerHTML = sorted.map((p,i) => `
+    <div class="pkg-option ${i===0?'selected':''}" id="pkg-opt-${p.id}"
+      onclick="selectPackage('${p.id}')"
+      style="border:1px solid ${i===0?'var(--gold)':'var(--border)'};background:${i===0?'rgba(201,168,76,.08)':'rgba(255,255,255,.04)'};padding:.85rem 1rem;cursor:pointer;transition:all .2s;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.8rem">
+      <div style="width:18px;height:18px;border-radius:50%;border:2px solid ${i===0?'var(--gold)':'var(--border)'};background:${i===0?'var(--gold)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.6rem;color:#0a0a0a" id="pkg-radio-${p.id}">${i===0?'●':''}</div>
+      <div>
+        <div style="font-size:.9rem;font-weight:600;color:var(--text)">${p.code}</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:.1rem">
+          ${p.desc||''}
+          ${p.insurance?`<span style="color:var(--gold)">· Insurance ฿${p.insurance}/day</span>`:''}
+          ${p.deposit?`<span style="color:var(--text3)">· Deposit ฿${p.deposit.toLocaleString()}</span>`:''}
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:'AudiType',sans-serif;font-size:1.1rem;font-weight:900;color:var(--gold)">฿${p.price.toLocaleString()}</div>
+        <div style="font-size:.65rem;color:var(--text3)">${durLabel[p.duration]||'/ package'}</div>
+      </div>
+    </div>`).join('');
+
+  // Auto-select first
+  selectPackage(sorted[0].id, false);
+}
+
+function selectPackage(pkgId, rerender=true) {
+  const pkgs = carPackages[String(selectedCar?.id)] || [];
+  selectedPackage = pkgs.find(p => p.id === pkgId) || null;
+
+  if (rerender) {
+    document.querySelectorAll('.pkg-option').forEach(el => {
+      const id = el.id.replace('pkg-opt-','');
+      const isSelected = id === pkgId;
+      el.style.border = `1px solid ${isSelected?'var(--gold)':'var(--border)'}`;
+      el.style.background = isSelected ? 'rgba(201,168,76,.08)' : 'rgba(255,255,255,.04)';
+      const radio = document.getElementById('pkg-radio-'+id);
+      if (radio) {
+        radio.style.background = isSelected ? 'var(--gold)' : 'transparent';
+        radio.style.borderColor = isSelected ? 'var(--gold)' : 'var(--border)';
+        radio.textContent = isSelected ? '●' : '';
+      }
+    });
+  }
+  updateStep1Summary();
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  const emailEl = document.getElementById('b-email');
+  if (emailEl) { emailEl.readOnly = false; emailEl.style.opacity = ''; }
+}
+
+// ===== STEP NAVIGATION =====
+let currentStep = 1;
+
+function goStep(n) {
+  currentStep = n;
+  [1,2,3,4].forEach(i => {
+    const step = document.getElementById(`modal-step${i}`);
+    if (step) step.style.display = i===n ? 'block' : 'none';
+    const tab = document.getElementById(`stab-${i}`);
+    if (tab) {
+      tab.style.color = i===n ? 'var(--gold)' : (i<n ? 'var(--text2)' : 'var(--text3)');
+      tab.style.borderBottomColor = i===n ? 'var(--gold)' : 'transparent';
+    }
+  });
+  if (n === 3) renderBookingSummary();
+}
+
+function nextStep(from) {
+  if (from === 1) {
+    const p = document.getElementById('b-pickup-date').value;
+    const r = document.getElementById('b-return-date').value;
+    const err = document.getElementById('step1-err');
+    if (!p || !r) { err.textContent = 'Please select pickup and return dates.'; err.style.display='block'; return; }
+    if (new Date(r) <= new Date(p)) { err.textContent = 'Return date must be after pickup date.'; err.style.display='block'; return; }
+    err.style.display = 'none';
+    goStep(2);
+  } else if (from === 2) {
+    const fn = document.getElementById('b-firstname').value.trim();
+    const phone = document.getElementById('b-phone').value.trim();
+    const idCard = document.getElementById('b-id').value.trim();
+    const err = document.getElementById('step2-err');
+    if (!fn || !phone || !idCard) { err.textContent = 'Please fill in First Name, Mobile and ID Card.'; err.style.display='block'; return; }
+    err.style.display = 'none';
+    goStep(3);
+  }
+}
+
+function updateStep1Summary() {
+  if (!selectedCar) return;
+  const p = document.getElementById('b-pickup-date').value;
+  const r = document.getElementById('b-return-date').value;
+  if (!p || !r) return;
+  const days = Math.max(1, Math.round((new Date(r)-new Date(p))/86400000));
+  let rental, insCost;
+  if (selectedPackage) {
+    // Package pricing
+    if (selectedPackage.duration === 'daily') rental = selectedPackage.price * days;
+    else rental = selectedPackage.price; // weekly/monthly/custom = flat
+    insCost = (selectedPackage.insurance||0) * days;
+  } else {
+    // Fallback: car base price
+    rental = selectedCar.price * days;
+    insCost = 0;
+  }
+  document.getElementById('s1-days').textContent = days;
+  document.getElementById('s1-rental').textContent = '฿'+rental.toLocaleString();
+  document.getElementById('s1-insurance-cost').textContent = insCost>0?'฿'+insCost.toLocaleString():'฿0';
+}
+
+function renderBookingSummary() {
+  const p = document.getElementById('b-pickup-date').value;
+  const r = document.getElementById('b-return-date').value;
+  const days = Math.max(1, Math.round((new Date(r)-new Date(p))/86400000));
+  let rental, insCost, pkgLabel;
+  if (selectedPackage) {
+    rental = selectedPackage.duration === 'daily' ? selectedPackage.price * days : selectedPackage.price;
+    insCost = (selectedPackage.insurance||0) * days;
+    pkgLabel = `${selectedPackage.code} (${selectedPackage.duration})`;
+  } else {
+    rental = selectedCar.price * days;
+    insCost = 0;
+    pkgLabel = 'None (base rate)';
+  }
+  const total = rental + insCost;
+  const fn = document.getElementById('b-firstname').value;
+  const sn = document.getElementById('b-surname').value;
+  const rows = [
+    ['Vehicle', selectedCar.name],
+    ['Customer', `${fn} ${sn}`.trim()],
+    ['Package', pkgLabel],
+    ['Insurance', insCost>0?`฿${insCost.toLocaleString()} (฿${selectedPackage?.insurance||0}/day)`:'—'],
+    ['Period', `${p} → ${r} (${days} days)`],
+    ['Pickup', selectedPickup ? selectedPickup.name : '—'],
+    ['Rental Fee', '฿'+rental.toLocaleString()],
+    ['Insurance Fee', insCost>0?'฿'+insCost.toLocaleString():'—'],
+  ];
+  document.getElementById('booking-summary-rows').innerHTML = rows.map(([k,v])=>`
+    <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.85rem">
+      <span style="color:var(--text3)">${k}</span>
+      <span style="color:var(--text)">${v}</span>
+    </div>`).join('') + `
+    <div style="display:flex;justify-content:space-between;padding:.8rem 0;margin-top:.3rem">
+      <span style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600">Total Charge</span>
+      <span style="font-family:'AudiType',sans-serif;font-size:1.6rem;font-weight:900;color:var(--gold)">฿${total.toLocaleString()}</span>
+    </div>`;
+  // Update pay button
+  const method = document.getElementById('b-payment').value;
+  const btn = document.getElementById('pay-btn');
+  if (btn) btn.textContent = method==='pay_at_pickup'?'✅ Confirm (Pay at Pickup)':method==='promptpay'?'📱 Generate PromptPay QR →':'💳 Confirm & Pay →';
+}
+
+async function confirmBooking() { /* legacy - not used */ }
+
+
+function searchCars() {
+  document.getElementById('fleet').scrollIntoView({behavior:'smooth'});
+  renderFleet();
+}
+
+// ============ LOCATION SYSTEM ============
+const LOCATIONS = [
+  { id:'suv', cat:'✈️ Airports', icon:'✈️', name:'Suvarnabhumi Airport', detail:'International Terminal, Level 1 · Open 24hrs', tags:['Free Shuttle','24/7'] },
+  { id:'dmk', cat:'✈️ Airports', icon:'✈️', name:'Don Mueang Airport', detail:'Domestic Terminal, Gate 5 · Open 24hrs', tags:['Free Shuttle','24/7'] },
+  { id:'siam', cat:'🏙️ City Centers', icon:'🏬', name:'Siam Paragon', detail:'B1 Parking Zone A · Mon–Sun 10:00–22:00', tags:['Mall','BTS'] },
+  { id:'cw', cat:'🏙️ City Centers', icon:'🏬', name:'CentralWorld', detail:'G Floor Entrance 1 · Mon–Sun 10:00–22:00', tags:['Mall','BTS'] },
+  { id:'asok', cat:'🏙️ City Centers', icon:'🏙️', name:'Asok / Sukhumvit', detail:'Terminal 21 B2 · Mon–Sun 09:00–21:00', tags:['BTS','MRT'] },
+  { id:'silom', cat:'🏙️ City Centers', icon:'🏙️', name:'Silom / Sathorn', detail:'Sathorn Road Branch · Mon–Sat 08:00–20:00', tags:['BTS'] },
+  { id:'hotel', cat:'🏨 Hotel Delivery', icon:'🏨', name:'Hotel Delivery — Bangkok', detail:'We deliver to your hotel lobby (2hr notice required)', tags:['Delivery','+฿200'] },
+  { id:'hotel-hua', cat:'🏨 Hotel Delivery', icon:'🏨', name:'Hotel Delivery — Hua Hin', detail:'Hua Hin area hotels (4hr notice required)', tags:['Delivery','+฿500'] },
+  { id:'pattaya', cat:'🌴 Destinations', icon:'🌴', name:'Pattaya City', detail:'North Pattaya Road, Gemini Hotel · Daily 08:00–20:00', tags:['Destination'] },
+  { id:'phuket', cat:'🌴 Destinations', icon:'✈️', name:'Phuket Airport', detail:'International Arrival Hall · Open 24hrs', tags:['Airport','24/7'] },
+  { id:'chiangmai', cat:'🌴 Destinations', icon:'✈️', name:'Chiang Mai Airport', detail:'Arrival Terminal · Open 24hrs', tags:['Airport','24/7'] },
+];
+
+let locModalTarget = 'pickup'; // 'pickup' or 'return'
+let selectedPickup = null;
+let selectedReturn = null;
+
+function openLocModal(target) {
+  locModalTarget = target;
+  document.getElementById('loc-modal-title').textContent = target === 'pickup' ? 'Select Pickup Location' : 'Select Return Location';
+  document.getElementById('loc-modal-sub').textContent = target === 'pickup' ? 'Where would you like to pick up your car?' : 'Where would you like to return your car?';
+  document.getElementById('loc-search').value = '';
+  renderLocList(LOCATIONS);
+  document.getElementById('loc-modal').style.display = 'flex';
+}
+
+function closeLocModal() {
+  document.getElementById('loc-modal').style.display = 'none';
+}
+
+function filterLocations(q) {
+  const filtered = q ? LOCATIONS.filter(l =>
+    l.name.toLowerCase().includes(q.toLowerCase()) ||
+    l.detail.toLowerCase().includes(q.toLowerCase()) ||
+    l.cat.toLowerCase().includes(q.toLowerCase())
+  ) : LOCATIONS;
+  renderLocList(filtered);
+}
+
+function renderLocList(list) {
+  const el = document.getElementById('loc-list');
+  if (!list.length) {
+    el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3)">No locations found</div>';
+    return;
+  }
+  // Group by category
+  const groups = {};
+  list.forEach(l => { if (!groups[l.cat]) groups[l.cat] = []; groups[l.cat].push(l); });
+
+  const selectedId = locModalTarget === 'pickup' ? selectedPickup?.id : selectedReturn?.id;
+  el.innerHTML = Object.entries(groups).map(([cat, items]) => `
+    <div class="loc-category">${cat}</div>
+    ${items.map(l => `
+      <div class="loc-item ${l.id === selectedId ? 'selected' : ''}" onclick="selectLocation('${l.id}')">
+        <div class="loc-item-icon">${l.icon}</div>
+        <div class="loc-item-info">
+          <div class="loc-item-name">${l.name} ${l.tags.map(t=>`<span class="loc-item-tag">${t}</span>`).join('')}</div>
+          <div class="loc-item-detail">${l.detail}</div>
+        </div>
+        ${l.id === selectedId ? '<div style="color:var(--gold);font-size:1.1rem">✓</div>' : ''}
+      </div>`).join('')}
+  `).join('');
+}
+
+function selectLocation(id) {
+  const loc = LOCATIONS.find(l => l.id === id);
+  if (!loc) return;
+  if (locModalTarget === 'pickup') {
+    selectedPickup = loc;
+    document.getElementById('pickup-name').textContent = loc.name;
+    document.getElementById('pickup-sub').textContent = loc.detail;
+    // Auto-set return to same if not chosen yet
+    if (!selectedReturn) {
+      selectedReturn = loc;
+      document.getElementById('return-name').textContent = loc.name;
+      document.getElementById('return-sub').textContent = 'Same as pickup · Click to change';
+    }
+  } else {
+    selectedReturn = loc;
+    document.getElementById('return-name').textContent = loc.name;
+    document.getElementById('return-sub').textContent = loc.detail;
+  }
+  closeLocModal();
+}
+
+function swapLocations() {
+  if (!selectedPickup && !selectedReturn) return;
+  const tmp = selectedPickup;
+  selectedPickup = selectedReturn;
+  selectedReturn = tmp;
+  if (selectedPickup) {
+    document.getElementById('pickup-name').textContent = selectedPickup.name;
+    document.getElementById('pickup-sub').textContent = selectedPickup.detail;
+  } else {
+    document.getElementById('pickup-name').textContent = 'Select pickup point';
+    document.getElementById('pickup-sub').textContent = 'Click to choose location';
+  }
+  if (selectedReturn) {
+    document.getElementById('return-name').textContent = selectedReturn.name;
+    document.getElementById('return-sub').textContent = selectedReturn.detail;
+  } else {
+    document.getElementById('return-name').textContent = 'Same as pickup';
+    document.getElementById('return-sub').textContent = 'Click to change';
+  }
+}
+
+// Close on outside click
+document.getElementById('loc-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeLocModal();
+});
+
+const t1=new Date(); t1.setDate(t1.getDate()+1);
+const t2=new Date(); t2.setDate(t2.getDate()+3);
+document.getElementById('pickup-date').value=t1.toISOString().split('T')[0];
+document.getElementById('return-date').value=t2.toISOString().split('T')[0];
+window.currentUser = null;
+applyLang('en');
+loadCarsFromFirebase(); // Load cars from Firebase
+loadPackagesFromFirebase(); // Load packages
+document.getElementById('modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+</script>
+
+<!-- ============ FIREBASE AUTH ============ -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDUx5yv-SLA6umvbreE06lqZKIvTH3AUx0",
+  authDomain: "calabura-ea686.firebaseapp.com",
+  databaseURL: "https://calabura-ea686-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "calabura-ea686",
+  storageBucket: "calabura-ea686.firebasestorage.app",
+  messagingSenderId: "952055824613",
+  appId: "1:952055824613:web:498e059b92c4cc03a5d40c"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// ===== AUTH STATE =====
+window.currentUser = null; // initialize first
+
+onAuthStateChanged(auth, user => {
+  window.currentUser = user || null;
+
+  const navBtn = document.getElementById('nav-auth-btn');
+  if (user) {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('user-bar').style.display = 'flex';
+    document.getElementById('user-name').textContent = user.displayName || user.email;
+    document.getElementById('user-avatar').textContent = (user.displayName || user.email)[0].toUpperCase();
+    if (navBtn) navBtn.style.display = 'none';
+    // Save user profile to Supabase (upsert)
+    const prov = user.providerData[0]?.providerId === 'google.com' ? 'google' : 'email';
+    fetch(`${SUPABASE_URL}/rest/v1/users`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({
+        uid: user.uid,
+        display_name: user.displayName || '',
+        email: user.email,
+        provider: prov,
+        created_at: user.metadata.creationTime,
+        last_login: user.metadata.lastSignInTime
+      })
+    }).catch(()=>{});
+  } else {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('user-bar').style.display = 'none';
+    if (navBtn) navBtn.style.display = 'block';
+  }
+  // Re-render fleet so book buttons update correctly
+  if (typeof renderFleet === 'function') renderFleet();
+});
+
+// ===== REGISTER =====
+window.doRegister = async function() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const err = document.getElementById('register-error-msg');
+  err.textContent = '';
+  if (!name || !email || !pass) { err.textContent = 'Please fill in all fields.'; return; }
+  if (pass !== pass2) { err.textContent = 'Passwords do not match.'; return; }
+  if (pass.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+  try {
+    document.getElementById('register-submit-btn').disabled = true;
+    document.getElementById('register-submit-btn').textContent = 'Creating account...';
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+    // Show onboarding after successful registration
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('ob-name').value = name;
+    document.getElementById('onboarding-screen').style.display = 'flex';
+  } catch(e) {
+    err.textContent = e.code === 'auth/email-already-in-use' ? 'Email already registered.' : e.message;
+    document.getElementById('register-submit-btn').disabled = false;
+    document.getElementById('register-submit-btn').textContent = 'Create Account';
+  }
+}
+
+// ===== LOGIN =====
+window.doLogin = async function() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error-msg');
+  err.textContent = '';
+  if (!email || !pass) { err.textContent = 'Please fill in all fields.'; return; }
+  try {
+    document.getElementById('login-submit-btn').disabled = true;
+    document.getElementById('login-submit-btn').textContent = 'Signing in...';
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    err.textContent = 'Invalid email or password.';
+    document.getElementById('login-submit-btn').disabled = false;
+    document.getElementById('login-submit-btn').textContent = 'Sign In';
+  }
+}
+
+// ===== GOOGLE LOGIN =====
+window.doGoogleLogin = async function() {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch(e) {
+    const activeForm = document.getElementById('form-login').style.display !== 'none' ? 'login' : 'register';
+    const errId = activeForm === 'login' ? 'login-error-msg' : 'register-error-msg';
+    document.getElementById(errId).textContent = e.message;
+  }
+}
+
+// ===== LOGOUT =====
+window.doLogout = async function() {
+  if (!confirm('Are you sure you want to sign out?')) return;
+  await signOut(auth);
+}
+
+// Auth ready</script>
+
+<!-- PROMPTPAY QR MODAL -->
+<div id="qr-overlay" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);justify-content:center;align-items:center;padding:1rem">
+  <div style="background:var(--card);border:1px solid var(--border);padding:2rem;max-width:420px;width:100%;text-align:center;animation:slideUp .3s ease;max-height:90vh;overflow-y:auto">
+
+    <!-- STEP 1: QR Code -->
+    <div id="qr-step1">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.3rem;color:var(--text)">Scan to Pay</h3>
+      <p style="font-size:.82rem;color:var(--text3);margin-bottom:1.2rem">Open your banking app and scan the QR code below</p>
+      <div id="qr-image-wrap" style="background:#fff;padding:1rem;display:inline-block;margin-bottom:.8rem;border:3px solid var(--gold)">
+        <img id="qr-image" src="" alt="QR Code" style="width:180px;height:180px;display:block">
+      </div>
+      <div id="qr-amount" style="font-family:'AudiType',sans-serif;font-size:1.8rem;font-weight:900;color:var(--gold);margin-bottom:.3rem"></div>
+      <p style="font-size:.78rem;color:var(--text3);margin-bottom:.8rem">PromptPay · Mic Electric Car</p>
+      <div id="qr-timer" style="font-family:'AudiType',sans-serif;font-size:1rem;color:var(--orange);margin-bottom:1.2rem"></div>
+
+      <!-- Steps -->
+      <div style="background:rgba(201,168,76,.06);border:1px solid var(--border);padding:.8rem 1rem;text-align:left;margin-bottom:1.2rem">
+        <div style="font-size:.78rem;color:var(--text2);line-height:2">
+          1️⃣ Scan QR with banking app<br>
+          2️⃣ Confirm payment amount<br>
+          3️⃣ Take a screenshot of the slip<br>
+          4️⃣ Upload slip below to confirm
+        </div>
+      </div>
+
+      <button onclick="document.getElementById('qr-step1').style.display='none';document.getElementById('qr-step2').style.display='block'"
+        style="width:100%;background:var(--gold);color:#0a0a0a;border:none;padding:.85rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;margin-bottom:.6rem">
+        ✅ I've Paid — Upload Slip →
+      </button>
+      <button onclick="closeQR()" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--text2);padding:.7rem;font-family:'DM Sans',sans-serif;cursor:pointer;font-size:.85rem">Cancel</button>
+    </div>
+
+    <!-- STEP 2: Upload Slip -->
+    <div id="qr-step2" style="display:none">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.3rem;color:var(--text)">Upload Payment Slip</h3>
+      <p style="font-size:.82rem;color:var(--text3);margin-bottom:1.5rem">Upload your payment screenshot to confirm booking</p>
+
+      <!-- Upload area -->
+      <div id="slip-drop-zone"
+        onclick="document.getElementById('slip-file-input').click()"
+        ondragover="event.preventDefault();this.style.borderColor='var(--gold)'"
+        ondragleave="this.style.borderColor='var(--border)'"
+        ondrop="handleSlipDrop(event)"
+        style="border:2px dashed var(--border);padding:2rem;cursor:pointer;transition:all .2s;margin-bottom:1rem;text-align:center">
+        <div id="slip-preview-wrap" style="display:none;margin-bottom:.8rem">
+          <img id="slip-preview" src="" style="max-width:100%;max-height:160px;object-fit:contain;border:1px solid var(--border)">
+        </div>
+        <div id="slip-placeholder">
+          <div style="font-size:2rem;margin-bottom:.5rem">📱</div>
+          <div style="font-size:.88rem;font-weight:600;color:var(--text)">Click or drag slip here</div>
+          <div style="font-size:.75rem;color:var(--text3);margin-top:.3rem">JPG, PNG up to 5MB</div>
+        </div>
+      </div>
+      <input type="file" id="slip-file-input" accept="image/*" style="display:none" onchange="previewSlip(this)">
+
+      <!-- Transaction ref -->
+      <div style="text-align:left;margin-bottom:1.2rem">
+        <label style="font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Transaction Reference (optional)</label>
+        <input type="text" id="slip-ref" placeholder="e.g. 67030912345678"
+          style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border .2s"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+
+      <div id="slip-error" style="color:#e74c3c;font-size:.8rem;margin-bottom:.8rem;display:none"></div>
+
+      <button onclick="submitSlip()"
+        style="width:100%;background:var(--gold);color:#0a0a0a;border:none;padding:.85rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;margin-bottom:.6rem">
+        📤 Submit & Confirm Booking →
+      </button>
+      <button onclick="document.getElementById('qr-step2').style.display='none';document.getElementById('qr-step1').style.display='block'"
+        style="width:100%;background:transparent;border:1px solid var(--border);color:var(--text2);padding:.7rem;font-family:'DM Sans',sans-serif;cursor:pointer;font-size:.85rem">← Back to QR</button>
+    </div>
+
+    <!-- STEP 3: Success -->
+    <div id="qr-step3" style="display:none">
+      <div style="font-size:3rem;margin-bottom:1rem">✅</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.5rem;color:var(--text)">Booking Confirmed!</h3>
+      <p style="font-size:.85rem;color:var(--text3);margin-bottom:.5rem">Your slip has been submitted.</p>
+      <p style="font-size:.82rem;color:var(--text3);margin-bottom:1.5rem">Admin will verify and confirm your booking shortly.</p>
+      <div id="qr-booking-ref" style="font-family:'AudiType',sans-serif;font-size:1.1rem;color:var(--gold);border:1px solid var(--border);padding:.6rem 1.2rem;display:inline-block;margin-bottom:1.5rem"></div>
+      <br>
+      <button onclick="closeQR();closeModal()" style="background:var(--gold);color:#0a0a0a;border:none;padding:.8rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer">Done</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- OMISE JS -->
+<script src="https://cdn.omise.co/omise.js"></script>
+<script>
+const OMISE_PKEY = 'pkey_test_676r11218omn703jx12';
+// NOTE: Secret key ต้องใช้ฝั่ง server เท่านั้น - ในที่นี้ใช้ test mode จำลองการทำงาน
+const OMISE_SKEY = 'skey_test_676r112gmaxvuehbab2';
+
+function togglePaymentFields() {
+  const method = document.getElementById('b-payment').value;
+  document.getElementById('credit-card-fields').style.display = method === 'credit_card' ? 'block' : 'none';
+  document.getElementById('promptpay-fields').style.display = method === 'promptpay' ? 'block' : 'none';
+  const btn = document.getElementById('pay-btn');
+  if (method === 'pay_at_pickup') {
+    btn.textContent = '✅ Confirm Booking (Pay at Pickup)';
+  } else if (method === 'promptpay') {
+    btn.textContent = '📱 Generate PromptPay QR →';
+  } else {
+    btn.textContent = '💳 Pay & Confirm Booking →';
+  }
+}
+
+function formatCardNumber(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(el) {
+  let v = el.value.replace(/\D/g,'');
+  if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+  el.value = v;
+}
+
+async function processPayment() {
+  const fn = document.getElementById('b-firstname').value;
+  const phone = document.getElementById('b-phone').value;
+  const email = document.getElementById('b-email').value;
+  const method = document.getElementById('b-payment').value;
+  const err = document.getElementById('pay-error');
+  err.style.display = 'none'; err.textContent = '';
+
+  if (!fn || !phone || !email) { err.textContent = 'Missing required fields.'; err.style.display='block'; return; }
+
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  if (method === 'pay_at_pickup') {
+    await saveBooking('pay_at_pickup', null);
+    btn.disabled = false;
+    return;
+  }
+
+  // Credit Card via Omise
+  if (method === 'credit_card') {
+    const cardNum = document.getElementById('card-number').value.replace(/\s/g,'');
+    const expiry = document.getElementById('card-expiry').value.split('/');
+    const cvv = document.getElementById('card-cvv').value;
+    const cardName = document.getElementById('card-name').value;
+    if (!cardNum || !expiry[0] || !expiry[1] || !cvv || !cardName) {
+      err.textContent = 'Please fill in all card details.';
+      btn.disabled = false; togglePaymentFields(); return;
+    }
+    try {
+      Omise.setPublicKey(OMISE_PKEY);
+      Omise.createToken('card', {
+        name: cardName,
+        number: cardNum,
+        expiration_month: parseInt(expiry[0]),
+        expiration_year: parseInt('20' + expiry[1]),
+        security_code: cvv
+      }, async (statusCode, response) => {
+        if (statusCode !== 200) {
+          err.textContent = response.message || 'Card error. Please check your details.';
+          btn.disabled = false; togglePaymentFields(); return;
+        }
+        try {
+          btn.textContent = '⏳ Processing payment...';
+          const p = document.getElementById('b-pickup-date').value;
+          const r = document.getElementById('b-return-date').value;
+          let days = 1;
+          if (p && r) { const d=(new Date(r)-new Date(p))/86400000; if(d>0) days=d; }
+          let rental, insCost;
+          if (selectedPackage) {
+            rental = selectedPackage.duration === 'daily' ? selectedPackage.price * days : selectedPackage.price;
+            insCost = (selectedPackage.insurance||0) * days;
+          } else {
+            rental = selectedCar.price * days;
+            insCost = 0;
+          }
+          const total = rental + insCost;
+
+          const chargeRes = await fetch('https://mic-electric-car.netlify.app/.netlify/functions/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              token: response.id,
+              amount: total,
+              description: `Mic : Electric Car — ${selectedCar.name} (${days} days)`
+            })
+          });
+          const chargeData = await chargeRes.json();
+          if (!chargeData.success) {
+            err.textContent = chargeData.error || 'Payment failed. Please try again.';
+            err.style.display = 'block';
+            btn.disabled = false; return;
+          }
+          await saveBooking('credit_card', chargeData.chargeId);
+          btn.disabled = false;
+        } catch(e) {
+          err.textContent = 'Payment error: ' + e.message;
+          err.style.display = 'block';
+          btn.disabled = false;
+        }
+      });
+    } catch(e) {
+      err.textContent = 'Payment error: ' + e.message;
+      err.style.display = 'block';
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  // PromptPay QR
+  if (method === 'promptpay') {
+    const p2 = document.getElementById('b-pickup-date').value;
+    const r2 = document.getElementById('b-return-date').value;
+    let days2 = 1;
+    if (p2 && r2) { const d=(new Date(r2)-new Date(p2))/86400000; if(d>0) days2=d; }
+    let rental2, insCost2;
+    if (selectedPackage) {
+      rental2 = selectedPackage.duration === 'daily' ? selectedPackage.price * days2 : selectedPackage.price;
+      insCost2 = (selectedPackage.insurance||0) * days2;
+    } else {
+      rental2 = selectedCar ? selectedCar.price * days2 : 0;
+      insCost2 = 0;
+    }
+    const total2 = rental2 + insCost2;
+    // Reset steps
+    document.getElementById('qr-step1').style.display = 'block';
+    document.getElementById('qr-step2').style.display = 'none';
+    document.getElementById('qr-step3').style.display = 'none';
+    document.getElementById('slip-preview-wrap').style.display = 'none';
+    document.getElementById('slip-placeholder').style.display = 'block';
+    document.getElementById('slip-ref').value = '';
+    document.getElementById('slip-error').style.display = 'none';
+    window._slipBase64 = null;
+    document.getElementById('qr-amount').textContent = '฿' + total2.toLocaleString();
+    document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021229370016A000000677010111011300660899999995303764540${total2}5802TH5910MicElecCar6304ABCD`;
+    document.getElementById('qr-overlay').style.display = 'flex';
+    startQRTimer(600);
+    btn.disabled = false; togglePaymentFields();
+    return;
+  }
+}
+
+let qrTimerInterval;
+function startQRTimer(seconds) {
+  clearInterval(qrTimerInterval);
+  let s = seconds;
+  const el = document.getElementById('qr-timer');
+  qrTimerInterval = setInterval(() => {
+    s--;
+    const m = Math.floor(s/60);
+    const sec = s % 60;
+    el.textContent = `⏱ ${m}:${sec.toString().padStart(2,'0')} remaining`;
+    if (s <= 0) {
+      clearInterval(qrTimerInterval);
+      document.getElementById('qr-status').textContent = '❌ QR expired. Please try again.';
+      el.textContent = '';
+    }
+  }, 1000);
+}
+
+function closeQR() {
+  clearInterval(qrTimerInterval);
+  document.getElementById('qr-overlay').style.display = 'none';
+}
+
+function previewSlip(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    document.getElementById('slip-error').textContent = 'File too large. Max 5MB.';
+    document.getElementById('slip-error').style.display = 'block';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    window._slipBase64 = e.target.result;
+    document.getElementById('slip-preview').src = e.target.result;
+    document.getElementById('slip-preview-wrap').style.display = 'block';
+    document.getElementById('slip-placeholder').style.display = 'none';
+    document.getElementById('slip-error').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleSlipDrop(event) {
+  event.preventDefault();
+  document.getElementById('slip-drop-zone').style.borderColor = 'var(--border)';
+  const file = event.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('slip-file-input').files = dt.files;
+    previewSlip(document.getElementById('slip-file-input'));
+  }
+}
+
+async function submitSlip() {
+  const errEl = document.getElementById('slip-error');
+  if (!window._slipBase64) {
+    errEl.textContent = 'Please upload your payment slip first.';
+    errEl.style.display = 'block';
+    return;
+  }
+  const submitBtn = event.target;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
+  errEl.style.display = 'none';
+
+  const ref = 'DN' + Date.now().toString().slice(-6);
+  const p = document.getElementById('pickup-date').value;
+  const r = document.getElementById('return-date').value;
+  let days = 1;
+  if (p && r) { const d=(new Date(r)-new Date(p))/86400000; if(d>0) days=d; }
+
+  // booking object is passed inline to sbPost below
+
+  try {
+    await sbPost('bookings', {
+      ref,
+      days,
+      name: document.getElementById('b-name').value,
+      phone: document.getElementById('b-phone').value,
+      email: document.getElementById('b-email').value,
+      id_card: document.getElementById('b-id').value || '-',
+      payment: 'promptpay',
+      payment_slip: window._slipBase64,
+      slip_ref: document.getElementById('slip-ref').value || '-',
+      insurance: document.getElementById('b-insurance').value,
+      car_id: selectedCar.id,
+      car_name: selectedCar.name,
+      car_model: selectedCar.model,
+      car_img: selectedCar.img,
+      pickup_location: typeof selectedPickup !== 'undefined' && selectedPickup ? selectedPickup.name : 'Not specified',
+      return_location: typeof selectedReturn !== 'undefined' && selectedReturn ? selectedReturn.name : 'Same as pickup',
+      pickup_date: p, return_date: r,
+      price_per_day: selectedCar.price,
+      total: selectedCar.price * days,
+      status: 'pending_verification',
+      created_at: new Date().toISOString()
+    });
+  } catch(e) { console.warn('Supabase slip save failed:', e); }
+
+  clearInterval(qrTimerInterval);
+  document.getElementById('qr-step2').style.display = 'none';
+  document.getElementById('qr-step3').style.display = 'block';
+  document.getElementById('qr-booking-ref').textContent = '# ' + ref;
+  submitBtn.disabled = false;
+  submitBtn.textContent = '📤 Submit & Confirm Booking →';
+}
+
+async function saveBooking(paymentMethod, tokenId) {
+  const p = document.getElementById('b-pickup-date').value;
+  const r = document.getElementById('b-return-date').value;
+  let days = 1;
+  if (p && r) { const d=(new Date(r)-new Date(p))/86400000; if(d>0) days=d; }
+  const ref = 'DN' + Date.now().toString().slice(-6);
+  const fn = document.getElementById('b-firstname').value;
+  const sn = document.getElementById('b-surname').value;
+  let rental, insCost;
+  if (selectedPackage) {
+    rental = selectedPackage.duration === 'daily' ? selectedPackage.price * days : selectedPackage.price;
+    insCost = (selectedPackage.insurance||0) * days;
+  } else {
+    rental = selectedCar.price * days;
+    insCost = 0;
+  }
+  const total = rental + insCost;
+
+  const booking = {
+    ref,
+    days,
+    name: `${fn} ${sn}`.trim(),
+    phone: document.getElementById('b-phone').value,
+    email: document.getElementById('b-email').value,
+    id_card: document.getElementById('b-id').value || '-',
+    license: document.getElementById('b-license').value || '-',
+    emergency: document.getElementById('b-emergency').value || '-',
+    address: document.getElementById('b-address').value || '-',
+    payment: paymentMethod,
+    omise_token: tokenId || null,
+    package_id: selectedPackage?.id || null,
+    package_code: selectedPackage?.code || null,
+    insurance: selectedPackage ? `${selectedPackage.code} (฿${selectedPackage.insurance||0}/day)` : 'none',
+    car_id: selectedCar.id,
+    car_name: selectedCar.name,
+    car_model: selectedCar.model,
+    car_img: selectedCar.img,
+    pickup_location: typeof selectedPickup !== 'undefined' && selectedPickup ? selectedPickup.name : 'Not specified',
+    return_location: typeof selectedReturn !== 'undefined' && selectedReturn ? selectedReturn.name : 'Same as pickup',
+    pickup_date: p,
+    return_date: r,
+    price_per_day: selectedCar.price,
+    insurance_cost: insCost,
+    total,
+    status: paymentMethod === 'pay_at_pickup' ? 'pending' : 'paid',
+    created_at: new Date().toISOString()
+  };
+
+  try {
+    await sbPost('bookings', booking);
+  } catch(e) {
+    console.warn('Supabase booking save failed:', e);
+  }
+
+  // Show Step 4 — Done
+  document.getElementById('booking-ref').textContent = ref;
+  document.getElementById('done-summary').innerHTML = `
+    <div><div style="font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700">${selectedCar.name}</div><div style="font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:.2rem">Vehicle</div></div>
+    <div><div style="font-family:'AudiType',sans-serif;font-size:.9rem;font-weight:700">${p}</div><div style="font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:.2rem">Pickup</div></div>
+    <div><div style="font-family:'AudiType',sans-serif;font-size:.9rem;font-weight:700;color:var(--gold)">฿${total.toLocaleString()}</div><div style="font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:.2rem">Total</div></div>`;
+  goStep(4);
+}
+</script>
+<div id="auth-screen" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);justify-content:center;align-items:center;padding:1rem;">
+  <div style="background:var(--card);border:1px solid var(--border);width:100%;max-width:420px;padding:2.5rem;position:relative;animation:slideUp .3s ease">
+    <button id="auth-close-btn" onclick="document.getElementById('auth-screen').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid var(--border);color:var(--text);width:32px;height:32px;cursor:pointer;font-size:1rem;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">✕</button>
+
+    <!-- TABS -->
+    <div style="display:flex;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--border)">
+      <button id="tab-login" onclick="showAuthTab('login')" style="flex:1;background:none;border:none;color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;padding:.8rem;cursor:pointer;border-bottom:2px solid var(--gold);transition:all .2s">Sign In</button>
+      <button id="tab-register" onclick="showAuthTab('register')" style="flex:1;background:none;border:none;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;padding:.8rem;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s">Create Account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="form-login">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:.4rem;color:var(--text)">Welcome Back</h2>
+      <p style="color:var(--text3);font-size:.85rem;margin-bottom:1.5rem">Sign in to book your car</p>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Email</label>
+          <input id="login-email" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doLogin()" style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Password</label>
+          <input id="login-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <p id="login-error-msg" style="color:#e74c3c;font-size:.82rem;min-height:1.2rem"></p>
+        <button id="login-submit-btn" onclick="doLogin()" style="background:var(--gold);color:#0a0a0a;border:none;padding:.9rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .2s;width:100%" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Sign In</button>
+        <div style="display:flex;align-items:center;gap:.8rem;color:var(--text3);font-size:.8rem"><div style="flex:1;height:1px;background:var(--border)"></div>OR<div style="flex:1;height:1px;background:var(--border)"></div></div>
+        <button onclick="doGoogleLogin()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:.8rem;font-family:'DM Sans',sans-serif;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .2s;width:100%" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.7 33.2 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4c-7.7 0-14.4 4.1-18.1 10.3-.1.2-.4.4-.6.4z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.2 0-9.7-3-11.3-7.3l-6.5 5C9.6 39.9 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.4-2.5 4.4-4.5 5.8l6.2 5.2C40.8 35.6 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+          Continue with Google
+        </button>
+        <p style="text-align:center;font-size:.82rem;color:var(--text3)">Don't have an account? <span onclick="showAuthTab('register')" style="color:var(--gold);cursor:pointer;font-weight:600">Sign up</span></p>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="form-register" style="display:none">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:.4rem;color:var(--text)">Create Account</h2>
+      <p style="color:var(--text3);font-size:.85rem;margin-bottom:1.5rem">Join us to start booking</p>
+      <div style="display:flex;flex-direction:column;gap:.9rem">
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Full Name</label>
+          <input id="reg-name" type="text" placeholder="John Smith" style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Email</label>
+          <input id="reg-email" type="email" placeholder="your@email.com" style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Password</label>
+          <input id="reg-pass" type="password" placeholder="Min. 6 characters" style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Confirm Password</label>
+          <input id="reg-pass2" type="password" placeholder="Repeat password" onkeydown="if(event.key==='Enter')doRegister()" style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <p id="register-error-msg" style="color:#e74c3c;font-size:.82rem;min-height:1.2rem"></p>
+        <button id="register-submit-btn" onclick="doRegister()" style="background:var(--gold);color:#0a0a0a;border:none;padding:.9rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;width:100%" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Create Account</button>
+        <div style="display:flex;align-items:center;gap:.8rem;color:var(--text3);font-size:.8rem"><div style="flex:1;height:1px;background:var(--border)"></div>OR<div style="flex:1;height:1px;background:var(--border)"></div></div>
+        <button onclick="doGoogleLogin()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:.8rem;font-family:'DM Sans',sans-serif;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .2s;width:100%" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.7 33.2 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4c-7.7 0-14.4 4.1-18.1 10.3-.1.2-.4.4-.6.4z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.2 0-9.7-3-11.3-7.3l-6.5 5C9.6 39.9 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.4-2.5 4.4-4.5 5.8l6.2 5.2C40.8 35.6 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+          Continue with Google
+        </button>
+        <p style="text-align:center;font-size:.82rem;color:var(--text3)">Already have an account? <span onclick="showAuthTab('login')" style="color:var(--gold);cursor:pointer;font-weight:600">Sign in</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ONBOARDING SCREEN (after register) -->
+<div id="onboarding-screen" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);justify-content:center;align-items:center;padding:1rem">
+  <div style="background:var(--card);border:1px solid var(--border);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease">
+    <!-- Header -->
+    <div style="padding:1.8rem 2rem;border-bottom:1px solid var(--border)">
+      <div style="font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.4rem">Welcome to Mic : Electric Car</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:.3rem">Complete Your Profile</h2>
+      <p style="font-size:.82rem;color:var(--text3)">Fill in your details to get started. This helps us serve you better.</p>
+      <!-- Steps -->
+      <div style="display:flex;gap:.5rem;margin-top:1rem;align-items:center">
+        <div id="ob-step1-dot" style="width:28px;height:4px;background:var(--gold);transition:all .3s"></div>
+        <div id="ob-step2-dot" style="width:28px;height:4px;background:var(--border);transition:all .3s"></div>
+        <span id="ob-step-label" style="font-size:.75rem;color:var(--text3);margin-left:.3rem">Step 1 of 2</span>
+      </div>
+    </div>
+
+    <!-- STEP 1: Personal Info -->
+    <div id="ob-step1" style="padding:1.8rem 2rem">
+      <p style="font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.15em">Personal Information</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="grid-column:1/-1">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Full Name</label>
+          <input type="text" id="ob-name" placeholder="John Smith" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Phone Number</label>
+          <input type="tel" id="ob-phone" placeholder="08X-XXX-XXXX" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Date of Birth</label>
+          <input type="date" id="ob-dob" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Nationality</label>
+          <select id="ob-nationality" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;appearance:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+            <option value="">Select...</option>
+            <option>Thai</option><option>Japanese</option><option>Chinese</option>
+            <option>Korean</option><option>American</option><option>British</option>
+            <option>Australian</option><option>Other</option>
+          </select>
+        </div>
+        <div style="grid-column:1/-1">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Address</label>
+          <textarea id="ob-address" rows="2" placeholder="Your address..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;resize:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:1.5rem">
+        <button onclick="goObStep2()" style="background:var(--gold);color:#0a0a0a;border:none;padding:.8rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer">Next → ID & License</button>
+      </div>
+      <div id="ob-step1-err" style="color:#e74c3c;font-size:.8rem;margin-top:.6rem;display:none"></div>
+    </div>
+
+    <!-- STEP 2: ID & License -->
+    <div id="ob-step2" style="display:none;padding:1.8rem 2rem">
+      <p style="font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.15em">ID & Driver's License</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="grid-column:1/-1">
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">ID / Passport Number</label>
+          <input type="text" id="ob-idcard" placeholder="X XXXX XXXXX XX X" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">Driver's License No.</label>
+          <input type="text" id="ob-license" placeholder="License number" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">License Expiry</label>
+          <input type="date" id="ob-license-exp" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:.4rem">License Country</label>
+          <select id="ob-license-country" style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;appearance:none">
+            <option>Thailand</option><option>Japan</option><option>China</option>
+            <option>Korea</option><option>USA</option><option>UK</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div id="ob-save-err" style="color:#e74c3c;font-size:.8rem;margin-top:.8rem;display:none"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem">
+        <button onclick="goObStep1()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:.7rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer">← Back</button>
+        <button onclick="saveOnboarding()" id="ob-save-btn" style="background:var(--gold);color:#0a0a0a;border:none;padding:.8rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer">✅ Complete Setup</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// ============ ONBOARDING ============
+function goObStep2() {
+  const name = document.getElementById('ob-name').value.trim();
+  const phone = document.getElementById('ob-phone').value.trim();
+  const err = document.getElementById('ob-step1-err');
+  if (!name || !phone) {
+    err.textContent = 'Please fill in Full Name and Phone Number.';
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  document.getElementById('ob-step1').style.display = 'none';
+  document.getElementById('ob-step2').style.display = 'block';
+  document.getElementById('ob-step1-dot').style.background = 'var(--gold)';
+  document.getElementById('ob-step2-dot').style.background = 'var(--gold)';
+  document.getElementById('ob-step-label').textContent = 'Step 2 of 2';
+}
+function goObStep1() {
+  document.getElementById('ob-step1').style.display = 'block';
+  document.getElementById('ob-step2').style.display = 'none';
+  document.getElementById('ob-step2-dot').style.background = 'var(--border)';
+  document.getElementById('ob-step-label').textContent = 'Step 1 of 2';
+}
+window.saveOnboarding = async function() {
+  const idCard = document.getElementById('ob-idcard').value.trim();
+  const license = document.getElementById('ob-license').value.trim();
+  const err = document.getElementById('ob-save-err');
+  if (!idCard || !license) {
+    err.textContent = 'Please fill in ID / Passport Number and Driver\'s License.';
+    err.style.display = 'block';
+    return;
+  }
+  const user = window.currentUser;
+  if (!user) return;
+  const btn = document.getElementById('ob-save-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try {
+    const profileData = {
+      uid: user.uid,
+      display_name: document.getElementById('ob-name').value || user.displayName || '',
+      email: user.email,
+      phone: document.getElementById('ob-phone').value,
+      dob: document.getElementById('ob-dob').value,
+      nationality: document.getElementById('ob-nationality').value,
+      address: document.getElementById('ob-address').value,
+      id_card: idCard,
+      license,
+      license_exp: document.getElementById('ob-license-exp').value,
+      license_country: document.getElementById('ob-license-country').value,
+      provider: user.providerData[0]?.providerId === 'google.com' ? 'google' : 'email',
+      created_at: user.metadata.creationTime,
+      last_login: user.metadata.lastSignInTime
+    };
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/users?uid=eq.${encodeURIComponent(user.uid)}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates,return=representation'
+      },
+      body: JSON.stringify(profileData)
+    });
+    if (!res.ok) throw new Error(await res.text());
+    // Done — close onboarding
+    document.getElementById('onboarding-screen').style.display = 'none';
+    goObStep1();
+  } catch(e) {
+    err.textContent = 'Save failed. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = '✅ Complete Setup';
+  }
+}
+function skipOnboarding() {
+  // Removed — no longer used
+}
+
+function showAuthTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('form-login').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('form-register').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('tab-login').style.color = isLogin ? 'var(--gold)' : 'var(--text2)';
+  document.getElementById('tab-login').style.borderBottomColor = isLogin ? 'var(--gold)' : 'transparent';
+  document.getElementById('tab-register').style.color = isLogin ? 'var(--text2)' : 'var(--gold)';
+  document.getElementById('tab-register').style.borderBottomColor = isLogin ? 'transparent' : 'var(--gold)';
+  // Clear errors
+  const loginErr = document.getElementById('login-error-msg');
+  const regEr
