@@ -6,219 +6,219 @@
 <title>MIC ELECTRIC CAR — Management Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --surface2: #1c1c27;
-    --border: #2a2a3a;
-    --accent: #c9a84c;
-    --accent-light: #e8c97a;
-    --accent2: #47c6ff;
-    --accent3: #ff6b6b;
-    --text: #f0f0f8;
-    --muted: #6b6b88;
-    --success: #4ade80;
-    --warning: #fbbf24;
-    --danger: #f87171;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  :root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c27;--border:#2a2a3a;--accent:#c9a84c;--accent-light:#e8c97a;--accent2:#47c6ff;--text:#f0f0f8;--muted:#6b6b88;--success:#4ade80;--warning:#fbbf24;--danger:#f87171;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-  .app { display: flex; min-height: 100vh; }
-  .sidebar { width: 250px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; transition: transform 0.3s; }
-  .main { margin-left: 250px; flex: 1; padding: 32px; min-height: 100vh; }
+  /* LOGIN */
+  #login-screen{display:flex;position:fixed;inset:0;z-index:9000;background:var(--bg);align-items:center;justify-content:center;}
+  .login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:100%;max-width:420px;text-align:center;}
+  .login-logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;}
+  .login-logo-icon{width:48px;height:48px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+  .login-logo-name{font-family:'Playfair Display',serif;font-weight:900;font-size:20px;color:var(--accent);text-align:left;line-height:1.2;}
+  .login-sub{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:32px;}
+  .login-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;}
+  .login-desc{font-size:13px;color:var(--muted);margin-bottom:28px;}
+  .login-field{margin-bottom:14px;text-align:left;}
+  .login-field label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;display:block;margin-bottom:6px;}
+  .login-field input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+  .login-field input:focus{border-color:var(--accent);}
+  .login-btn{width:100%;background:var(--accent);color:#0a0a0f;border:none;border-radius:10px;padding:13px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;}
+  .login-btn:hover{background:var(--accent-light);}
+  .login-err{color:var(--danger);font-size:13px;margin-top:12px;min-height:20px;}
+  .login-footer{margin-top:24px;font-size:11px;color:var(--muted);}
 
-  /* SIDEBAR */
-  .logo { padding: 24px 20px 20px; border-bottom: 1px solid var(--border); }
-  .logo-mark { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-  .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .logo-name { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 15px; color: var(--accent); letter-spacing: 0.3px; line-height: 1.2; }
-  .logo-sub { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
-  .logo-url { font-size: 9px; color: var(--muted); margin-top: 6px; opacity: 0.6; }
+  /* LAYOUT */
+  .app{display:flex;min-height:100vh;}
+  .sidebar{width:250px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;height:100vh;z-index:100;}
+  .main{margin-left:250px;flex:1;padding:32px;min-height:100vh;}
+  .logo{padding:24px 20px 20px;border-bottom:1px solid var(--border);}
+  .logo-mark{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .logo-icon{width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .logo-name{font-family:'Playfair Display',serif;font-weight:900;font-size:14px;color:var(--accent);line-height:1.2;}
+  .logo-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-top:2px;}
+  .logo-url{font-size:9px;color:var(--muted);margin-top:6px;opacity:.55;}
+  .nav{padding:16px 0;flex:1;overflow-y:auto;}
+  .nav-section{padding:8px 20px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:600;}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;color:var(--muted);font-size:14px;transition:all .2s;position:relative;}
+  .nav-item:hover{color:var(--text);background:rgba(201,168,76,.05);}
+  .nav-item.active{color:var(--accent);background:rgba(201,168,76,.08);}
+  .nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:24px;background:var(--accent);border-radius:0 2px 2px 0;}
+  .nav-icon{font-size:15px;width:20px;text-align:center;}
+  .badge{margin-left:auto;background:var(--accent);color:#0a0a0f;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center;}
+  .sidebar-footer{padding:14px 20px;border-top:1px solid var(--border);}
+  .sb-user{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .sb-avatar{width:32px;height:32px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#0a0a0f;flex-shrink:0;}
+  .sb-user-info{flex:1;min-width:0;}
+  .sb-user-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sb-user-role{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;}
+  .sb-logout-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .sb-logout-btn:hover{border-color:var(--danger);color:var(--danger);}
+  .sb-status{display:flex;align-items:center;gap:8px;font-size:11px;margin-top:8px;}
+  .sb-dot{width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-  .nav { padding: 16px 0; flex: 1; overflow-y: auto; }
-  .nav-section { padding: 8px 20px 4px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
-  .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 20px; cursor: pointer; color: var(--muted); font-size: 14px; transition: all 0.2s; position: relative; }
-  .nav-item:hover { color: var(--text); background: rgba(201,168,76,0.05); }
-  .nav-item.active { color: var(--accent); background: rgba(201,168,76,0.08); }
-  .nav-item.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 24px; background: var(--accent); border-radius: 0 2px 2px 0; }
-  .nav-icon { font-size: 15px; width: 20px; text-align: center; }
-  .badge { margin-left: auto; background: var(--accent); color: #0a0a0f; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; min-width: 20px; text-align: center; }
-
-  .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
-  .sb-status { display: flex; align-items: center; gap: 8px; font-size: 11px; }
-  .sb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); flex-shrink: 0; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-  /* TOP BAR */
-  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-  .page-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; }
-  .page-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
-  .topbar-actions { display: flex; gap: 12px; align-items: center; }
-
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
-  .btn-primary { background: var(--accent); color: #0a0a0f; }
-  .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
-  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
-  .btn-danger { background: rgba(248,113,113,0.15); color: var(--danger); border: 1px solid rgba(248,113,113,0.3); }
-  .btn-danger:hover { background: rgba(248,113,113,0.25); }
-  .btn-success { background: rgba(74,222,128,0.15); color: var(--success); border: 1px solid rgba(74,222,128,0.3); }
-  .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
-  .btn-warn { background: rgba(251,191,36,0.15); color: var(--warning); border: 1px solid rgba(251,191,36,0.3); }
+  /* BUTTONS */
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+  .page-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;}
+  .page-sub{font-size:13px;color:var(--muted);margin-top:2px;}
+  .topbar-actions{display:flex;gap:12px;align-items:center;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+  .btn-primary{background:var(--accent);color:#0a0a0f;} .btn-primary:hover{background:var(--accent-light);transform:translateY(-1px);}
+  .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);} .btn-ghost:hover{color:var(--text);border-color:var(--muted);}
+  .btn-danger{background:rgba(248,113,113,.15);color:var(--danger);border:1px solid rgba(248,113,113,.3);} .btn-danger:hover{background:rgba(248,113,113,.25);}
+  .btn-success{background:rgba(74,222,128,.15);color:var(--success);border:1px solid rgba(74,222,128,.3);}
+  .btn-warn{background:rgba(251,191,36,.15);color:var(--warning);border:1px solid rgba(251,191,36,.3);}
+  .btn-sm{padding:6px 12px;font-size:12px;border-radius:6px;}
 
   /* STATS */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
-  .stat-card::after { content: ''; position: absolute; top: 0; right: 0; width: 60px; height: 60px; border-radius: 0 12px 0 60px; opacity: 0.07; }
-  .stat-card.gold::after { background: var(--accent); }
-  .stat-card.blue::after { background: var(--accent2); }
-  .stat-card.green::after { background: var(--success); }
-  .stat-card.red::after { background: var(--danger); }
-  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .stat-value { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; }
-  .stat-card.gold .stat-value { color: var(--accent); }
-  .stat-card.blue .stat-value { color: var(--accent2); }
-  .stat-card.green .stat-value { color: var(--success); }
-  .stat-card.red .stat-value { color: var(--danger); }
-  .stat-change { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;}
+  .stat-card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:0 12px 0 60px;opacity:.07;}
+  .stat-card.gold::after{background:var(--accent);} .stat-card.blue::after{background:var(--accent2);} .stat-card.green::after{background:var(--success);} .stat-card.red::after{background:var(--danger);}
+  .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .stat-value{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;}
+  .stat-card.gold .stat-value{color:var(--accent);} .stat-card.blue .stat-value{color:var(--accent2);} .stat-card.green .stat-value{color:var(--success);} .stat-card.red .stat-value{color:var(--danger);}
+  .stat-change{font-size:12px;color:var(--muted);margin-top:4px;}
 
-  /* SECTIONS */
-  .section { display: none; }
-  .section.active { display: block; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
-
-  /* TABLES */
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; padding: 10px 14px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  td { padding: 12px 14px; border-bottom: 1px solid rgba(42,42,58,0.5); vertical-align: middle; }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-
-  .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-  .tag-available { background: rgba(74,222,128,0.1); color: var(--success); }
-  .tag-rented { background: rgba(71,198,255,0.1); color: var(--accent2); }
-  .tag-maintenance { background: rgba(251,191,36,0.1); color: var(--warning); }
-  .tag-deleted { background: rgba(248,113,113,0.1); color: var(--danger); }
-  .tag-vip { background: rgba(201,168,76,0.15); color: var(--accent); }
-  .tag-active { background: rgba(74,222,128,0.1); color: var(--success); }
-  .tag-paid { background: rgba(201,168,76,0.15); color: var(--accent); }
-  .tag-pending { background: rgba(251,191,36,0.1); color: var(--warning); }
-  .tag-pending_verification { background: rgba(71,198,255,0.1); color: var(--accent2); }
-  .tag-confirmed { background: rgba(74,222,128,0.1); color: var(--success); }
-  .tag-cancelled { background: rgba(248,113,113,0.1); color: var(--danger); }
-  .tag-extended { background: rgba(71,198,255,0.1); color: var(--accent2); }
-  .tag-early { background: rgba(251,191,36,0.1); color: var(--warning); }
-  .tag-completed { background: rgba(74,222,128,0.08); color: var(--success); }
+  /* CARDS + TABLES */
+  .section{display:none;} .section.active{display:block;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+  .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;}
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;padding:10px 14px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:12px 14px;border-bottom:1px solid rgba(42,42,58,.5);vertical-align:middle;}
+  tr:hover td{background:rgba(255,255,255,.02);}
+  .tag{display:inline-flex;align-items:center;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+  .tag-available,.tag-active,.tag-confirmed{background:rgba(74,222,128,.1);color:var(--success);}
+  .tag-rented,.tag-extended,.tag-pending_verification{background:rgba(71,198,255,.1);color:var(--accent2);}
+  .tag-maintenance,.tag-pending{background:rgba(251,191,36,.1);color:var(--warning);}
+  .tag-deleted,.tag-cancelled{background:rgba(248,113,113,.1);color:var(--danger);}
+  .tag-vip,.tag-paid{background:rgba(201,168,76,.15);color:var(--accent);}
+  .tag-completed{background:rgba(74,222,128,.08);color:var(--success);}
 
   /* FORMS */
-  .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-group.full { grid-column: 1 / -1; }
-  label { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-  input, select, textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; transition: border-color 0.2s; width: 100%; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-  input::placeholder, textarea::placeholder { color: var(--muted); }
-  textarea { resize: vertical; min-height: 80px; }
-  select option { background: var(--surface2); }
-  .file-upload { border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; color: var(--muted); font-size: 13px; transition: all 0.2s; }
-  .file-upload:hover { border-color: var(--accent); color: var(--accent); background: rgba(201,168,76,0.03); }
+  .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-group.full{grid-column:1/-1;}
+  label{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.5px;}
+  input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;transition:border-color .2s;width:100%;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);}
+  input::placeholder,textarea::placeholder{color:var(--muted);}
+  textarea{resize:vertical;min-height:80px;} select option{background:var(--surface2);}
+
+  /* PHOTO UPLOAD */
+  .photo-upload-zone{border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;}
+  .photo-upload-zone:hover,.photo-upload-zone.drag-over{border-color:var(--accent);background:rgba(201,168,76,.03);}
+  .photo-upload-zone input[type=file]{display:none;}
+  .photo-upload-icon{font-size:32px;margin-bottom:8px;}
+  .photo-upload-text{font-size:13px;color:var(--muted);}
+  .photo-upload-text span{color:var(--accent);font-weight:600;}
+  .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:12px;}
+  .photo-thumb{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1;border:1px solid var(--border);}
+  .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-del{position:absolute;top:4px;right:4px;background:rgba(248,113,113,.85);border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;}
+  .photo-del:hover{background:var(--danger);}
+  .car-thumb-img{width:48px;height:36px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
 
   /* MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); padding: 16px; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; }
-  .modal-header { padding: 24px 28px 0; display: flex; align-items: center; justify-content: space-between; }
-  .modal-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
-  .modal-body { padding: 24px 28px; }
-  .modal-footer { padding: 0 28px 24px; display: flex; gap: 12px; justify-content: flex-end; }
-  .close-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .close-btn:hover { color: var(--text); border-color: var(--muted); }
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;}
+  .modal-header{padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between;}
+  .modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;}
+  .modal-body{padding:24px 28px;} .modal-footer{padding:0 28px 24px;display:flex;gap:12px;justify-content:flex-end;}
+  .close-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .close-btn:hover{color:var(--text);}
 
   /* CALENDAR */
-  .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .cal-nav { display: flex; gap: 8px; }
-  .cal-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-  .cal-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-  .cal-day-header { text-align: center; padding: 8px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-  .cal-day { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px; min-height: 80px; position: relative; cursor: pointer; transition: all 0.2s; }
-  .cal-day:hover { border-color: var(--accent); }
-  .cal-day.today { border-color: var(--accent); }
-  .cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
-  .cal-day-num { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
-  .cal-day.today .cal-day-num { color: var(--accent); }
-  .cal-booking { font-size: 10px; background: rgba(71,198,255,0.15); color: var(--accent2); padding: 2px 5px; border-radius: 3px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cal-booking.returning { background: rgba(74,222,128,0.15); color: var(--success); }
-  .cal-booking.starting { background: rgba(201,168,76,0.15); color: var(--accent); }
+  .calendar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .cal-nav{display:flex;gap:8px;}
+  .cal-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;}
+  .cal-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cal-day-header{text-align:center;padding:8px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+  .cal-day{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;min-height:80px;cursor:pointer;transition:all .2s;}
+  .cal-day:hover{border-color:var(--accent);} .cal-day.today{border-color:var(--accent);} .cal-day.empty{background:transparent;border-color:transparent;cursor:default;}
+  .cal-day-num{font-size:12px;font-weight:600;margin-bottom:4px;} .cal-day.today .cal-day-num{color:var(--accent);}
+  .cal-booking{font-size:10px;background:rgba(71,198,255,.15);color:var(--accent2);padding:2px 5px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cal-booking.returning{background:rgba(74,222,128,.15);color:var(--success);} .cal-booking.starting{background:rgba(201,168,76,.15);color:var(--accent);}
 
-  /* TABS */
-  .tabs { display: flex; gap: 4px; background: var(--surface2); border-radius: 8px; padding: 4px; margin-bottom: 20px; }
-  .tab { padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; color: var(--muted); font-weight: 500; transition: all 0.2s; }
-  .tab.active { background: var(--surface); color: var(--text); }
+  .tabs{display:flex;gap:4px;background:var(--surface2);border-radius:8px;padding:4px;margin-bottom:20px;}
+  .tab{padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;color:var(--muted);font-weight:500;transition:all .2s;}
+  .tab.active{background:var(--surface);color:var(--text);}
+  .search-bar{position:relative;} .search-bar input{padding-left:36px;}
+  .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;}
 
-  /* SEARCH */
-  .search-bar { position: relative; }
-  .search-bar input { padding-left: 36px; }
-  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
-
-  /* GRID */
-  .cars-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .car-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: all 0.2s; }
-  .car-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-2px); }
-  .car-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-  .car-brand { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; }
-  .car-model-text { font-size: 13px; color: var(--muted); }
-  .car-plate { font-family: 'Syne', sans-serif; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; font-size: 13px; letter-spacing: 1px; display: inline-block; margin-top: 4px; }
-  .car-specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px; }
-  .spec-item { font-size: 12px; color: var(--muted); }
-  .spec-item span { color: var(--text); font-weight: 500; }
-  .car-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  /* CAR CARDS */
+  .cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .car-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .2s;}
+  .car-card:hover{border-color:rgba(201,168,76,.35);transform:translateY(-2px);}
+  .car-card-img{width:100%;height:160px;object-fit:cover;display:block;}
+  .car-card-img-empty{width:100%;height:160px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:40px;color:var(--border);}
+  .car-card-body{padding:16px;}
+  .car-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .car-brand-text{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;}
+  .car-model-sub{font-size:13px;color:var(--muted);}
+  .car-plate{font-family:'Syne',sans-serif;font-weight:700;background:var(--surface2);border:1px solid var(--border);padding:4px 10px;border-radius:6px;font-size:13px;letter-spacing:1px;display:inline-block;margin-top:4px;}
+  .car-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px;}
+  .spec-item{font-size:12px;color:var(--muted);} .spec-item span{color:var(--text);font-weight:500;}
+  .car-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
 
   /* ADJUSTMENTS */
-  .adjustment-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .adj-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; }
-  .adj-card:hover { transform: translateY(-3px); }
-  .adj-card.early:hover { border-color: var(--warning); }
-  .adj-card.extend:hover { border-color: var(--accent2); }
-  .adj-card.cancel:hover { border-color: var(--danger); }
-  .adj-icon { font-size: 36px; margin-bottom: 12px; }
-  .adj-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
-  .adj-desc { font-size: 13px; color: var(--muted); }
+  .adjustment-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .adj-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;}
+  .adj-card:hover{transform:translateY(-3px);}
+  .adj-card.early:hover{border-color:var(--warning);} .adj-card.extend:hover{border-color:var(--accent2);} .adj-card.cancel:hover{border-color:var(--danger);}
+  .adj-icon{font-size:36px;margin-bottom:12px;} .adj-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;margin-bottom:6px;} .adj-desc{font-size:13px;color:var(--muted);}
 
-  /* LOADING */
-  .loading-row td { text-align: center; padding: 32px; color: var(--muted); }
-  .spin { display: inline-block; animation: spin 1s linear infinite; }
-  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  /* ADMIN USERS */
+  .role-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase;}
+  .role-superadmin{background:rgba(201,168,76,.15);color:var(--accent);border:1px solid rgba(201,168,76,.3);}
+  .role-admin{background:rgba(71,198,255,.12);color:var(--accent2);border:1px solid rgba(71,198,255,.25);}
+  .role-viewer{background:rgba(107,107,136,.15);color:var(--muted);border:1px solid var(--border);}
 
-  /* TOAST */
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; font-size: 13px; z-index: 9999; display: none; align-items: center; gap: 10px; max-width: 360px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-  .toast.show { display: flex; animation: slideIn 0.3s ease; }
-  .toast.success { border-color: rgba(74,222,128,0.4); }
-  .toast.error { border-color: rgba(248,113,113,0.4); }
-  @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-  hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--surface); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-  @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 900px) { .sidebar { transform: translateX(-100%); } .main { margin-left: 0; } .form-grid { grid-template-columns: 1fr; } .adjustment-cards { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2,1fr); } }
+  .loading-row td{text-align:center;padding:32px;color:var(--muted);}
+  .spin{display:inline-block;animation:spin 1s linear infinite;}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:13px;z-index:9999;display:none;align-items:center;gap:10px;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+  .toast.show{display:flex;animation:slideIn .3s ease;}
+  .toast.success{border-color:rgba(74,222,128,.4);} .toast.error{border-color:rgba(248,113,113,.4);} .toast.info{border-color:rgba(71,198,255,.4);}
+  @keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+  hr.divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+  ::-webkit-scrollbar{width:6px;height:6px;} ::-webkit-scrollbar-track{background:var(--surface);} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  @media(max-width:1200px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:900px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.form-grid{grid-template-columns:1fr}.adjustment-cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<div class="app">
-  <!-- SIDEBAR -->
+<!-- ===== LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">&#9889;</div>
+      <div class="login-logo-name">MIC ELECTRIC<br>CAR</div>
+    </div>
+    <div class="login-sub">Management Portal</div>
+    <div class="login-title">Admin Sign In</div>
+    <div class="login-desc">micelectriccar.com/admin</div>
+    <div class="login-field"><label>Username</label><input type="text" id="login-user" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="login-field"><label>Password</label><input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">Sign In &#8594;</button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-footer">MIC Electric Car &middot; Secured Portal &middot; v2.0<br><small style="opacity:.6;">Default: admin / admin123 (change after first login)</small></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div class="app" id="app-shell" style="display:none;">
   <aside class="sidebar">
     <div class="logo">
       <div class="logo-mark">
-        <div class="logo-icon">⚡</div>
+        <div class="logo-icon">&#9889;</div>
         <div class="logo-name">MIC ELECTRIC<br>CAR</div>
       </div>
       <div class="logo-sub">Management Portal</div>
@@ -226,75 +226,48 @@
     </div>
     <nav class="nav">
       <div class="nav-section">Overview</div>
-      <div class="nav-item active" onclick="showSection('dashboard',this)">
-        <span class="nav-icon">⊞</span> Dashboard
-      </div>
+      <div class="nav-item active" onclick="showSection('dashboard',this)"><span class="nav-icon">&#8862;</span> Dashboard</div>
       <div class="nav-section">Fleet</div>
-      <div class="nav-item" onclick="showSection('cars',this)">
-        <span class="nav-icon">🚗</span> Cars
-        <span class="badge" id="cars-count">—</span>
-      </div>
-      <div class="nav-item" onclick="showSection('packages',this)">
-        <span class="nav-icon">📦</span> Packages
-      </div>
+      <div class="nav-item" onclick="showSection('cars',this)"><span class="nav-icon">&#128663;</span> Cars <span class="badge" id="cars-count">0</span></div>
+      <div class="nav-item" onclick="showSection('packages',this)"><span class="nav-icon">&#128230;</span> Packages</div>
       <div class="nav-section">Customers</div>
-      <div class="nav-item" onclick="showSection('customers',this)">
-        <span class="nav-icon">👤</span> Customers
-      </div>
+      <div class="nav-item" onclick="showSection('customers',this)"><span class="nav-icon">&#128100;</span> Customers</div>
       <div class="nav-section">Bookings</div>
-      <div class="nav-item" onclick="showSection('bookings',this)">
-        <span class="nav-icon">📋</span> Booking List
-        <span class="badge" id="bookings-count">—</span>
-      </div>
-      <div class="nav-item" onclick="showSection('calendar',this)">
-        <span class="nav-icon">📅</span> Calendar
-      </div>
-      <div class="nav-item" onclick="showSection('adjustments',this)">
-        <span class="nav-icon">⚙️</span> Adjustments
-      </div>
+      <div class="nav-item" onclick="showSection('bookings',this)"><span class="nav-icon">&#128203;</span> Booking List <span class="badge" id="bookings-count">0</span></div>
+      <div class="nav-item" onclick="showSection('calendar',this)"><span class="nav-icon">&#128197;</span> Calendar</div>
+      <div class="nav-item" onclick="showSection('adjustments',this)"><span class="nav-icon">&#9881;</span> Adjustments</div>
+      <div class="nav-section" id="nav-admin-section" style="display:none;">System</div>
+      <div class="nav-item" id="nav-admin-item" style="display:none;" onclick="showSection('admin-users',this)"><span class="nav-icon">&#128737;</span> Admin Users</div>
     </nav>
     <div class="sidebar-footer">
-      <div class="sb-status">
-        <div class="sb-dot" id="sb-dot"></div>
-        <span id="sb-status-text" style="color:var(--muted);font-size:11px;">Connecting to Supabase…</span>
+      <div class="sb-user">
+        <div class="sb-avatar" id="sb-avatar">A</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name" id="sb-username">Admin</div>
+          <div class="sb-user-role" id="sb-userrole">admin</div>
+        </div>
       </div>
+      <button class="sb-logout-btn" onclick="doLogout()">Sign Out</button>
+      <div class="sb-status"><div class="sb-dot" id="sb-dot"></div><span id="sb-status-text" style="color:var(--muted);font-size:11px;">Connecting&#8230;</span></div>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
-
     <!-- DASHBOARD -->
     <div id="section-dashboard" class="section active">
       <div class="topbar">
-        <div>
-          <div class="page-title">Dashboard</div>
-          <div class="page-sub">Fleet overview — MIC Electric Car</div>
-        </div>
-        <div class="topbar-actions">
-          <button class="btn btn-primary" onclick="openModal('modal-add-booking')">+ New Booking</button>
-        </div>
+        <div><div class="page-title">Dashboard</div><div class="page-sub">Fleet overview &#8212; MIC Electric Car</div></div>
+        <div class="topbar-actions"><button class="btn btn-primary" onclick="openModal('modal-add-booking')">+ New Booking</button></div>
       </div>
       <div class="stats-grid">
-        <div class="stat-card gold"><div class="stat-label">Total Cars</div><div class="stat-value" id="stat-total-cars">—</div><div class="stat-change">in fleet</div></div>
-        <div class="stat-card blue"><div class="stat-label">Active Rentals</div><div class="stat-value" id="stat-active-rentals">—</div><div class="stat-change">currently rented</div></div>
-        <div class="stat-card green"><div class="stat-label">Available</div><div class="stat-value" id="stat-available">—</div><div class="stat-change">ready to rent</div></div>
-        <div class="stat-card red"><div class="stat-label">Total Bookings</div><div class="stat-value" id="stat-customers">—</div><div class="stat-change">all time</div></div>
+        <div class="stat-card gold"><div class="stat-label">Total Cars</div><div class="stat-value" id="stat-total-cars">&#8212;</div><div class="stat-change">in fleet</div></div>
+        <div class="stat-card blue"><div class="stat-label">Active Rentals</div><div class="stat-value" id="stat-active-rentals">&#8212;</div><div class="stat-change">currently rented</div></div>
+        <div class="stat-card green"><div class="stat-label">Available</div><div class="stat-value" id="stat-available">&#8212;</div><div class="stat-change">ready to rent</div></div>
+        <div class="stat-card red"><div class="stat-label">Total Bookings</div><div class="stat-value" id="stat-customers">&#8212;</div><div class="stat-change">all time</div></div>
       </div>
       <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
-        <div class="card">
-          <div class="card-header"><div class="card-title">Recent Bookings</div></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Ref</th><th>Customer</th><th>Car</th><th>Period</th><th>Status</th></tr></thead>
-              <tbody id="recent-bookings-tbody"><tr class="loading-row"><td colspan="5"><span class="spin">⟳</span> Loading…</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">Fleet Status</div></div>
-          <div id="fleet-status-list" style="display:flex;flex-direction:column;gap:12px;"></div>
-        </div>
+        <div class="card"><div class="card-header"><div class="card-title">Recent Bookings</div></div><div class="table-wrap"><table><thead><tr><th>Ref</th><th>Customer</th><th>Car</th><th>Period</th><th>Status</th></tr></thead><tbody id="recent-bookings-tbody"><tr class="loading-row"><td colspan="5"><span class="spin">&#10227;</span> Loading&#8230;</td></tr></tbody></table></div></div>
+        <div class="card"><div class="card-header"><div class="card-title">Fleet Status</div></div><div id="fleet-status-list" style="display:flex;flex-direction:column;gap:12px;"></div></div>
       </div>
     </div>
 
@@ -302,107 +275,39 @@
     <div id="section-cars" class="section">
       <div class="topbar">
         <div><div class="page-title">Car Fleet</div><div class="page-sub">Manage your EV vehicles</div></div>
-        <div class="topbar-actions">
-          <div class="search-bar"><span class="search-icon">🔍</span><input type="text" placeholder="Search cars…" oninput="filterCars(this.value)"></div>
-          <button class="btn btn-primary" onclick="openModal('modal-add-car')">+ Add Car</button>
-        </div>
+        <div class="topbar-actions"><div class="search-bar"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search cars&#8230;" oninput="filterCars(this.value)"></div><button class="btn btn-primary" onclick="openModal('modal-add-car')">+ Add Car</button></div>
       </div>
-      <div class="tabs">
-        <div class="tab active" onclick="setCarsView('grid', this)">⊞ Grid</div>
-        <div class="tab" onclick="setCarsView('list', this)">☰ List</div>
-      </div>
+      <div class="tabs"><div class="tab active" onclick="setCarsView('grid',this)">&#8862; Grid</div><div class="tab" onclick="setCarsView('list',this)">&#9776; List</div></div>
       <div id="cars-grid-view" class="cars-grid"></div>
-      <div id="cars-list-view" style="display:none;">
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Plate</th><th>Brand / Model</th><th>Color</th><th>HP</th><th>Drive</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="cars-list-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <div id="cars-list-view" style="display:none;"><div class="card"><div class="table-wrap"><table><thead><tr><th>Photo</th><th>Plate</th><th>Brand / Model</th><th>Color</th><th>HP</th><th>Price/Day</th><th>Status</th><th>Actions</th></tr></thead><tbody id="cars-list-tbody"></tbody></table></div></div></div>
     </div>
 
     <!-- PACKAGES -->
     <div id="section-packages" class="section">
-      <div class="topbar">
-        <div><div class="page-title">Rental Packages</div><div class="page-sub">Define pricing &amp; link to cars</div></div>
-        <div class="topbar-actions">
-          <button class="btn btn-primary" onclick="openModal('modal-add-package')">+ Add Package</button>
-        </div>
-      </div>
+      <div class="topbar"><div><div class="page-title">Rental Packages</div><div class="page-sub">Define pricing &amp; link to cars</div></div><div class="topbar-actions"><button class="btn btn-primary" onclick="openModal('modal-add-package')">+ Add Package</button></div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="card">
-          <div class="card-header"><div class="card-title">Packages</div></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Code</th><th>Duration</th><th>Price</th><th>Insurance</th><th>Deposit</th><th>Actions</th></tr></thead>
-              <tbody id="packages-tbody"><tr class="loading-row"><td colspan="6"><span class="spin">⟳</span></td></tr></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">Package Binding</div><button class="btn btn-sm btn-primary" onclick="openModal('modal-bind-package')">+ Bind</button></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Package</th><th>Car (Plate)</th><th>Actions</th></tr></thead>
-              <tbody id="bindings-tbody"><tr class="loading-row"><td colspan="3"><span class="spin">⟳</span></td></tr></tbody>
-            </table>
-          </div>
-        </div>
+        <div class="card"><div class="card-header"><div class="card-title">Packages</div></div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Duration</th><th>Price</th><th>Insurance</th><th>Deposit</th><th>Actions</th></tr></thead><tbody id="packages-tbody"><tr class="loading-row"><td colspan="6"><span class="spin">&#10227;</span></td></tr></tbody></table></div></div>
+        <div class="card"><div class="card-header"><div class="card-title">Package Binding</div><button class="btn btn-sm btn-primary" onclick="openModal('modal-bind-package')">+ Bind</button></div><div class="table-wrap"><table><thead><tr><th>Package</th><th>Car</th><th>Actions</th></tr></thead><tbody id="bindings-tbody"><tr class="loading-row"><td colspan="3"><span class="spin">&#10227;</span></td></tr></tbody></table></div></div>
       </div>
     </div>
 
     <!-- CUSTOMERS -->
     <div id="section-customers" class="section">
-      <div class="topbar">
-        <div><div class="page-title">Customers</div><div class="page-sub">Registered customer base</div></div>
-        <div class="topbar-actions">
-          <div class="search-bar"><span class="search-icon">🔍</span><input type="text" placeholder="Search customers…" oninput="filterCustomers(this.value)"></div>
-          <button class="btn btn-primary" onclick="openModal('modal-add-customer')">+ Add Customer</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Name</th><th>ID Card</th><th>Mobile</th><th>Email</th><th>License</th><th>VIP</th><th>Actions</th></tr></thead>
-            <tbody id="customers-tbody"><tr class="loading-row"><td colspan="7"><span class="spin">⟳</span> Loading…</td></tr></tbody>
-          </table>
-        </div>
-      </div>
+      <div class="topbar"><div><div class="page-title">Customers</div><div class="page-sub">Registered customer base</div></div><div class="topbar-actions"><div class="search-bar"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search&#8230;" oninput="filterCustomers(this.value)"></div><button class="btn btn-primary" onclick="openModal('modal-add-customer')">+ Add Customer</button></div></div>
+      <div class="card"><div class="table-wrap"><table><thead><tr><th>Name</th><th>ID Card</th><th>Mobile</th><th>Email</th><th>License</th><th>VIP</th><th>Actions</th></tr></thead><tbody id="customers-tbody"><tr class="loading-row"><td colspan="7"><span class="spin">&#10227;</span></td></tr></tbody></table></div></div>
     </div>
 
     <!-- BOOKINGS -->
     <div id="section-bookings" class="section">
-      <div class="topbar">
-        <div><div class="page-title">Booking List</div><div class="page-sub">All reservations from web & admin</div></div>
-        <div class="topbar-actions">
-          <button class="btn btn-primary" onclick="openModal('modal-add-booking')">+ New Booking</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Ref</th><th>Customer</th><th>Car</th><th>Package</th><th>Pickup</th><th>Return</th><th>Total</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="bookings-tbody"><tr class="loading-row"><td colspan="10"><span class="spin">⟳</span> Loading…</td></tr></tbody>
-          </table>
-        </div>
-      </div>
+      <div class="topbar"><div><div class="page-title">Booking List</div><div class="page-sub">All reservations</div></div><div class="topbar-actions"><button class="btn btn-primary" onclick="openModal('modal-add-booking')">+ New Booking</button></div></div>
+      <div class="card"><div class="table-wrap"><table><thead><tr><th>Ref</th><th>Customer</th><th>Car</th><th>Package</th><th>Pickup</th><th>Return</th><th>Total</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="bookings-tbody"><tr class="loading-row"><td colspan="10"><span class="spin">&#10227;</span></td></tr></tbody></table></div></div>
     </div>
 
     <!-- CALENDAR -->
     <div id="section-calendar" class="section">
       <div class="topbar"><div><div class="page-title">Calendar View</div><div class="page-sub">Booking overview by month</div></div></div>
       <div class="card">
-        <div class="calendar-header">
-          <div class="cal-nav">
-            <button class="cal-btn" onclick="changeMonth(-1)">←</button>
-            <button class="cal-btn" onclick="changeMonth(1)">→</button>
-          </div>
-          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;" id="cal-month-label"></div>
-          <button class="cal-btn" onclick="goToday()">Today</button>
-        </div>
+        <div class="calendar-header"><div class="cal-nav"><button class="cal-btn" onclick="changeMonth(-1)">&#8592;</button><button class="cal-btn" onclick="changeMonth(1)">&#8594;</button></div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;" id="cal-month-label"></div><button class="cal-btn" onclick="goToday()">Today</button></div>
         <div class="calendar-grid" id="calendar-days-header"></div>
         <div class="calendar-grid" id="calendar-days" style="margin-top:4px;"></div>
       </div>
@@ -412,73 +317,55 @@
     <div id="section-adjustments" class="section">
       <div class="topbar"><div><div class="page-title">Booking Adjustments</div><div class="page-sub">Modify existing reservations</div></div></div>
       <div class="adjustment-cards">
-        <div class="adj-card early" onclick="openAdjustmentModal('early')">
-          <div class="adj-icon">⏪</div>
-          <div class="adj-title">Early Return</div>
-          <div class="adj-desc">Customer returns car before the end date</div>
-        </div>
-        <div class="adj-card extend" onclick="openAdjustmentModal('extend')">
-          <div class="adj-icon">⏩</div>
-          <div class="adj-title">Extend Rental</div>
-          <div class="adj-desc">Extend the rental period with new pricing</div>
-        </div>
-        <div class="adj-card cancel" onclick="openAdjustmentModal('cancel')">
-          <div class="adj-icon">✖</div>
-          <div class="adj-title">Cancel Booking</div>
-          <div class="adj-desc">Cancel a booking and mark car available</div>
-        </div>
+        <div class="adj-card early" onclick="openAdjustmentModal('early')"><div class="adj-icon">&#9194;</div><div class="adj-title">Early Return</div><div class="adj-desc">Customer returns car before the end date</div></div>
+        <div class="adj-card extend" onclick="openAdjustmentModal('extend')"><div class="adj-icon">&#9193;</div><div class="adj-title">Extend Rental</div><div class="adj-desc">Extend the rental period with new pricing</div></div>
+        <div class="adj-card cancel" onclick="openAdjustmentModal('cancel')"><div class="adj-icon">&#10006;</div><div class="adj-title">Cancel Booking</div><div class="adj-desc">Cancel a booking and mark car available</div></div>
       </div>
-      <div class="card" style="margin-top:24px;">
-        <div class="card-header"><div class="card-title">Recent Adjustments</div></div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Booking Ref</th><th>Customer</th><th>Car</th><th>Type</th><th>Date</th><th>Note</th></tr></thead>
-            <tbody id="adjustments-tbody"><tr class="loading-row"><td colspan="6"><span class="spin">⟳</span></td></tr></tbody>
-          </table>
-        </div>
-      </div>
+      <div class="card" style="margin-top:24px;"><div class="card-header"><div class="card-title">Recent Adjustments</div></div><div class="table-wrap"><table><thead><tr><th>Booking Ref</th><th>Customer</th><th>Car</th><th>Type</th><th>Date</th><th>Note</th></tr></thead><tbody id="adjustments-tbody"><tr class="loading-row"><td colspan="6"><span class="spin">&#10227;</span></td></tr></tbody></table></div></div>
     </div>
 
+    <!-- ADMIN USERS -->
+    <div id="section-admin-users" class="section">
+      <div class="topbar"><div><div class="page-title">Admin Users</div><div class="page-sub">Manage portal access &amp; permissions</div></div><div class="topbar-actions"><button class="btn btn-primary" onclick="openModal('modal-add-admin')">+ Add Admin User</button></div></div>
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header"><div class="card-title">Role Permissions</div></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-size:13px;">
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;"><div class="role-badge role-superadmin" style="margin-bottom:10px;">&#11088; Super Admin</div><div style="color:var(--muted);line-height:1.8;font-size:12px;">&#10003; All features<br>&#10003; Add/remove admins<br>&#10003; Delete any data<br>&#10003; Change roles</div></div>
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;"><div class="role-badge role-admin" style="margin-bottom:10px;">&#128273; Admin</div><div style="color:var(--muted);line-height:1.8;font-size:12px;">&#10003; Manage cars &amp; fleet<br>&#10003; Manage bookings<br>&#10003; Manage customers<br>&#10007; Cannot manage admins</div></div>
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;"><div class="role-badge role-viewer" style="margin-bottom:10px;">&#128065; Viewer</div><div style="color:var(--muted);line-height:1.8;font-size:12px;">&#10003; View dashboard<br>&#10003; View bookings<br>&#10007; Cannot edit data<br>&#10007; Cannot manage admins</div></div>
+        </div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">Portal Users</div></div><div class="table-wrap"><table><thead><tr><th>Username</th><th>Display Name</th><th>Role</th><th>Last Login</th><th>Created</th><th>Actions</th></tr></thead><tbody id="admin-users-tbody"><tr class="loading-row"><td colspan="6"><span class="spin">&#10227;</span></td></tr></tbody></table></div></div>
+    </div>
   </main>
 </div>
 
-<!-- ========== MODALS ========== -->
+<!-- ===== MODALS ===== -->
 
-<!-- ADD CAR -->
+<!-- ADD CAR + PHOTO UPLOAD -->
 <div class="modal-overlay" id="modal-add-car">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Add New Car</div>
-      <button class="close-btn" onclick="closeModal('modal-add-car')">✕</button>
-    </div>
+    <div class="modal-header"><div class="modal-title">Add New Car</div><button class="close-btn" onclick="closeModal('modal-add-car')">&#10005;</button></div>
     <div class="modal-body">
+      <div class="form-group full" style="margin-bottom:20px;">
+        <label>Car Photos (up to 5, max 3MB each)</label>
+        <div class="photo-upload-zone" id="car-drop-zone" onclick="document.getElementById('car-photos-inp').click()" ondragover="handleDragOver(event,'car-drop-zone')" ondragleave="handleDragLeave(event,'car-drop-zone')" ondrop="handleDrop(event,'car-photos-inp','car-drop-zone')">
+          <input type="file" id="car-photos-inp" multiple accept="image/*" onchange="handlePhotoSelect(this,'car-photo-grid','car-photo-data')">
+          <div class="photo-upload-icon">&#128247;</div>
+          <div class="photo-upload-text">Click or <span>drag &amp; drop photos here</span></div>
+        </div>
+        <div class="photo-grid" id="car-photo-grid"></div>
+      </div>
+      <input type="hidden" id="car-photo-data" value="[]">
+      <hr class="divider">
       <div class="form-grid">
         <div class="form-group"><label>Brand</label><input id="car-brand" type="text" placeholder="e.g. Tesla"></div>
         <div class="form-group"><label>Model</label><input id="car-model-inp" type="text" placeholder="e.g. Model 3"></div>
         <div class="form-group"><label>License Plate</label><input id="car-plate" type="text" placeholder="e.g. กข 1234"></div>
-        <div class="form-group"><label>Category</label>
-          <select id="car-cat">
-            <option value="type_eco">Eco Car</option>
-            <option value="type_sedan">Sedan</option>
-            <option value="type_lux">Luxury</option>
-            <option value="SUV">SUV</option>
-            <option value="Sports">Sports</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Status</label>
-          <select id="car-status">
-            <option value="available">Available</option>
-            <option value="maintenance">Maintenance</option>
-          </select>
-        </div>
+        <div class="form-group"><label>Category</label><select id="car-cat"><option value="type_eco">Eco Car</option><option value="type_sedan">Sedan</option><option value="type_lux">Luxury</option><option value="SUV">SUV</option><option value="Sports">Sports</option></select></div>
+        <div class="form-group"><label>Status</label><select id="car-status"><option value="available">Available</option><option value="maintenance">Maintenance</option></select></div>
         <div class="form-group"><label>Price / Day (THB)</label><input id="car-price" type="number" placeholder="e.g. 2500"></div>
-        <div class="form-group"><label>Drive Type</label>
-          <select id="car-dtype">
-            <option value="RWD">Rear Wheel Drive (RWD)</option>
-            <option value="FWD">Front Wheel Drive (FWD)</option>
-            <option value="AWD">All Wheel Drive (AWD)</option>
-          </select>
-        </div>
+        <div class="form-group"><label>Drive Type</label><select id="car-dtype"><option value="RWD">RWD</option><option value="FWD">FWD</option><option value="AWD">AWD</option></select></div>
         <div class="form-group"><label>HP</label><input id="car-hp" type="number" placeholder="e.g. 350"></div>
         <div class="form-group"><label>Torque (Nm)</label><input id="car-torque" type="number" placeholder="e.g. 420"></div>
         <div class="form-group"><label>Range (km)</label><input id="car-range" type="number" placeholder="e.g. 500"></div>
@@ -486,861 +373,484 @@
         <div class="form-group"><label>DC Charging</label><input id="car-dc" type="text" placeholder="e.g. 150kW DC"></div>
         <div class="form-group"><label>Exterior Color</label><input id="car-color" type="text" placeholder="e.g. Pearl White"></div>
         <div class="form-group"><label>Interior Color</label><input id="car-interior" type="text" placeholder="e.g. Black"></div>
-        <div class="form-group"><label>Image URL</label><input id="car-img" type="text" placeholder="https://..."></div>
+        <div class="form-group"><label>Image URL (fallback if no upload)</label><input id="car-img" type="text" placeholder="https://&#8230;"></div>
+        <div class="form-group"><label>Features (comma-separated)</label><input id="car-features" type="text" placeholder="5 Seats, A/C, Autopilot"></div>
       </div>
       <hr class="divider">
-      <div class="form-group">
-        <label>Features (comma-separated)</label>
-        <input id="car-features" type="text" placeholder="e.g. 5 Seats,A/C,Autopilot">
-      </div>
-      <div class="form-group" style="margin-top:12px;">
-        <label>Condition Notes</label>
-        <textarea id="car-condition" placeholder="Existing scratches, dents..."></textarea>
-      </div>
+      <div class="form-group"><label>Condition Notes</label><textarea id="car-condition" placeholder="Existing scratches, dents&#8230;"></textarea></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-add-car')">Cancel</button>
-      <button class="btn btn-primary" onclick="addCar()">Add Car</button>
-    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-car')">Cancel</button><button class="btn btn-primary" onclick="addCar()">Add Car</button></div>
   </div>
 </div>
 
 <!-- ADD PACKAGE -->
 <div class="modal-overlay" id="modal-add-package">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Add Rental Package</div>
-      <button class="close-btn" onclick="closeModal('modal-add-package')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group"><label>Package Code</label><input id="pkg-code" type="text" placeholder="e.g. PKG-3DAY"></div>
-        <div class="form-group"><label>Duration Type</label>
-          <select id="pkg-duration">
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="custom">Custom</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Price (THB)</label><input id="pkg-price" type="number" placeholder="e.g. 3000"></div>
-        <div class="form-group"><label>Deposit (THB)</label><input id="pkg-deposit" type="number" placeholder="e.g. 5000"></div>
-        <div class="form-group"><label>Insurance (THB/day, 0=none)</label><input id="pkg-insurance" type="number" placeholder="e.g. 300" value="0"></div>
-        <div class="form-group"><label>Description</label><input id="pkg-desc" type="text" placeholder="Short description"></div>
-        <div class="form-group"><label>Pickup Time</label><input id="pkg-pickup" type="time" value="09:00"></div>
-        <div class="form-group"><label>Return Time</label><input id="pkg-return" type="time" value="18:00"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-add-package')">Cancel</button>
-      <button class="btn btn-primary" onclick="addPackage()">Add Package</button>
-    </div>
+  <div class="modal"><div class="modal-header"><div class="modal-title">Add Rental Package</div><button class="close-btn" onclick="closeModal('modal-add-package')">&#10005;</button></div>
+  <div class="modal-body"><div class="form-grid">
+    <div class="form-group"><label>Package Code</label><input id="pkg-code" type="text" placeholder="e.g. PKG-3DAY"></div>
+    <div class="form-group"><label>Duration Type</label><select id="pkg-duration"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="custom">Custom</option></select></div>
+    <div class="form-group"><label>Price (THB)</label><input id="pkg-price" type="number" placeholder="e.g. 3000"></div>
+    <div class="form-group"><label>Deposit (THB)</label><input id="pkg-deposit" type="number" placeholder="e.g. 5000"></div>
+    <div class="form-group"><label>Insurance (THB/day)</label><input id="pkg-insurance" type="number" placeholder="0" value="0"></div>
+    <div class="form-group"><label>Description</label><input id="pkg-desc" type="text" placeholder="Short description"></div>
+    <div class="form-group"><label>Pickup Time</label><input id="pkg-pickup" type="time" value="09:00"></div>
+    <div class="form-group"><label>Return Time</label><input id="pkg-return" type="time" value="18:00"></div>
+  </div></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-package')">Cancel</button><button class="btn btn-primary" onclick="addPackage()">Add Package</button></div>
   </div>
 </div>
 
 <!-- BIND PACKAGE -->
 <div class="modal-overlay" id="modal-bind-package">
-  <div class="modal" style="max-width:480px;">
-    <div class="modal-header">
-      <div class="modal-title">Bind Package to Car</div>
-      <button class="close-btn" onclick="closeModal('modal-bind-package')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group"><label>Package</label><select id="bind-pkg"></select></div>
-        <div class="form-group"><label>Car</label><select id="bind-car"></select></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-bind-package')">Cancel</button>
-      <button class="btn btn-primary" onclick="bindPackage()">Bind</button>
-    </div>
+  <div class="modal" style="max-width:480px;"><div class="modal-header"><div class="modal-title">Bind Package to Car</div><button class="close-btn" onclick="closeModal('modal-bind-package')">&#10005;</button></div>
+  <div class="modal-body"><div class="form-grid"><div class="form-group"><label>Package</label><select id="bind-pkg"></select></div><div class="form-group"><label>Car</label><select id="bind-car"></select></div></div></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-bind-package')">Cancel</button><button class="btn btn-primary" onclick="bindPackage()">Bind</button></div>
   </div>
 </div>
 
 <!-- ADD CUSTOMER -->
 <div class="modal-overlay" id="modal-add-customer">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Add Customer</div>
-      <button class="close-btn" onclick="closeModal('modal-add-customer')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group"><label>First Name</label><input id="cust-name" type="text" placeholder="First name"></div>
-        <div class="form-group"><label>Surname</label><input id="cust-surname" type="text" placeholder="Last name"></div>
-        <div class="form-group"><label>Nickname</label><input id="cust-nick" type="text" placeholder="Nickname"></div>
-        <div class="form-group"><label>ID Card / Passport</label><input id="cust-id" type="text" placeholder="1-XXXX-XXXXX-XX-X"></div>
-        <div class="form-group"><label>Mobile</label><input id="cust-mobile" type="tel" placeholder="08X-XXX-XXXX"></div>
-        <div class="form-group"><label>Emergency Number</label><input id="cust-emergency" type="tel" placeholder="08X-XXX-XXXX"></div>
-        <div class="form-group"><label>Email</label><input id="cust-email" type="email" placeholder="email@example.com"></div>
-        <div class="form-group"><label>Driving License</label><input id="cust-license" type="text" placeholder="License number"></div>
-        <div class="form-group"><label>VIP Status</label>
-          <select id="cust-vip">
-            <option value="no">Regular</option>
-            <option value="yes">VIP</option>
-          </select>
-        </div>
-        <div class="form-group full"><label>Address</label><textarea id="cust-address" placeholder="Full address…"></textarea></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-add-customer')">Cancel</button>
-      <button class="btn btn-primary" onclick="addCustomer()">Add Customer</button>
-    </div>
+  <div class="modal"><div class="modal-header"><div class="modal-title">Add Customer</div><button class="close-btn" onclick="closeModal('modal-add-customer')">&#10005;</button></div>
+  <div class="modal-body"><div class="form-grid">
+    <div class="form-group"><label>First Name</label><input id="cust-name" type="text" placeholder="First name"></div>
+    <div class="form-group"><label>Surname</label><input id="cust-surname" type="text" placeholder="Last name"></div>
+    <div class="form-group"><label>Nickname</label><input id="cust-nick" type="text" placeholder="Nickname"></div>
+    <div class="form-group"><label>ID Card / Passport</label><input id="cust-id" type="text" placeholder="1-XXXX-XXXXX-XX-X"></div>
+    <div class="form-group"><label>Mobile</label><input id="cust-mobile" type="tel" placeholder="08X-XXX-XXXX"></div>
+    <div class="form-group"><label>Emergency Number</label><input id="cust-emergency" type="tel" placeholder="08X-XXX-XXXX"></div>
+    <div class="form-group"><label>Email</label><input id="cust-email" type="email" placeholder="email@example.com"></div>
+    <div class="form-group"><label>Driving License</label><input id="cust-license" type="text" placeholder="License number"></div>
+    <div class="form-group"><label>VIP Status</label><select id="cust-vip"><option value="no">Regular</option><option value="yes">VIP</option></select></div>
+    <div class="form-group full"><label>Address</label><textarea id="cust-address" placeholder="Full address&#8230;"></textarea></div>
+  </div></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-customer')">Cancel</button><button class="btn btn-primary" onclick="addCustomer()">Add Customer</button></div>
   </div>
 </div>
 
 <!-- ADD BOOKING -->
 <div class="modal-overlay" id="modal-add-booking">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">New Booking</div>
-      <button class="close-btn" onclick="closeModal('modal-add-booking')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group"><label>Customer Name</label><input id="book-cust-name" type="text" placeholder="Full name"></div>
-        <div class="form-group"><label>Customer Phone</label><input id="book-cust-phone" type="tel" placeholder="08X-XXX-XXXX"></div>
-        <div class="form-group"><label>Customer Email</label><input id="book-cust-email" type="email" placeholder="email@example.com"></div>
-        <div class="form-group"><label>ID Card</label><input id="book-cust-id" type="text" placeholder="1-XXXX-XXXXX-XX-X"></div>
-        <div class="form-group"><label>Car</label><select id="book-car"></select></div>
-        <div class="form-group"><label>Package</label><select id="book-package" onchange="updateBookingTotal()"></select></div>
-        <div class="form-group"><label>Pickup Date</label><input id="book-start" type="date" onchange="updateBookingTotal()"></div>
-        <div class="form-group"><label>Return Date</label><input id="book-end" type="date"></div>
-        <div class="form-group"><label>Pickup Location</label><input id="book-pickup-loc" type="text" placeholder="e.g. Suvarnabhumi Airport"></div>
-        <div class="form-group"><label>Payment Method</label>
-          <select id="book-payment">
-            <option value="pay_at_pickup">Pay at Pickup</option>
-            <option value="credit_card">Credit Card</option>
-            <option value="promptpay">PromptPay</option>
-          </select>
-        </div>
-        <div class="form-group full">
-          <label>Estimated Total</label>
-          <div id="booking-total-display" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent);padding:10px 0;">— THB</div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-add-booking')">Cancel</button>
-      <button class="btn btn-primary" onclick="addBooking()">Confirm Booking</button>
-    </div>
+  <div class="modal"><div class="modal-header"><div class="modal-title">New Booking</div><button class="close-btn" onclick="closeModal('modal-add-booking')">&#10005;</button></div>
+  <div class="modal-body"><div class="form-grid">
+    <div class="form-group"><label>Customer Name</label><input id="book-cust-name" type="text" placeholder="Full name"></div>
+    <div class="form-group"><label>Customer Phone</label><input id="book-cust-phone" type="tel" placeholder="08X-XXX-XXXX"></div>
+    <div class="form-group"><label>Customer Email</label><input id="book-cust-email" type="email" placeholder="email@example.com"></div>
+    <div class="form-group"><label>ID Card</label><input id="book-cust-id" type="text" placeholder="1-XXXX-XXXXX-XX-X"></div>
+    <div class="form-group"><label>Car</label><select id="book-car"></select></div>
+    <div class="form-group"><label>Package</label><select id="book-package" onchange="updateBookingTotal()"></select></div>
+    <div class="form-group"><label>Pickup Date</label><input id="book-start" type="date" onchange="updateBookingTotal()"></div>
+    <div class="form-group"><label>Return Date</label><input id="book-end" type="date"></div>
+    <div class="form-group"><label>Pickup Location</label><input id="book-pickup-loc" type="text" placeholder="e.g. Suvarnabhumi Airport"></div>
+    <div class="form-group"><label>Payment Method</label><select id="book-payment"><option value="pay_at_pickup">Pay at Pickup</option><option value="credit_card">Credit Card</option><option value="promptpay">PromptPay</option></select></div>
+    <div class="form-group full"><label>Estimated Total</label><div id="booking-total-display" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent);padding:10px 0;">&#8212; THB</div></div>
+  </div></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-booking')">Cancel</button><button class="btn btn-primary" onclick="addBooking()">Confirm Booking</button></div>
   </div>
 </div>
 
 <!-- ADJUSTMENT MODAL -->
 <div class="modal-overlay" id="modal-adjustment">
-  <div class="modal" style="max-width:520px;">
-    <div class="modal-header">
-      <div class="modal-title" id="adj-modal-title">Adjustment</div>
-      <button class="close-btn" onclick="closeModal('modal-adjustment')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group" style="margin-bottom:16px;">
-        <label>Select Booking</label>
-        <select id="adj-booking-select"></select>
-      </div>
-      <div id="adj-fields"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-adjustment')">Cancel</button>
-      <button class="btn btn-primary" id="adj-confirm-btn">Confirm</button>
-    </div>
+  <div class="modal" style="max-width:520px;"><div class="modal-header"><div class="modal-title" id="adj-modal-title">Adjustment</div><button class="close-btn" onclick="closeModal('modal-adjustment')">&#10005;</button></div>
+  <div class="modal-body"><div class="form-group" style="margin-bottom:16px;"><label>Select Booking</label><select id="adj-booking-select"></select></div><div id="adj-fields"></div></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-adjustment')">Cancel</button><button class="btn btn-primary" id="adj-confirm-btn">Confirm</button></div>
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- ADD ADMIN USER -->
+<div class="modal-overlay" id="modal-add-admin">
+  <div class="modal" style="max-width:520px;"><div class="modal-header"><div class="modal-title">Add Admin User</div><button class="close-btn" onclick="closeModal('modal-add-admin')">&#10005;</button></div>
+  <div class="modal-body">
+    <div style="background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:14px;margin-bottom:20px;font-size:13px;color:var(--muted);">
+      &#9889; Credentials stored in Supabase <code style="background:var(--surface2);padding:1px 5px;border-radius:3px;">admin_users</code> table with SHA-256 hashed passwords.
+    </div>
+    <div class="form-grid">
+      <div class="form-group"><label>Username</label><input id="new-admin-username" type="text" placeholder="e.g. manager01" autocomplete="off"></div>
+      <div class="form-group"><label>Display Name</label><input id="new-admin-displayname" type="text" placeholder="e.g. Operations Manager"></div>
+      <div class="form-group"><label>Password</label><input id="new-admin-pass" type="password" placeholder="Min. 8 characters" autocomplete="new-password"></div>
+      <div class="form-group"><label>Confirm Password</label><input id="new-admin-pass2" type="password" placeholder="Repeat password" autocomplete="new-password"></div>
+      <div class="form-group full"><label>Role</label>
+        <select id="new-admin-role">
+          <option value="admin">Admin &#8212; Full fleet &amp; booking management</option>
+          <option value="viewer">Viewer &#8212; Read-only access</option>
+          <option value="superadmin">Super Admin &#8212; All permissions incl. user management</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-admin')">Cancel</button><button class="btn btn-primary" onclick="addAdminUser()">Create User</button></div>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD -->
+<div class="modal-overlay" id="modal-change-pass">
+  <div class="modal" style="max-width:440px;"><div class="modal-header"><div class="modal-title">Change Password</div><button class="close-btn" onclick="closeModal('modal-change-pass')">&#10005;</button></div>
+  <div class="modal-body">
+    <div class="form-group" style="margin-bottom:14px;"><label>New Password</label><input id="chpass-new" type="password" placeholder="Min. 8 characters" autocomplete="new-password"></div>
+    <div class="form-group"><label>Confirm New Password</label><input id="chpass-new2" type="password" placeholder="Repeat password"></div>
+    <input type="hidden" id="chpass-user-id">
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-change-pass')">Cancel</button><button class="btn btn-primary" onclick="changeAdminPassword()">Update Password</button></div>
+  </div>
+</div>
+
+<!-- CAR PHOTOS VIEWER -->
+<div class="modal-overlay" id="modal-car-photos">
+  <div class="modal" style="max-width:680px;"><div class="modal-header"><div class="modal-title" id="car-photos-modal-title">Car Photos</div><button class="close-btn" onclick="closeModal('modal-car-photos')">&#10005;</button></div>
+  <div class="modal-body"><div id="car-photos-viewer" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div><div id="car-photos-empty" style="text-align:center;padding:40px;color:var(--muted);display:none;">No photos for this car.</div></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-car-photos')">Close</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 // ============================================================
-//  SUPABASE CONFIG
+// SUPABASE CONFIG
 // ============================================================
 const SUPABASE_URL = 'https://fmoiykmqjhlcfvzgpvvj.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtb2l5a21xamhsY2Z2emdwdnZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NjkxNzYsImV4cCI6MjA5MzM0NTE3Nn0.iMUbkUPkDJdq52Vt43ZaxXCxBFVjpDdDUaTxRZwPJk8'; // TODO: Replace with your anon key (eyJ...) from Supabase Dashboard → Settings → API
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtb2l5a21xamhsY2Z2emdwdnZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NjkxNzYsImV4cCI6MjA5MzM0NTE3Nn0.iMUbkUPkDJdq52Vt43ZaxXCxBFVjpDdDUaTxRZwPJk8'; // TODO: Replace with eyJ... key from Supabase Dashboard > Settings > API
+
+const SB_H = {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'};
+async function sbGet(t,p=''){const r=await fetch(`${SUPABASE_URL}/rest/v1/${t}?${p}`,{headers:SB_H});if(!r.ok)throw new Error(`GET ${t}: ${r.status} ${await r.text()}`);return r.json();}
+async function sbPost(t,b){const r=await fetch(`${SUPABASE_URL}/rest/v1/${t}`,{method:'POST',headers:SB_H,body:JSON.stringify(b)});if(!r.ok){const x=await r.text();throw new Error(`POST ${t}: ${x}`);}return r.json();}
+async function sbPatch(t,m,b){const r=await fetch(`${SUPABASE_URL}/rest/v1/${t}?${m}`,{method:'PATCH',headers:SB_H,body:JSON.stringify(b)});if(!r.ok)throw new Error(`PATCH ${t}: ${r.status}`);return r.json();}
+async function sbDel(t,m){const r=await fetch(`${SUPABASE_URL}/rest/v1/${t}?${m}`,{method:'DELETE',headers:{...SB_H,'Prefer':'return=minimal'}});if(!r.ok)throw new Error(`DEL ${t}: ${r.status}`);}
 
 // ============================================================
-//  SUPABASE REST HELPERS
+// AUTH
 // ============================================================
-const SB_HEADERS = {
-  'apikey': SUPABASE_KEY,
-  'Authorization': `Bearer ${SUPABASE_KEY}`,
-  'Content-Type': 'application/json',
-  'Prefer': 'return=representation'
-};
+let currentAdmin=null;
+async function sha256(str){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
 
-async function sbSelect(table, params = '') {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, { headers: SB_HEADERS });
-  if (!r.ok) throw new Error(`GET ${table}: ${r.status}`);
-  return r.json();
-}
-async function sbInsert(table, body) {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, { method: 'POST', headers: SB_HEADERS, body: JSON.stringify(body) });
-  if (!r.ok) { const t = await r.text(); throw new Error(`POST ${table}: ${t}`); }
-  return r.json();
-}
-async function sbUpdate(table, match, body) {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${match}`, { method: 'PATCH', headers: SB_HEADERS, body: JSON.stringify(body) });
-  if (!r.ok) throw new Error(`PATCH ${table}: ${r.status}`);
-  return r.json();
-}
-async function sbDelete(table, match) {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${match}`, { method: 'DELETE', headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' } });
-  if (!r.ok) throw new Error(`DELETE ${table}: ${r.status}`);
-}
+let FALLBACK_HASH='';
+(async()=>{FALLBACK_HASH=await sha256('admin123');})();
 
-// ============================================================
-//  LOCAL CACHE (loaded once per page visit)
-// ============================================================
-let db = { cars: [], packages: [], bindings: [], customers: [], bookings: [], adjustments: [] };
-
-async function loadAll() {
-  try {
-    const [cars, packages, bindings, bookings] = await Promise.all([
-      sbSelect('cars', 'select=*&order=id.asc'),
-      sbSelect('packages', 'select=*&order=id.asc'),
-      sbSelect('pkg_bindings', 'select=*'),
-      sbSelect('bookings', 'select=*&order=created_at.desc&limit=200'),
-    ]);
-    db.cars      = cars      || [];
-    db.packages  = packages  || [];
-    db.bindings  = bindings  || [];
-    db.bookings  = bookings  || [];
-
-    // Try loading customers/users table
-    try {
-      db.customers = await sbSelect('customers', 'select=*&order=id.asc') || [];
-    } catch {
-      try { db.customers = await sbSelect('users', 'select=*&order=id.asc') || []; } catch { db.customers = []; }
+async function doLogin(){
+  const username=document.getElementById('login-user').value.trim();
+  const password=document.getElementById('login-pass').value;
+  const errEl=document.getElementById('login-err');
+  errEl.textContent='';
+  if(!username||!password){errEl.textContent='Please enter username and password.';return;}
+  const btn=document.querySelector('.login-btn');
+  btn.textContent='Signing in\u2026';btn.disabled=true;
+  try{
+    const hash=await sha256(password);
+    let adminUser=null;
+    try{
+      const rows=await sbGet('admin_users',`select=*&username=eq.${encodeURIComponent(username)}&is_active=eq.true&limit=1`);
+      if(rows&&rows.length>0){
+        if(rows[0].password_hash===hash)adminUser=rows[0];
+        else{errEl.textContent='Invalid password.';btn.textContent='Sign In \u2192';btn.disabled=false;return;}
+      }
+    }catch(e){}
+    if(!adminUser){
+      if(username==='admin'&&hash===FALLBACK_HASH)adminUser={id:'local-0',username:'admin',display_name:'Super Admin',role:'superadmin',password_hash:FALLBACK_HASH};
+      else{errEl.textContent='Invalid username or password.';btn.textContent='Sign In \u2192';btn.disabled=false;return;}
     }
-
-    // Try loading adjustments
-    try { db.adjustments = await sbSelect('booking_adjustments', 'select=*&order=created_at.desc') || []; } catch { db.adjustments = []; }
-
-    setSbStatus(true);
-    renderDashboard();
-    updateBadges();
-  } catch(e) {
-    setSbStatus(false);
-    toast('⚠ Supabase connection failed: ' + e.message, 'error');
-  }
+    currentAdmin=adminUser;
+    sessionStorage.setItem('mic_admin',JSON.stringify({username:adminUser.username,role:adminUser.role,display_name:adminUser.display_name,id:adminUser.id}));
+    if(adminUser.id&&adminUser.id!=='local-0')sbPatch('admin_users',`id=eq.${adminUser.id}`,{last_login:new Date().toISOString()}).catch(()=>{});
+    showApp();
+  }catch(e){errEl.textContent='Login error: '+e.message;}
+  btn.textContent='Sign In \u2192';btn.disabled=false;
 }
 
-function setSbStatus(ok) {
-  document.getElementById('sb-dot').style.background = ok ? 'var(--success)' : 'var(--danger)';
-  document.getElementById('sb-status-text').textContent = ok ? 'Connected to Supabase' : 'Connection error';
+function showApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-shell').style.display='flex';
+  document.getElementById('sb-username').textContent=currentAdmin.display_name||currentAdmin.username;
+  document.getElementById('sb-userrole').textContent=currentAdmin.role;
+  document.getElementById('sb-avatar').textContent=(currentAdmin.display_name||currentAdmin.username)[0].toUpperCase();
+  if(currentAdmin.role==='superadmin'){document.getElementById('nav-admin-section').style.display='';document.getElementById('nav-admin-item').style.display='';}
+  loadAll();
 }
-function updateBadges() {
-  document.getElementById('cars-count').textContent = db.cars.filter(c => c.status !== 'deleted').length;
-  document.getElementById('bookings-count').textContent = db.bookings.filter(b => ['active','pending','paid','confirmed'].includes(b.status)).length;
-}
+
+function doLogout(){if(!confirm('Sign out?'))return;sessionStorage.removeItem('mic_admin');currentAdmin=null;document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';document.getElementById('login-user').value='';document.getElementById('login-pass').value='';}
+
+(function(){const s=sessionStorage.getItem('mic_admin');if(s){try{currentAdmin=JSON.parse(s);showApp();}catch{sessionStorage.removeItem('mic_admin');}}})();
 
 // ============================================================
-//  NAVIGATION
+// DATA
 // ============================================================
-function showSection(id, el) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('section-' + id).classList.add('active');
-  if (el) el.classList.add('active');
+let db={cars:[],packages:[],bindings:[],customers:[],bookings:[],adjustments:[],adminUsers:[]};
+
+async function loadAll(){
+  try{
+    const[cars,pkgs,bindings,bookings]=await Promise.all([sbGet('cars','select=*&order=id.asc'),sbGet('packages','select=*&order=id.asc'),sbGet('pkg_bindings','select=*'),sbGet('bookings','select=*&order=created_at.desc&limit=200')]);
+    db.cars=cars||[];db.packages=pkgs||[];db.bindings=bindings||[];db.bookings=bookings||[];
+    try{db.customers=await sbGet('customers','select=*&order=id.asc')||[];}catch{try{db.customers=await sbGet('users','select=*&order=id.asc')||[];}catch{db.customers=[];}}
+    try{db.adjustments=await sbGet('booking_adjustments','select=*&order=created_at.desc')||[];}catch{db.adjustments=[];}
+    try{db.adminUsers=await sbGet('admin_users','select=id,username,display_name,role,is_active,last_login,created_at&order=created_at.asc')||[];}catch{db.adminUsers=[];}
+    setSbStatus(true);renderDashboard();updateBadges();
+  }catch(e){setSbStatus(false);toast('Supabase error: '+e.message,'error');}
+}
+
+function setSbStatus(ok){document.getElementById('sb-dot').style.background=ok?'var(--success)':'var(--danger)';document.getElementById('sb-status-text').textContent=ok?'Connected to Supabase':'Connection error';}
+function updateBadges(){document.getElementById('cars-count').textContent=db.cars.filter(c=>c.status!=='deleted').length;document.getElementById('bookings-count').textContent=db.bookings.filter(b=>['active','pending','paid','confirmed'].includes(b.status)).length;}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  if(el)el.classList.add('active');
   renderSection(id);
 }
-function renderSection(id) {
-  if (id === 'dashboard') renderDashboard();
-  else if (id === 'cars') renderCars();
-  else if (id === 'packages') renderPackages();
-  else if (id === 'customers') renderCustomers();
-  else if (id === 'bookings') renderBookings();
-  else if (id === 'calendar') renderCalendar();
-  else if (id === 'adjustments') renderAdjustments();
+function renderSection(id){
+  if(id==='dashboard')renderDashboard();
+  else if(id==='cars')renderCars();
+  else if(id==='packages')renderPackages();
+  else if(id==='customers')renderCustomers();
+  else if(id==='bookings')renderBookings();
+  else if(id==='calendar')renderCalendar();
+  else if(id==='adjustments')renderAdjustments();
+  else if(id==='admin-users')renderAdminUsers();
 }
 
 // ============================================================
-//  HELPERS
+// HELPERS
 // ============================================================
-function pad(n) { return String(n).padStart(3, '0'); }
-function fmtDate(d) { if (!d) return '—'; return new Date(d).toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'}); }
-function getCar(id) { return db.cars.find(c => String(c.id) === String(id)); }
-function getPkg(id) { return db.packages.find(p => String(p.id) === String(id)); }
-function getCustomerById(id) { return db.customers.find(c => String(c.id) === String(id)); }
+function fmtDate(d){if(!d)return'\u2014';return new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}
+function fmtDateTime(d){if(!d)return'\u2014';return new Date(d).toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function getCar(id){return db.cars.find(c=>String(c.id)===String(id));}
+function getPkg(id){return db.packages.find(p=>String(p.id)===String(id));}
+function statusTag(s){const k=(s||'').toLowerCase().replace(/\s/g,'_');return`<span class="tag tag-${k}">${s||'\u2014'}</span>`;}
+function toast(msg,type='success'){const t=document.getElementById('toast');const icons={success:'\u2713',error:'\u26a0',info:'\u2139'};t.textContent=(icons[type]||'\u2022')+' '+msg;t.className=`toast show ${type}`;clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),4000);}
 
-function statusTag(status) {
-  const s = (status||'').toLowerCase().replace(/\s/g,'_');
-  return `<span class="tag tag-${s}">${status||'—'}</span>`;
+// ============================================================
+// PHOTO UPLOAD
+// ============================================================
+function handleDragOver(e,z){e.preventDefault();document.getElementById(z).classList.add('drag-over');}
+function handleDragLeave(e,z){document.getElementById(z).classList.remove('drag-over');}
+function handleDrop(e,inp,z){e.preventDefault();document.getElementById(z).classList.remove('drag-over');const files=e.dataTransfer.files;if(!files.length)return;const el=document.getElementById(inp);const dt=new DataTransfer();Array.from(files).filter(f=>f.type.startsWith('image/')).forEach(f=>dt.items.add(f));el.files=dt.files;el.dispatchEvent(new Event('change'));}
+
+function handlePhotoSelect(input,gridId,hiddenId){
+  const files=Array.from(input.files);
+  const existing=JSON.parse(document.getElementById(hiddenId).value||'[]');
+  if(existing.length+files.length>5){toast('Maximum 5 photos per car','error');return;}
+  files.forEach(file=>{
+    if(file.size>3*1024*1024){toast(`${file.name} is too large (max 3MB)`,'error');return;}
+    const reader=new FileReader();
+    reader.onload=(e)=>{
+      const base64=e.target.result;
+      const current=JSON.parse(document.getElementById(hiddenId).value||'[]');
+      current.push(base64);
+      document.getElementById(hiddenId).value=JSON.stringify(current);
+      renderPhotoGrid(gridId,hiddenId);
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value='';
 }
 
-function toast(msg, type = 'success') {
-  const t = document.getElementById('toast');
-  t.textContent = (type === 'success' ? '✓ ' : '⚠ ') + msg;
-  t.className = `toast show ${type}`;
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 4000);
+function renderPhotoGrid(gridId,hiddenId){
+  const photos=JSON.parse(document.getElementById(hiddenId).value||'[]');
+  document.getElementById(gridId).innerHTML=photos.map((src,i)=>`<div class="photo-thumb"><img src="${src}" alt="Photo ${i+1}"><button class="photo-del" onclick="removePhoto(${i},'${gridId}','${hiddenId}')">\u2715</button></div>`).join('');
 }
+function removePhoto(i,g,h){const p=JSON.parse(document.getElementById(h).value||'[]');p.splice(i,1);document.getElementById(h).value=JSON.stringify(p);renderPhotoGrid(g,h);}
+function resetPhotoUpload(){document.getElementById('car-photo-data').value='[]';document.getElementById('car-photo-grid').innerHTML='';document.getElementById('car-photos-inp').value='';}
 
-// ============================================================
-//  DASHBOARD
-// ============================================================
-function renderDashboard() {
-  const total  = db.cars.filter(c => c.status !== 'deleted').length;
-  const active = db.bookings.filter(b => ['active','confirmed','paid'].includes(b.status)).length;
-  const avail  = db.cars.filter(c => c.status === 'available').length;
-
-  document.getElementById('stat-total-cars').textContent     = total;
-  document.getElementById('stat-active-rentals').textContent = active;
-  document.getElementById('stat-available').textContent      = avail;
-  document.getElementById('stat-customers').textContent      = db.bookings.length;
-
-  // Recent bookings
-  document.getElementById('recent-bookings-tbody').innerHTML = db.bookings.slice(0,8).map(b => {
-    const car = getCar(b.car_id || b.carId);
-    return `<tr>
-      <td><b>${b.ref || b.id || '—'}</b></td>
-      <td>${b.name || '—'}</td>
-      <td>${car ? car.name||`${car.brand||''} ${car.model||''}`.trim() : (b.car_name||'—')}</td>
-      <td>${fmtDate(b.pickup_date||b.pickupDate)} – ${fmtDate(b.return_date||b.returnDate)}</td>
-      <td>${statusTag(b.status)}</td>
-    </tr>`;
-  }).join('') || '<tr class="loading-row"><td colspan="5">No bookings yet</td></tr>';
-
-  // Fleet status bar
-  const statuses = [
-    {key:'available', label:'Available', color:'var(--success)'},
-    {key:'rented',    label:'Rented',    color:'var(--accent2)'},
-    {key:'maintenance',label:'Maintenance',color:'var(--warning)'},
-  ];
-  document.getElementById('fleet-status-list').innerHTML = statuses.map(s => {
-    const cnt = db.cars.filter(c => c.status === s.key).length;
-    const pct = total ? Math.round(cnt/total*100) : 0;
-    return `<div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-        <span style="font-size:13px;text-transform:capitalize;">${s.label}</span>
-        <span style="font-size:13px;font-weight:600;">${cnt}</span>
-      </div>
-      <div style="background:var(--surface2);border-radius:4px;height:6px;">
-        <div style="background:${s.color};width:${pct}%;height:100%;border-radius:4px;transition:width 0.5s;"></div>
-      </div>
-    </div>`;
-  }).join('');
+function viewCarPhotos(carId){
+  const car=getCar(carId);if(!car)return;
+  const photos=Array.isArray(car.photos)&&car.photos.length?car.photos:(car.img?[car.img]:[]);
+  document.getElementById('car-photos-modal-title').textContent=`Photos \u2014 ${car.name||car.brand||'Car'}`;
+  const viewer=document.getElementById('car-photos-viewer');
+  const empty=document.getElementById('car-photos-empty');
+  if(!photos.length){viewer.innerHTML='';empty.style.display='block';}
+  else{empty.style.display='none';viewer.innerHTML=photos.map(src=>`<div style="border-radius:8px;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--border);"><img src="${src}" style="width:100%;height:100%;object-fit:cover;cursor:pointer;display:block;" onclick="window.open('${src}','_blank')"></div>`).join('');}
+  openModal('modal-car-photos');
 }
 
 // ============================================================
-//  CARS
+// DASHBOARD
 // ============================================================
-let carsView = 'grid';
-let carsFilter = '';
-function setCarsView(v, el) {
-  carsView = v;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('cars-grid-view').style.display = v === 'grid' ? 'grid' : 'none';
-  document.getElementById('cars-list-view').style.display = v === 'list' ? 'block' : 'none';
-  renderCars(carsFilter);
+function renderDashboard(){
+  const total=db.cars.filter(c=>c.status!=='deleted').length;
+  const active=db.bookings.filter(b=>['active','confirmed','paid'].includes(b.status)).length;
+  const avail=db.cars.filter(c=>c.status==='available').length;
+  document.getElementById('stat-total-cars').textContent=total;
+  document.getElementById('stat-active-rentals').textContent=active;
+  document.getElementById('stat-available').textContent=avail;
+  document.getElementById('stat-customers').textContent=db.bookings.length;
+  document.getElementById('recent-bookings-tbody').innerHTML=db.bookings.slice(0,8).map(b=>{const car=getCar(b.car_id||b.carId);return`<tr><td><b>${b.ref||b.id||'\u2014'}</b></td><td>${b.name||'\u2014'}</td><td>${car?car.name||`${car.brand||''} ${car.model||''}`.trim():(b.car_name||'\u2014')}</td><td>${fmtDate(b.pickup_date||b.pickupDate)}\u2013${fmtDate(b.return_date||b.returnDate)}</td><td>${statusTag(b.status)}</td></tr>`;}).join('')||'<tr class="loading-row"><td colspan="5">No bookings yet</td></tr>';
+  const statuses=[{key:'available',label:'Available',color:'var(--success)'},{key:'rented',label:'Rented',color:'var(--accent2)'},{key:'maintenance',label:'Maintenance',color:'var(--warning)'}];
+  document.getElementById('fleet-status-list').innerHTML=statuses.map(s=>{const cnt=db.cars.filter(c=>c.status===s.key).length;const pct=total?Math.round(cnt/total*100):0;return`<div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;">${s.label}</span><span style="font-size:13px;font-weight:600;">${cnt}</span></div><div style="background:var(--surface2);border-radius:4px;height:6px;"><div style="background:${s.color};width:${pct}%;height:100%;border-radius:4px;transition:width .5s;"></div></div></div>`;}).join('');
 }
-function filterCars(v) { carsFilter = v; renderCars(v); }
 
-function renderCars(filter = '') {
-  const cars = db.cars.filter(c => c.status !== 'deleted' && (!filter || `${c.brand||''} ${c.model||''} ${c.name||''} ${c.plate||''}`.toLowerCase().includes(filter.toLowerCase())));
-  document.getElementById('cars-count').textContent = cars.length;
+// ============================================================
+// CARS
+// ============================================================
+let carsView='grid',carsFilter='';
+function setCarsView(v,el){carsView=v;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('cars-grid-view').style.display=v==='grid'?'grid':'none';document.getElementById('cars-list-view').style.display=v==='list'?'block':'none';renderCars(carsFilter);}
+function filterCars(v){carsFilter=v;renderCars(v);}
+function getMainPhoto(c){return Array.isArray(c.photos)&&c.photos.length?c.photos[0]:(c.img||null);}
 
-  // GRID
-  document.getElementById('cars-grid-view').innerHTML = cars.map(c => {
-    const name = c.name || `${c.brand||''} ${c.model||''}`.trim();
-    const feats = Array.isArray(c.features) ? c.features : (c.features ? JSON.parse(c.features||'[]') : []);
-    return `<div class="car-card">
-      <div class="car-card-top">
-        <div><div class="car-brand">${name}</div><div class="car-model-text">${c.model||c.cat||''}</div></div>
-        <div>${statusTag(c.status)}</div>
-      </div>
-      ${c.plate ? `<div class="car-plate">${c.plate}</div>` : ''}
-      <div class="car-specs">
-        <div class="spec-item">Drive: <span>${c.dtype||c.drive||'—'}</span></div>
-        <div class="spec-item">HP: <span>${c.hp||'—'}</span></div>
-        <div class="spec-item">Range: <span>${c.range ? c.range+'km' : '—'}</span></div>
-        <div class="spec-item">Price: <span>฿${c.price ? c.price.toLocaleString() : '—'}/day</span></div>
-        <div class="spec-item">Color: <span>${c.color||'—'}</span></div>
-        <div class="spec-item">Int: <span>${c.interior||'—'}</span></div>
-      </div>
-      ${feats.length ? `<div style="margin-top:10px;display:flex;gap:5px;flex-wrap:wrap;">${feats.map(f=>`<span style="font-size:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);padding:2px 7px;border-radius:4px;color:var(--accent);">${f}</span>`).join('')}</div>` : ''}
-      <div class="car-actions">
-        <button class="btn btn-sm btn-warn" onclick="editCarStatus(${c.id},'maintenance')">🔧</button>
-        <button class="btn btn-sm btn-success" onclick="editCarStatus(${c.id},'available')">✓</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteCar(${c.id})">🗑</button>
+function renderCars(filter=''){
+  const isViewer=currentAdmin?.role==='viewer';
+  const cars=db.cars.filter(c=>c.status!=='deleted'&&(!filter||`${c.brand||''} ${c.model||''} ${c.name||''} ${c.plate||''}`.toLowerCase().includes(filter.toLowerCase())));
+  document.getElementById('cars-count').textContent=cars.length;
+  document.getElementById('cars-grid-view').innerHTML=cars.map(c=>{
+    const name=c.name||`${c.brand||''} ${c.model||''}`.trim();
+    const feats=Array.isArray(c.features)?c.features:(c.features?JSON.parse(c.features||'[]'):[]);
+    const mp=getMainPhoto(c);const pc=Array.isArray(c.photos)?c.photos.length:0;
+    return`<div class="car-card">
+      ${mp?`<img class="car-card-img" src="${mp}" alt="${name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="car-card-img-empty" style="display:none">&#128663;</div>`:`<div class="car-card-img-empty">&#128663;</div>`}
+      <div class="car-card-body">
+        <div class="car-card-top"><div><div class="car-brand-text">${name}</div><div class="car-model-sub">${c.model||c.cat||''}</div></div><div>${statusTag(c.status)}</div></div>
+        ${c.plate?`<div class="car-plate">${c.plate}</div>`:''}
+        <div class="car-specs"><div class="spec-item">Drive: <span>${c.dtype||'\u2014'}</span></div><div class="spec-item">HP: <span>${c.hp||'\u2014'}</span></div><div class="spec-item">Range: <span>${c.range?c.range+'km':'\u2014'}</span></div><div class="spec-item">฿<span>${c.price?(c.price).toLocaleString():'\u2014'}/day</span></div></div>
+        ${feats.length?`<div style="margin-top:10px;display:flex;gap:4px;flex-wrap:wrap;">${feats.map(f=>`<span style="font-size:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);padding:2px 6px;border-radius:4px;color:var(--accent);">${f}</span>`).join('')}</div>`:''}
+        <div class="car-actions">
+          <button class="btn btn-sm btn-ghost" onclick="viewCarPhotos(${c.id})" title="${pc} photo(s)">&#128247; ${pc>0?pc:''}</button>
+          ${!isViewer?`<button class="btn btn-sm btn-warn" onclick="editCarStatus(${c.id},'maintenance')" title="Set Maintenance">&#128295;</button><button class="btn btn-sm btn-success" onclick="editCarStatus(${c.id},'available')" title="Set Available">&#10003;</button><button class="btn btn-sm btn-danger" onclick="deleteCar(${c.id})">&#128465;</button>`:''}
+        </div>
       </div>
     </div>`;
-  }).join('') || '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);">No cars found</div>';
+  }).join('')||'<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);">No cars found</div>';
+  document.getElementById('cars-list-tbody').innerHTML=cars.map(c=>{const name=c.name||`${c.brand||''} ${c.model||''}`.trim();const mp=getMainPhoto(c);const pc=Array.isArray(c.photos)?c.photos.length:0;
+  return`<tr><td>${mp?`<img class="car-thumb-img" src="${mp}" alt="${name}">`:'\u2014'}</td><td><b>${c.plate||'\u2014'}</b>${pc>0?`<br><span style="font-size:10px;color:var(--muted);">&#128247; ${pc}</span>`:''}</td><td>${name}</td><td>${c.color||'\u2014'}</td><td>${c.hp?c.hp+' HP':'\u2014'}</td><td>${c.price?'\u0E3F'+c.price.toLocaleString():'\u2014'}</td><td>${statusTag(c.status)}</td><td style="display:flex;gap:6px;flex-wrap:wrap;"><button class="btn btn-sm btn-ghost" onclick="viewCarPhotos(${c.id})">&#128247;</button>${!isViewer?`<button class="btn btn-sm btn-warn" onclick="editCarStatus(${c.id},'maintenance')">&#128295;</button><button class="btn btn-sm btn-success" onclick="editCarStatus(${c.id},'available')">&#10003;</button><button class="btn btn-sm btn-danger" onclick="deleteCar(${c.id})">&#128465;</button>`:''}</td></tr>`;}).join('');
+}
 
-  // LIST
-  document.getElementById('cars-list-tbody').innerHTML = cars.map(c => {
-    const name = c.name || `${c.brand||''} ${c.model||''}`.trim();
-    return `<tr>
-      <td><b>${c.plate||'—'}</b></td>
-      <td>${name}</td>
-      <td>${c.color||'—'}</td>
-      <td>${c.hp ? c.hp+' HP' : '—'}</td>
-      <td>${c.dtype||'—'}</td>
-      <td>${statusTag(c.status)}</td>
-      <td style="display:flex;gap:6px;">
-        <button class="btn btn-sm btn-warn" onclick="editCarStatus(${c.id},'maintenance')">🔧</button>
-        <button class="btn btn-sm btn-success" onclick="editCarStatus(${c.id},'available')">✓</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteCar(${c.id})">🗑</button>
+async function addCar(){
+  if(currentAdmin?.role==='viewer'){toast('Viewer cannot add cars','error');return;}
+  const brand=document.getElementById('car-brand').value.trim();const model=document.getElementById('car-model-inp').value.trim();
+  if(!brand||!model){toast('Brand and Model are required','error');return;}
+  const feats=document.getElementById('car-features').value.trim().split(',').map(f=>f.trim()).filter(Boolean);
+  const photos=JSON.parse(document.getElementById('car-photo-data').value||'[]');
+  const imgUrl=document.getElementById('car-img').value.trim();
+  const car={name:`${brand} ${model}`,brand,model,plate:document.getElementById('car-plate').value,cat:document.getElementById('car-cat').value,cat_key:document.getElementById('car-cat').value,status:document.getElementById('car-status').value,price:+document.getElementById('car-price').value||0,dtype:document.getElementById('car-dtype').value,hp:+document.getElementById('car-hp').value||0,torque:+document.getElementById('car-torque').value||0,range:+document.getElementById('car-range').value||0,ac:document.getElementById('car-ac').value,dc:document.getElementById('car-dc').value,color:document.getElementById('car-color').value,interior:document.getElementById('car-interior').value,img:photos.length?photos[0]:imgUrl,photos,features:feats,condition:document.getElementById('car-condition').value};
+  try{const r=await sbPost('cars',car);db.cars.push(Array.isArray(r)?r[0]:r);resetPhotoUpload();closeModal('modal-add-car');renderCars(carsFilter);renderDashboard();toast(`Car added with ${photos.length} photo(s)!`);}catch(e){toast('Failed: '+e.message,'error');}
+}
+async function editCarStatus(id,status){if(currentAdmin?.role==='viewer'){toast('Viewer cannot edit','error');return;}try{await sbPatch('cars',`id=eq.${id}`,{status});const c=db.cars.find(x=>String(x.id)===String(id));if(c)c.status=status;renderCars(carsFilter);renderDashboard();toast('Status \u2192 '+status);}catch(e){toast(e.message,'error');}}
+async function deleteCar(id){if(currentAdmin?.role==='viewer'){toast('Viewer cannot delete','error');return;}if(!confirm('Remove this car?'))return;try{await sbPatch('cars',`id=eq.${id}`,{status:'deleted'});const c=db.cars.find(x=>String(x.id)===String(id));if(c)c.status='deleted';renderCars(carsFilter);renderDashboard();toast('Car removed');}catch(e){toast(e.message,'error');}}
+
+// ============================================================
+// PACKAGES
+// ============================================================
+function renderPackages(){
+  document.getElementById('packages-tbody').innerHTML=db.packages.map(p=>`<tr><td><b>${p.code}</b></td><td>${p.duration||'\u2014'}</td><td>\u0E3F${(p.price||0).toLocaleString()}</td><td>${p.insurance?`<span class="tag tag-active">\u0E3F${p.insurance}/day</span>`:'<span class="tag tag-cancelled">None</span>'}</td><td>${p.deposit?'\u0E3F'+p.deposit.toLocaleString():'\u2014'}</td><td><button class="btn btn-sm btn-danger" onclick="deletePackage(${p.id})">&#128465;</button></td></tr>`).join('')||'<tr class="loading-row"><td colspan="6">No packages</td></tr>';
+  document.getElementById('bindings-tbody').innerHTML=db.bindings.map(b=>{const pkg=getPkg(b.pkg_id||b.pkgId);const car=getCar(b.car_id||b.carId);return`<tr><td>${pkg?pkg.code:'\u2014'}</td><td>${car?(car.plate?car.plate+' ('+(car.brand||car.name||'')+')':car.name||'\u2014'):'\u2014'}</td><td><button class="btn btn-sm btn-danger" onclick="deleteBinding(${b.id||0})">&#128465;</button></td></tr>`;}).join('')||'<tr class="loading-row"><td colspan="3">No bindings</td></tr>';
+}
+async function addPackage(){const code=document.getElementById('pkg-code').value.trim();const price=+document.getElementById('pkg-price').value;if(!code||!price){toast('Code and Price required','error');return;}try{const r=await sbPost('packages',{code,duration:document.getElementById('pkg-duration').value,price,deposit:+document.getElementById('pkg-deposit').value||0,insurance:+document.getElementById('pkg-insurance').value||0,desc:document.getElementById('pkg-desc').value,pickup_time:document.getElementById('pkg-pickup').value,return_time:document.getElementById('pkg-return').value});db.packages.push(Array.isArray(r)?r[0]:r);closeModal('modal-add-package');renderPackages();toast('Package added!');}catch(e){toast(e.message,'error');}}
+async function deletePackage(id){if(!confirm('Delete?'))return;try{await sbDel('packages',`id=eq.${id}`);db.packages=db.packages.filter(p=>String(p.id)!==String(id));renderPackages();toast('Package deleted');}catch(e){toast(e.message,'error');}}
+async function deleteBinding(id){try{await sbDel('pkg_bindings',`id=eq.${id}`);db.bindings=db.bindings.filter(b=>String(b.id)!==String(id));renderPackages();toast('Binding removed');}catch(e){toast(e.message,'error');}}
+async function bindPackage(){const pkgId=+document.getElementById('bind-pkg').value;const carId=+document.getElementById('bind-car').value;if(!pkgId||!carId)return;if(db.bindings.find(b=>String(b.pkg_id||b.pkgId)===String(pkgId)&&String(b.car_id||b.carId)===String(carId))){toast('Already bound','error');return;}try{const r=await sbPost('pkg_bindings',{pkg_id:pkgId,car_id:carId});db.bindings.push(Array.isArray(r)?r[0]:r);closeModal('modal-bind-package');renderPackages();toast('Package bound!');}catch(e){toast(e.message,'error');}}
+
+// ============================================================
+// CUSTOMERS
+// ============================================================
+function renderCustomers(filter=''){const custs=db.customers.filter(c=>!filter||`${c.name||''} ${c.surname||''} ${c.display_name||''} ${c.id_card||''} ${c.mobile||c.phone||''} ${c.email||''}`.toLowerCase().includes(filter.toLowerCase()));document.getElementById('customers-tbody').innerHTML=custs.map(c=>{const name=c.display_name||`${c.name||''} ${c.surname||''}`.trim();return`<tr><td><b>${name}</b>${c.nick?`<br><span style="color:var(--muted);font-size:11px;">"${c.nick}"</span>`:''}</td><td>${c.id_card||c.idCard||'\u2014'}</td><td>${c.mobile||c.phone||'\u2014'}</td><td>${c.email||'\u2014'}</td><td>${c.license||'\u2014'}</td><td>${c.vip==='yes'?'<span class="tag tag-vip">VIP</span>':'\u2014'}</td><td><button class="btn btn-sm btn-danger" onclick="deleteCustomer(${c.id})">&#128465;</button></td></tr>`;}).join('')||'<tr class="loading-row"><td colspan="7">No customers yet</td></tr>';}
+function filterCustomers(v){renderCustomers(v);}
+async function addCustomer(){const name=document.getElementById('cust-name').value.trim();const surname=document.getElementById('cust-surname').value.trim();if(!name||!surname){toast('Name and Surname required','error');return;}const tbl=db.customers.length>0&&db.customers[0].uid!==undefined?'users':'customers';try{const r=await sbPost(tbl,{name,surname,display_name:`${name} ${surname}`,nick:document.getElementById('cust-nick').value,id_card:document.getElementById('cust-id').value,mobile:document.getElementById('cust-mobile').value,phone:document.getElementById('cust-mobile').value,emergency:document.getElementById('cust-emergency').value,email:document.getElementById('cust-email').value,license:document.getElementById('cust-license').value,vip:document.getElementById('cust-vip').value,address:document.getElementById('cust-address').value});db.customers.push(Array.isArray(r)?r[0]:r);closeModal('modal-add-customer');renderCustomers();toast('Customer added!');}catch(e){toast(e.message,'error');}}
+async function deleteCustomer(id){if(!confirm('Remove?'))return;const tbl=db.customers.length>0&&db.customers[0].uid!==undefined?'users':'customers';try{await sbDel(tbl,`id=eq.${id}`);db.customers=db.customers.filter(c=>String(c.id)!==String(id));renderCustomers();toast('Customer removed');}catch(e){toast(e.message,'error');}}
+
+// ============================================================
+// BOOKINGS
+// ============================================================
+function renderBookings(){
+  const isViewer=currentAdmin?.role==='viewer';
+  document.getElementById('bookings-tbody').innerHTML=db.bookings.map(b=>{const car=getCar(b.car_id||b.carId);const pkg=getPkg(b.package_id||b.pkgId);return`<tr><td><b>${b.ref||b.id||'\u2014'}</b></td><td>${b.name||'\u2014'}<br><span style="color:var(--muted);font-size:11px;">${b.phone||''}</span></td><td>${car?car.name||`${car.brand||''} ${car.model||''}`.trim():(b.car_name||'\u2014')}</td><td>${pkg?pkg.code:(b.package_code||'\u2014')}</td><td>${fmtDate(b.pickup_date||b.pickupDate)}</td><td>${fmtDate(b.return_date||b.returnDate)}</td><td>\u0E3F${(b.total||0).toLocaleString()}</td><td>${b.payment||'\u2014'}</td><td>${statusTag(b.status)}</td><td style="display:flex;gap:4px;flex-wrap:wrap;">${isViewer?'\u2014':`<button class="btn btn-sm btn-success" onclick="updateBookingStatus('${b.id}','confirmed')" title="Confirm">&#10003;</button><button class="btn btn-sm btn-ghost" onclick="openAdjustmentModal('extend','${b.ref||b.id}')" title="Extend">+</button><button class="btn btn-sm btn-danger" onclick="openAdjustmentModal('cancel','${b.ref||b.id}')" title="Cancel">&#10006;</button>`}</td></tr>`;}).join('')||'<tr class="loading-row"><td colspan="10">No bookings yet</td></tr>';
+}
+async function updateBookingStatus(id,status){try{await sbPatch('bookings',`id=eq.${id}`,{status});const b=db.bookings.find(x=>String(x.id)===String(id));if(b)b.status=status;renderBookings();toast('Status \u2192 '+status);}catch(e){toast(e.message,'error');}}
+function populateBookingDropdowns(){document.getElementById('book-car').innerHTML=db.cars.filter(c=>c.status==='available').map(c=>`<option value="${c.id}">${c.name||`${c.brand||''} ${c.model||''}`.trim()} \u2014 ${c.plate||''}</option>`).join('');document.getElementById('book-package').innerHTML=db.packages.map(p=>`<option value="${p.id}">${p.code} (${p.duration} \u2014 \u0E3F${(p.price||0).toLocaleString()})</option>`).join('');document.getElementById('book-start').valueAsDate=new Date();updateBookingTotal();}
+function updateBookingTotal(){const pkg=getPkg(document.getElementById('book-package').value);const sv=document.getElementById('book-start').value;if(pkg&&sv){const start=new Date(sv);const days=pkg.days||1;const end=new Date(start);end.setDate(end.getDate()+days);document.getElementById('book-end').value=end.toISOString().split('T')[0];const ins=(pkg.insurance||0)*days;const total=(pkg.price||0)+ins;document.getElementById('booking-total-display').textContent=`\u0E3F${total.toLocaleString()} (\u0E3F${pkg.price||0}${ins>0?' + \u0E3F'+ins+' ins':''}${pkg.deposit?', deposit \u0E3F'+pkg.deposit:''})`; }}
+async function addBooking(){
+  if(currentAdmin?.role==='viewer'){toast('Viewer cannot create bookings','error');return;}
+  const carId=document.getElementById('book-car').value;const pkgId=document.getElementById('book-package').value;const start=document.getElementById('book-start').value;const name=document.getElementById('book-cust-name').value.trim();
+  if(!carId||!pkgId||!start||!name){toast('Fill in Customer, Car, Package and Start Date','error');return;}
+  const pkg=getPkg(pkgId);const days=pkg?pkg.days||1:1;const ins=(pkg?.insurance||0)*days;const total=(pkg?.price||0)+ins;const ref='MEC-'+Date.now().toString().slice(-6);
+  try{const r=await sbPost('bookings',{ref,name,phone:document.getElementById('book-cust-phone').value,email:document.getElementById('book-cust-email').value,id_card:document.getElementById('book-cust-id').value,car_id:+carId,car_name:getCar(carId)?.name||'',package_id:+pkgId,package_code:pkg?.code||'',pickup_date:start,return_date:document.getElementById('book-end').value,pickup_location:document.getElementById('book-pickup-loc').value,payment:document.getElementById('book-payment').value,days,insurance_cost:ins,total,status:'confirmed',created_at:new Date().toISOString()});db.bookings.unshift(Array.isArray(r)?r[0]:r);await sbPatch('cars',`id=eq.${carId}`,{status:'rented'});const c=db.cars.find(x=>String(x.id)===String(carId));if(c)c.status='rented';closeModal('modal-add-booking');renderBookings();renderDashboard();updateBadges();toast('Booking confirmed: '+ref);}catch(e){toast('Failed: '+e.message,'error');}
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+let calendarDate=new Date();calendarDate.setDate(1);
+function renderCalendar(){const year=calendarDate.getFullYear(),month=calendarDate.getMonth();document.getElementById('cal-month-label').textContent=calendarDate.toLocaleString('default',{month:'long',year:'numeric'});document.getElementById('calendar-days-header').innerHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(h=>`<div class="cal-day-header">${h}</div>`).join('');const first=new Date(year,month,1).getDay();const dim=new Date(year,month+1,0).getDate();const today=new Date();let html='';for(let i=0;i<first;i++)html+='<div class="cal-day empty"></div>';for(let d=1;d<=dim;d++){const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const isToday=today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d;let bhtml='';db.bookings.forEach(b=>{const s=b.pickup_date||b.pickupDate;const e=b.return_date||b.returnDate;if(s===ds)bhtml+=`<div class="cal-booking starting">${b.ref||b.id} \u2191</div>`;else if(e===ds)bhtml+=`<div class="cal-booking returning">${b.ref||b.id} \u2193</div>`;else if(s&&e&&ds>s&&ds<e){const car=getCar(b.car_id||b.carId);bhtml+=`<div class="cal-booking">${car?car.name||car.brand:''}</div>`;}});html+=`<div class="cal-day ${isToday?'today':''}"><div class="cal-day-num">${d}</div>${bhtml}</div>`;}document.getElementById('calendar-days').innerHTML=html;}
+function changeMonth(d){calendarDate.setMonth(calendarDate.getMonth()+d);renderCalendar();}
+function goToday(){calendarDate=new Date();calendarDate.setDate(1);renderCalendar();}
+
+// ============================================================
+// ADJUSTMENTS
+// ============================================================
+let currentAdjType='';
+function renderAdjustments(){document.getElementById('adjustments-tbody').innerHTML=db.adjustments.length===0?'<tr class="loading-row"><td colspan="6">No adjustments yet</td></tr>':db.adjustments.map(a=>{const b=db.bookings.find(bk=>bk.ref===a.booking_ref||String(bk.id)===String(a.booking_id));const car=b?getCar(b.car_id||b.carId):null;return`<tr><td><b>${a.booking_ref||'\u2014'}</b></td><td>${b?b.name||'\u2014':'\u2014'}</td><td>${car?car.name||car.brand||'\u2014':(b?b.car_name||'\u2014':'\u2014')}</td><td>${statusTag(a.type)}</td><td>${fmtDate(a.created_at||a.date)}</td><td>${a.note||'\u2014'}</td></tr>`;}).join('');}
+function openAdjustmentModal(type,bookingRef=''){
+  if(currentAdmin?.role==='viewer'){toast('Viewer cannot make adjustments','error');return;}
+  currentAdjType=type;const titles={early:'\u23ea Early Return',extend:'\u23e9 Extend Rental',cancel:'\u2716 Cancel Booking'};document.getElementById('adj-modal-title').textContent=titles[type];const sel=document.getElementById('adj-booking-select');const active=db.bookings.filter(b=>!['cancelled','completed'].includes(b.status));sel.innerHTML=active.map(b=>`<option value="${b.ref||b.id}">${b.ref||b.id} \u2014 ${b.name||'\u2014'} \u2014 ${b.car_name||''}</option>`).join('');if(bookingRef)sel.value=bookingRef;const fields={early:`<div class="form-group"><label>Actual Return Date</label><input id="adj-date" type="date"></div><div class="form-group"><label>Note</label><textarea id="adj-note" placeholder="Reason&#8230;"></textarea></div>`,extend:`<div class="form-group"><label>Additional Days</label><input id="adj-days" type="number" min="1" placeholder="e.g. 2"></div><div class="form-group"><label>Note</label><textarea id="adj-note" placeholder="Reason&#8230;"></textarea></div>`,cancel:`<div style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--danger);">&#9888; This will cancel the booking and mark the car as available.</div><div class="form-group"><label>Cancellation Reason</label><textarea id="adj-note" placeholder="Reason&#8230;"></textarea></div>`};document.getElementById('adj-fields').innerHTML=fields[type]||'';document.getElementById('adj-confirm-btn').onclick=confirmAdjustment;openModal('modal-adjustment');
+}
+async function confirmAdjustment(){
+  const ref=document.getElementById('adj-booking-select').value;const booking=db.bookings.find(b=>(b.ref||b.id)===ref);if(!booking){toast('Booking not found','error');return;}const note=document.getElementById('adj-note')?.value||'';const adj={booking_ref:ref,booking_id:booking.id,type:currentAdjType,note,created_at:new Date().toISOString()};
+  try{
+    if(currentAdjType==='early'){const date=document.getElementById('adj-date').value;await sbPatch('bookings',`id=eq.${booking.id}`,{return_date:date||booking.return_date});booking.return_date=date||booking.return_date;await sbPatch('cars',`id=eq.${booking.car_id||booking.carId}`,{status:'available'});const car=getCar(booking.car_id||booking.carId);if(car)car.status='available';toast('Early return recorded');}
+    else if(currentAdjType==='extend'){const days=+document.getElementById('adj-days').value;if(!days){toast('Enter days','error');return;}const end=new Date(booking.return_date||booking.returnDate||booking.end);end.setDate(end.getDate()+days);const newEnd=end.toISOString().split('T')[0];await sbPatch('bookings',`id=eq.${booking.id}`,{return_date:newEnd,status:'extended'});booking.return_date=newEnd;booking.status='extended';adj.type='extended';toast('Extended by '+days+' day(s)');}
+    else if(currentAdjType==='cancel'){await sbPatch('bookings',`id=eq.${booking.id}`,{status:'cancelled'});booking.status='cancelled';await sbPatch('cars',`id=eq.${booking.car_id||booking.carId}`,{status:'available'});const car=getCar(booking.car_id||booking.carId);if(car)car.status='available';adj.type='cancelled';toast('Booking cancelled');}
+    try{const r=await sbPost('booking_adjustments',adj);db.adjustments.unshift(Array.isArray(r)?r[0]:r);}catch{db.adjustments.unshift(adj);}
+    closeModal('modal-adjustment');renderAdjustments();renderBookings();renderDashboard();updateBadges();
+  }catch(e){toast('Failed: '+e.message,'error');}
+}
+
+// ============================================================
+// ADMIN USERS
+// ============================================================
+function renderAdminUsers(){
+  document.getElementById('admin-users-tbody').innerHTML=db.adminUsers.length===0?'<tr class="loading-row"><td colspan="6">No admin users in Supabase table yet.<br>Using built-in admin (admin / admin123).<br>Run the SQL setup to create the admin_users table.</td></tr>':db.adminUsers.map(u=>{
+    const roleClass=u.role==='superadmin'?'role-superadmin':u.role==='admin'?'role-admin':'role-viewer';
+    const isSelf=String(u.id)===String(currentAdmin?.id);
+    return`<tr>
+      <td><b>${u.username}</b>${isSelf?` <span style="font-size:10px;color:var(--accent);">(you)</span>`:''}</td>
+      <td>${u.display_name||'\u2014'}</td>
+      <td><div class="role-badge ${roleClass}">${u.role}</div></td>
+      <td>${fmtDateTime(u.last_login)}</td>
+      <td>${fmtDate(u.created_at)}</td>
+      <td style="display:flex;gap:6px;align-items:center;">
+        <button class="btn btn-sm btn-ghost" onclick="openChangePassword('${u.id}')" title="Change Password">&#128273;</button>
+        ${!isSelf?`<select onchange="changeAdminRole('${u.id}',this.value)" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--text);cursor:pointer;width:auto;"><option value="viewer" ${u.role==='viewer'?'selected':''}>Viewer</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option><option value="superadmin" ${u.role==='superadmin'?'selected':''}>Super Admin</option></select>
+        <button class="btn btn-sm btn-danger" onclick="deleteAdminUser('${u.id}','${u.username}')">&#128465;</button>`:'<span style="font-size:11px;color:var(--muted);">Current user</span>'}
       </td>
     </tr>`;
   }).join('');
 }
 
-async function addCar() {
-  const brand = document.getElementById('car-brand').value.trim();
-  const model = document.getElementById('car-model-inp').value.trim();
-  const plate = document.getElementById('car-plate').value.trim();
-  if (!brand || !model) { toast('Brand and Model are required', 'error'); return; }
-  const featureStr = document.getElementById('car-features').value.trim();
-  const features = featureStr ? featureStr.split(',').map(f => f.trim()).filter(Boolean) : [];
-  const car = {
-    name: `${brand} ${model}`,
-    brand, model, plate,
-    cat: document.getElementById('car-cat').value,
-    cat_key: document.getElementById('car-cat').value,
-    status: document.getElementById('car-status').value,
-    price: +document.getElementById('car-price').value || 0,
-    dtype: document.getElementById('car-dtype').value,
-    hp: +document.getElementById('car-hp').value || 0,
-    torque: +document.getElementById('car-torque').value || 0,
-    range: +document.getElementById('car-range').value || 0,
-    ac: document.getElementById('car-ac').value,
-    dc: document.getElementById('car-dc').value,
-    color: document.getElementById('car-color').value,
-    interior: document.getElementById('car-interior').value,
-    img: document.getElementById('car-img').value,
-    features,
-    condition: document.getElementById('car-condition').value,
-  };
-  try {
-    const result = await sbInsert('cars', car);
-    db.cars.push(Array.isArray(result) ? result[0] : result);
-    closeModal('modal-add-car');
-    renderCars(carsFilter);
-    renderDashboard();
-    toast('Car added successfully!');
-  } catch(e) { toast('Failed to add car: ' + e.message, 'error'); }
+async function addAdminUser(){
+  const username=document.getElementById('new-admin-username').value.trim();const displayName=document.getElementById('new-admin-displayname').value.trim();const pass=document.getElementById('new-admin-pass').value;const pass2=document.getElementById('new-admin-pass2').value;const role=document.getElementById('new-admin-role').value;
+  if(!username||!pass){toast('Username and password required','error');return;}
+  if(pass!==pass2){toast('Passwords do not match','error');return;}
+  if(pass.length<8){toast('Password must be at least 8 characters','error');return;}
+  if(db.adminUsers.find(u=>u.username===username)){toast('Username already exists','error');return;}
+  try{
+    const hash=await sha256(pass);
+    const r=await sbPost('admin_users',{username,display_name:displayName||username,role,password_hash:hash,is_active:true,created_at:new Date().toISOString()});
+    db.adminUsers.push(Array.isArray(r)?r[0]:r);
+    closeModal('modal-add-admin');renderAdminUsers();
+    ['new-admin-username','new-admin-displayname','new-admin-pass','new-admin-pass2'].forEach(id=>document.getElementById(id).value='');
+    toast(`Admin user "${username}" created!`);
+  }catch(e){toast('Failed: '+e.message+'. Ensure admin_users table exists in Supabase.','error');}
 }
 
-async function editCarStatus(id, status) {
-  try {
-    await sbUpdate('cars', `id=eq.${id}`, { status });
-    const c = db.cars.find(x => String(x.id) === String(id));
-    if (c) c.status = status;
-    renderCars(carsFilter);
-    renderDashboard();
-    toast('Car status updated to ' + status);
-  } catch(e) { toast('Update failed: ' + e.message, 'error'); }
+async function changeAdminRole(id,role){try{await sbPatch('admin_users',`id=eq.${id}`,{role});const u=db.adminUsers.find(x=>String(x.id)===String(id));if(u)u.role=role;toast('Role updated to '+role);}catch(e){toast(e.message,'error');}}
+
+function openChangePassword(id){document.getElementById('chpass-user-id').value=id;document.getElementById('chpass-new').value='';document.getElementById('chpass-new2').value='';openModal('modal-change-pass');}
+
+async function changeAdminPassword(){
+  const id=document.getElementById('chpass-user-id').value;const p=document.getElementById('chpass-new').value;const p2=document.getElementById('chpass-new2').value;
+  if(!p||p.length<8){toast('Password must be at least 8 characters','error');return;}
+  if(p!==p2){toast('Passwords do not match','error');return;}
+  try{const hash=await sha256(p);await sbPatch('admin_users',`id=eq.${id}`,{password_hash:hash});closeModal('modal-change-pass');toast('Password updated!');}catch(e){toast(e.message,'error');}
 }
 
-async function deleteCar(id) {
-  if (!confirm('Remove this car from fleet?')) return;
-  try {
-    await sbUpdate('cars', `id=eq.${id}`, { status: 'deleted' });
-    const c = db.cars.find(x => String(x.id) === String(id));
-    if (c) c.status = 'deleted';
-    renderCars(carsFilter);
-    renderDashboard();
-    toast('Car removed from fleet');
-  } catch(e) { toast('Delete failed: ' + e.message, 'error'); }
+async function deleteAdminUser(id,username){
+  if(!confirm(`Remove admin user "${username}"?`))return;
+  try{await sbPatch('admin_users',`id=eq.${id}`,{is_active:false});db.adminUsers=db.adminUsers.filter(u=>String(u.id)!==String(id));renderAdminUsers();toast(`User "${username}" deactivated`);}catch(e){toast(e.message,'error');}
 }
 
 // ============================================================
-//  PACKAGES
+// MODALS
 // ============================================================
-function renderPackages() {
-  document.getElementById('packages-tbody').innerHTML = db.packages.map(p => `
-    <tr>
-      <td><b>${p.code}</b></td>
-      <td>${p.duration||p.days ? (p.duration||(p.days+' day'+(p.days>1?'s':''))) : '—'}</td>
-      <td>฿${(p.price||0).toLocaleString()}</td>
-      <td>${p.insurance ? `<span class="tag tag-active">฿${p.insurance}/day</span>` : '<span class="tag tag-cancelled">None</span>'}</td>
-      <td>${p.deposit ? '฿'+p.deposit.toLocaleString() : '—'}</td>
-      <td><button class="btn btn-sm btn-danger" onclick="deletePackage(${p.id})">🗑</button></td>
-    </tr>`).join('') || '<tr class="loading-row"><td colspan="6">No packages</td></tr>';
-
-  document.getElementById('bindings-tbody').innerHTML = db.bindings.map((b, i) => {
-    const pkg = getPkg(b.pkg_id || b.pkgId);
-    const car = getCar(b.car_id || b.carId);
-    return `<tr>
-      <td>${pkg ? pkg.code : '—'}</td>
-      <td>${car ? (car.plate ? car.plate + ' (' + (car.brand||car.name||'') + ')' : car.name||'—') : '—'}</td>
-      <td><button class="btn btn-sm btn-danger" onclick="deleteBinding(${b.id || i})">🗑</button></td>
-    </tr>`;
-  }).join('') || '<tr class="loading-row"><td colspan="3">No bindings</td></tr>';
-}
-
-async function addPackage() {
-  const code = document.getElementById('pkg-code').value.trim();
-  const price = +document.getElementById('pkg-price').value;
-  if (!code || !price) { toast('Code and Price are required', 'error'); return; }
-  const pkg = {
-    code,
-    duration: document.getElementById('pkg-duration').value,
-    price,
-    deposit: +document.getElementById('pkg-deposit').value || 0,
-    insurance: +document.getElementById('pkg-insurance').value || 0,
-    desc: document.getElementById('pkg-desc').value,
-    pickup_time: document.getElementById('pkg-pickup').value,
-    return_time: document.getElementById('pkg-return').value,
-  };
-  try {
-    const result = await sbInsert('packages', pkg);
-    db.packages.push(Array.isArray(result) ? result[0] : result);
-    closeModal('modal-add-package');
-    renderPackages();
-    toast('Package added!');
-  } catch(e) { toast('Failed to add package: ' + e.message, 'error'); }
-}
-
-async function deletePackage(id) {
-  if (!confirm('Delete this package?')) return;
-  try {
-    await sbDelete('packages', `id=eq.${id}`);
-    db.packages = db.packages.filter(p => String(p.id) !== String(id));
-    renderPackages();
-    toast('Package deleted');
-  } catch(e) { toast('Failed to delete: ' + e.message, 'error'); }
-}
-
-async function deleteBinding(id) {
-  try {
-    await sbDelete('pkg_bindings', `id=eq.${id}`);
-    db.bindings = db.bindings.filter(b => String(b.id) !== String(id));
-    renderPackages();
-    toast('Binding removed');
-  } catch(e) { toast('Failed to remove binding: ' + e.message, 'error'); }
-}
-
-async function bindPackage() {
-  const pkgId = +document.getElementById('bind-pkg').value;
-  const carId = +document.getElementById('bind-car').value;
-  if (!pkgId || !carId) return;
-  if (db.bindings.find(b => String(b.pkg_id||b.pkgId) === String(pkgId) && String(b.car_id||b.carId) === String(carId))) {
-    toast('Already bound', 'error'); return;
-  }
-  try {
-    const result = await sbInsert('pkg_bindings', { pkg_id: pkgId, car_id: carId });
-    db.bindings.push(Array.isArray(result) ? result[0] : result);
-    closeModal('modal-bind-package');
-    renderPackages();
-    toast('Package bound to car!');
-  } catch(e) { toast('Failed to bind: ' + e.message, 'error'); }
-}
-
-// ============================================================
-//  CUSTOMERS
-// ============================================================
-let custs_all = [];
-function renderCustomers(filter = '') {
-  custs_all = db.customers;
-  const custs = db.customers.filter(c => !filter || `${c.name||''} ${c.surname||''} ${c.display_name||''} ${c.id_card||c.idCard||''} ${c.mobile||c.phone||''} ${c.email||''}`.toLowerCase().includes(filter.toLowerCase()));
-  document.getElementById('customers-tbody').innerHTML = custs.map(c => {
-    const name = c.display_name || `${c.name||''} ${c.surname||''}`.trim();
-    return `<tr>
-      <td><b>${name}</b>${c.nick ? `<br><span style="color:var(--muted);font-size:11px;">"${c.nick}"</span>` : ''}</td>
-      <td>${c.id_card||c.idCard||'—'}</td>
-      <td>${c.mobile||c.phone||'—'}</td>
-      <td>${c.email||'—'}</td>
-      <td>${c.license||'—'}</td>
-      <td>${c.vip === 'yes' ? '<span class="tag tag-vip">VIP</span>' : '—'}</td>
-      <td><button class="btn btn-sm btn-danger" onclick="deleteCustomer(${c.id})">🗑</button></td>
-    </tr>`;
-  }).join('') || '<tr class="loading-row"><td colspan="7">No customers yet</td></tr>';
-}
-function filterCustomers(v) { renderCustomers(v); }
-
-async function addCustomer() {
-  const name = document.getElementById('cust-name').value.trim();
-  const surname = document.getElementById('cust-surname').value.trim();
-  if (!name || !surname) { toast('Name and Surname required', 'error'); return; }
-  const cust = {
-    name, surname,
-    display_name: `${name} ${surname}`,
-    nick: document.getElementById('cust-nick').value,
-    id_card: document.getElementById('cust-id').value,
-    mobile: document.getElementById('cust-mobile').value,
-    phone: document.getElementById('cust-mobile').value,
-    emergency: document.getElementById('cust-emergency').value,
-    email: document.getElementById('cust-email').value,
-    license: document.getElementById('cust-license').value,
-    vip: document.getElementById('cust-vip').value,
-    address: document.getElementById('cust-address').value,
-  };
-  const table = db.customers.length > 0 && db.customers[0].uid !== undefined ? 'users' : 'customers';
-  try {
-    const result = await sbInsert(table, cust);
-    db.customers.push(Array.isArray(result) ? result[0] : result);
-    closeModal('modal-add-customer');
-    renderCustomers();
-    toast('Customer added!');
-  } catch(e) { toast('Failed to add customer: ' + e.message, 'error'); }
-}
-
-async function deleteCustomer(id) {
-  if (!confirm('Remove this customer?')) return;
-  const table = db.customers.length > 0 && db.customers[0].uid !== undefined ? 'users' : 'customers';
-  try {
-    await sbDelete(table, `id=eq.${id}`);
-    db.customers = db.customers.filter(c => String(c.id) !== String(id));
-    renderCustomers();
-    toast('Customer removed');
-  } catch(e) { toast('Failed to remove: ' + e.message, 'error'); }
-}
-
-// ============================================================
-//  BOOKINGS
-// ============================================================
-function renderBookings() {
-  document.getElementById('bookings-tbody').innerHTML = db.bookings.map(b => {
-    const car = getCar(b.car_id || b.carId);
-    const carName = car ? (car.name || `${car.brand||''} ${car.model||''}`.trim()) : (b.car_name || '—');
-    const pkg = getPkg(b.package_id || b.pkgId);
-    return `<tr>
-      <td><b>${b.ref || b.id || '—'}</b></td>
-      <td>${b.name||'—'}<br><span style="color:var(--muted);font-size:11px;">${b.phone||''}</span></td>
-      <td>${carName}</td>
-      <td>${pkg ? pkg.code : (b.package_code||'—')}</td>
-      <td>${fmtDate(b.pickup_date||b.pickupDate)}</td>
-      <td>${fmtDate(b.return_date||b.returnDate)}</td>
-      <td>฿${(b.total||0).toLocaleString()}</td>
-      <td>${b.payment||b.paymentMethod||'—'}</td>
-      <td>${statusTag(b.status)}</td>
-      <td style="display:flex;gap:4px;flex-wrap:wrap;">
-        <button class="btn btn-sm btn-success" onclick="updateBookingStatus('${b.id}','confirmed')" title="Confirm">✓</button>
-        <button class="btn btn-sm btn-ghost" onclick="openAdjustmentModal('extend','${b.ref||b.id}')" title="Extend">+</button>
-        <button class="btn btn-sm btn-danger" onclick="openAdjustmentModal('cancel','${b.ref||b.id}')" title="Cancel">✕</button>
-      </td>
-    </tr>`;
-  }).join('') || '<tr class="loading-row"><td colspan="10">No bookings yet</td></tr>';
-}
-
-async function updateBookingStatus(id, status) {
-  try {
-    await sbUpdate('bookings', `id=eq.${id}`, { status });
-    const b = db.bookings.find(x => String(x.id) === String(id));
-    if (b) b.status = status;
-    renderBookings();
-    toast('Booking status → ' + status);
-  } catch(e) { toast('Update failed: ' + e.message, 'error'); }
-}
-
-function populateBookingDropdowns() {
-  document.getElementById('book-car').innerHTML = db.cars.filter(c => c.status === 'available').map(c => `<option value="${c.id}">${(c.name||`${c.brand||''} ${c.model||''}`.trim())} — ${c.plate||''}</option>`).join('');
-  document.getElementById('book-package').innerHTML = db.packages.map(p => `<option value="${p.id}">${p.code} (${p.duration} — ฿${(p.price||0).toLocaleString()})</option>`).join('');
-  document.getElementById('book-start').valueAsDate = new Date();
-  updateBookingTotal();
-}
-
-function updateBookingTotal() {
-  const pkgId = document.getElementById('book-package').value;
-  const startVal = document.getElementById('book-start').value;
-  const pkg = getPkg(pkgId);
-  if (pkg && startVal) {
-    const start = new Date(startVal);
-    const days = pkg.days || 1;
-    const end = new Date(start); end.setDate(end.getDate() + days);
-    document.getElementById('book-end').value = end.toISOString().split('T')[0];
-    const ins = (pkg.insurance || 0) * days;
-    const total = (pkg.price || 0) + ins;
-    document.getElementById('booking-total-display').textContent = `฿${total.toLocaleString()} (rental ฿${pkg.price||0}${ins>0?' + insurance ฿'+ins:''}, deposit ฿${pkg.deposit||0})`;
-  }
-}
-
-async function addBooking() {
-  const carId = document.getElementById('book-car').value;
-  const pkgId = document.getElementById('book-package').value;
-  const start = document.getElementById('book-start').value;
-  const end   = document.getElementById('book-end').value;
-  const name  = document.getElementById('book-cust-name').value.trim();
-  if (!carId || !pkgId || !start || !name) { toast('Fill in Customer, Car, Package and Start Date', 'error'); return; }
-  const pkg = getPkg(pkgId);
-  const days = pkg ? (pkg.days || 1) : 1;
-  const ins  = (pkg?.insurance || 0) * days;
-  const total = (pkg?.price || 0) + ins;
-  const ref = 'MEC-' + Date.now().toString().slice(-6);
-  const booking = {
-    ref,
-    name,
-    phone: document.getElementById('book-cust-phone').value,
-    email: document.getElementById('book-cust-email').value,
-    id_card: document.getElementById('book-cust-id').value,
-    car_id: +carId,
-    car_name: getCar(carId)?.name || '',
-    package_id: +pkgId,
-    package_code: pkg?.code || '',
-    pickup_date: start,
-    return_date: end,
-    pickup_location: document.getElementById('book-pickup-loc').value,
-    payment: document.getElementById('book-payment').value,
-    days,
-    insurance_cost: ins,
-    total,
-    status: 'confirmed',
-    created_at: new Date().toISOString(),
-  };
-  try {
-    const result = await sbInsert('bookings', booking);
-    db.bookings.unshift(Array.isArray(result) ? result[0] : result);
-    // Mark car as rented
-    await sbUpdate('cars', `id=eq.${carId}`, { status: 'rented' });
-    const c = db.cars.find(x => String(x.id) === String(carId));
-    if (c) c.status = 'rented';
-    closeModal('modal-add-booking');
-    renderBookings();
-    renderDashboard();
-    updateBadges();
-    toast('Booking confirmed: ' + ref);
-  } catch(e) { toast('Failed to save booking: ' + e.message, 'error'); }
-}
-
-// ============================================================
-//  CALENDAR
-// ============================================================
-let calendarDate = new Date();
-calendarDate.setDate(1);
-
-function renderCalendar() {
-  const year = calendarDate.getFullYear(), month = calendarDate.getMonth();
-  document.getElementById('cal-month-label').textContent = calendarDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-  const headers = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  document.getElementById('calendar-days-header').innerHTML = headers.map(h => `<div class="cal-day-header">${h}</div>`).join('');
-  const first = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const today = new Date();
-  let html = '';
-  for (let i = 0; i < first; i++) html += '<div class="cal-day empty"></div>';
-  for (let d = 1; d <= daysInMonth; d++) {
-    const ds = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday = today.getFullYear()===year && today.getMonth()===month && today.getDate()===d;
-    let bhtml = '';
-    db.bookings.forEach(b => {
-      const start = b.pickup_date || b.pickupDate || b.start;
-      const end   = b.return_date || b.returnDate || b.end;
-      if (start === ds) bhtml += `<div class="cal-booking starting">${b.ref||b.id} ↑</div>`;
-      else if (end === ds) bhtml += `<div class="cal-booking returning">${b.ref||b.id} ↓</div>`;
-      else if (start && end && ds > start && ds < end) { const car = getCar(b.car_id||b.carId); bhtml += `<div class="cal-booking">${car?car.name||car.brand:''}</div>`; }
-    });
-    html += `<div class="cal-day ${isToday?'today':''}"><div class="cal-day-num">${d}</div>${bhtml}</div>`;
-  }
-  document.getElementById('calendar-days').innerHTML = html;
-}
-function changeMonth(delta) { calendarDate.setMonth(calendarDate.getMonth() + delta); renderCalendar(); }
-function goToday() { calendarDate = new Date(); calendarDate.setDate(1); renderCalendar(); }
-
-// ============================================================
-//  ADJUSTMENTS
-// ============================================================
-let currentAdjType = '';
-
-function renderAdjustments() {
-  document.getElementById('adjustments-tbody').innerHTML = db.adjustments.length === 0
-    ? '<tr class="loading-row"><td colspan="6">No adjustments yet</td></tr>'
-    : db.adjustments.map(a => {
-        const b = db.bookings.find(bk => bk.ref === a.booking_ref || bk.id === a.booking_id);
-        const car = b ? getCar(b.car_id || b.carId) : null;
-        return `<tr>
-          <td><b>${a.booking_ref || a.bookingId || '—'}</b></td>
-          <td>${b ? b.name||'—' : '—'}</td>
-          <td>${car ? car.name||car.brand||'—' : (b?b.car_name||'—':'—')}</td>
-          <td>${statusTag(a.type)}</td>
-          <td>${fmtDate(a.created_at || a.date)}</td>
-          <td>${a.note || '—'}</td>
-        </tr>`;
-      }).join('');
-}
-
-function openAdjustmentModal(type, bookingRef = '') {
-  currentAdjType = type;
-  const titles = { early:'⏪ Early Return', extend:'⏩ Extend Rental', cancel:'✖ Cancel Booking' };
-  document.getElementById('adj-modal-title').textContent = titles[type];
-
-  const sel = document.getElementById('adj-booking-select');
-  const active = db.bookings.filter(b => !['cancelled','completed'].includes(b.status));
-  sel.innerHTML = active.map(b => `<option value="${b.ref||b.id}">${b.ref||b.id} — ${b.name||'—'} — ${b.car_name||''}</option>`).join('');
-  if (bookingRef) sel.value = bookingRef;
-
-  const fields = {
-    early: `<div class="form-group"><label>Actual Return Date</label><input id="adj-date" type="date"></div><div class="form-group"><label>Note</label><textarea id="adj-note" placeholder="Reason for early return…"></textarea></div>`,
-    extend: `<div class="form-group"><label>Additional Days</label><input id="adj-days" type="number" min="1" placeholder="e.g. 2"></div><div class="form-group"><label>Note</label><textarea id="adj-note" placeholder="Reason for extension…"></textarea></div>`,
-    cancel: `<div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);border-radius:8px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--danger);">⚠ This will cancel the booking and mark the car as available again.</div><div class="form-group"><label>Cancellation Reason</label><textarea id="adj-note" placeholder="Reason…"></textarea></div>`,
-  };
-  document.getElementById('adj-fields').innerHTML = fields[type] || '';
-  document.getElementById('adj-confirm-btn').onclick = confirmAdjustment;
-  openModal('modal-adjustment');
-}
-
-async function confirmAdjustment() {
-  const bookingRef = document.getElementById('adj-booking-select').value;
-  const booking = db.bookings.find(b => (b.ref || b.id) === bookingRef);
-  if (!booking) { toast('Booking not found', 'error'); return; }
-  const note = document.getElementById('adj-note')?.value || '';
-  const adjRecord = { booking_ref: bookingRef, booking_id: booking.id, type: currentAdjType, note, created_at: new Date().toISOString() };
-
-  try {
-    if (currentAdjType === 'early') {
-      const date = document.getElementById('adj-date').value;
-      await sbUpdate('bookings', `id=eq.${booking.id}`, { return_date: date || booking.return_date });
-      booking.return_date = date || booking.return_date;
-      await sbUpdate('cars', `id=eq.${booking.car_id||booking.carId}`, { status: 'available' });
-      const car = getCar(booking.car_id||booking.carId); if (car) car.status = 'available';
-      toast('Early return recorded');
-    } else if (currentAdjType === 'extend') {
-      const days = +document.getElementById('adj-days').value;
-      if (!days) { toast('Enter number of days', 'error'); return; }
-      const current = new Date(booking.return_date || booking.returnDate || booking.end);
-      current.setDate(current.getDate() + days);
-      const newEnd = current.toISOString().split('T')[0];
-      await sbUpdate('bookings', `id=eq.${booking.id}`, { return_date: newEnd, status: 'extended' });
-      booking.return_date = newEnd; booking.status = 'extended';
-      adjRecord.type = 'extended';
-      toast('Booking extended by ' + days + ' day(s)');
-    } else if (currentAdjType === 'cancel') {
-      await sbUpdate('bookings', `id=eq.${booking.id}`, { status: 'cancelled' });
-      booking.status = 'cancelled';
-      await sbUpdate('cars', `id=eq.${booking.car_id||booking.carId}`, { status: 'available' });
-      const car = getCar(booking.car_id||booking.carId); if (car) car.status = 'available';
-      adjRecord.type = 'cancelled';
-      toast('Booking cancelled');
-    }
-
-    // Save adjustment record
-    try {
-      const aResult = await sbInsert('booking_adjustments', adjRecord);
-      db.adjustments.unshift(Array.isArray(aResult) ? aResult[0] : aResult);
-    } catch { db.adjustments.unshift(adjRecord); } // fallback: keep locally if table doesn't exist
-
-    closeModal('modal-adjustment');
-    renderAdjustments();
-    renderBookings();
-    renderDashboard();
-    updateBadges();
-  } catch(e) { toast('Adjustment failed: ' + e.message, 'error'); }
-}
-
-// ============================================================
-//  MODALS
-// ============================================================
-function openModal(id) {
-  if (id === 'modal-add-booking') populateBookingDropdowns();
-  if (id === 'modal-bind-package') {
-    document.getElementById('bind-pkg').innerHTML = db.packages.map(p => `<option value="${p.id}">${p.code}</option>`).join('');
-    document.getElementById('bind-car').innerHTML = db.cars.filter(c => c.status !== 'deleted').map(c => `<option value="${c.id}">${c.plate||''} (${c.name||c.brand||''})</option>`).join('');
-  }
-  document.getElementById(id).classList.add('open');
-}
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
-});
-
-// ============================================================
-//  INIT
-// ============================================================
-loadAll();
+function openModal(id){if(id==='modal-add-booking')populateBookingDropdowns();if(id==='modal-bind-package'){document.getElementById('bind-pkg').innerHTML=db.packages.map(p=>`<option value="${p.id}">${p.code}</option>`).join('');document.getElementById('bind-car').innerHTML=db.cars.filter(c=>c.status!=='deleted').map(c=>`<option value="${c.id}">${c.plate||''} (${c.name||c.brand||''})</option>`).join('');}document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');if(id==='modal-add-car')resetPhotoUpload();}
+document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});});
 </script>
 </body>
 </html>
