@@ -575,7 +575,7 @@ let db={cars:[],packages:[],bindings:[],customers:[],bookings:[],adjustments:[],
 
 async function loadAll(){
   try{
-    const[cars,pkgs,bindings,bookings]=await Promise.all([sbGet('cars','select=*&order=id.asc'),sbGet('packages','select=*&order=id.asc'),sbGet('pkg_bindings','select=*'),sbGet('bookings','select=*&order=created_at.desc&limit=200')]);
+    const[cars,pkgs,bindings,bookings]=await Promise.all([sbGet('cars','select=*&order=id.asc'),sbGet('packages','select=*&order=id.asc'),sbGet('package_car_bindings','select=*'),sbGet('bookings','select=*&order=created_at.desc&limit=200')]);
     db.cars=cars||[];db.packages=pkgs||[];db.bindings=bindings||[];db.bookings=bookings||[];
     try{db.customers=await sbGet('customers','select=*&order=id.asc')||[];}catch{try{db.customers=await sbGet('users','select=*&order=id.asc')||[];}catch{db.customers=[];}}
     try{db.adjustments=await sbGet('booking_adjustments','select=*&order=created_at.desc')||[];}catch{db.adjustments=[];}
@@ -734,8 +734,8 @@ function renderPackages(){
 }
 async function addPackage(){const code=document.getElementById('pkg-code').value.trim();const price=+document.getElementById('pkg-price').value;if(!code||!price){toast('Code and Price required','error');return;}try{const r=await sbPost('packages',{code,duration:document.getElementById('pkg-duration').value,price,deposit:+document.getElementById('pkg-deposit').value||0,insurance:+document.getElementById('pkg-insurance').value||0,desc:document.getElementById('pkg-desc').value,pickup_time:document.getElementById('pkg-pickup').value,return_time:document.getElementById('pkg-return').value});db.packages.push(Array.isArray(r)?r[0]:r);closeModal('modal-add-package');renderPackages();toast('Package added!');}catch(e){toast(e.message,'error');}}
 async function deletePackage(id){if(!confirm('Delete?'))return;try{await sbDel('packages',`id=eq.${id}`);db.packages=db.packages.filter(p=>String(p.id)!==String(id));renderPackages();toast('Package deleted');}catch(e){toast(e.message,'error');}}
-async function deleteBinding(id){try{await sbDel('pkg_bindings',`id=eq.${id}`);db.bindings=db.bindings.filter(b=>String(b.id)!==String(id));renderPackages();toast('Binding removed');}catch(e){toast(e.message,'error');}}
-async function bindPackage(){const pkgId=+document.getElementById('bind-pkg').value;const carId=+document.getElementById('bind-car').value;if(!pkgId||!carId)return;if(db.bindings.find(b=>String(b.pkg_id||b.pkgId)===String(pkgId)&&String(b.car_id||b.carId)===String(carId))){toast('Already bound','error');return;}try{const r=await sbPost('pkg_bindings',{pkg_id:pkgId,car_id:carId});db.bindings.push(Array.isArray(r)?r[0]:r);closeModal('modal-bind-package');renderPackages();toast('Package bound!');}catch(e){toast(e.message,'error');}}
+async function deleteBinding(id){try{await sbDel('package_car_bindings',`id=eq.${id}`);db.bindings=db.bindings.filter(b=>String(b.id)!==String(id));renderPackages();toast('Binding removed');}catch(e){toast(e.message,'error');}}
+async function bindPackage(){const pkgId=+document.getElementById('bind-pkg').value;const carId=+document.getElementById('bind-car').value;if(!pkgId||!carId)return;if(db.bindings.find(b=>String(b.pkg_id||b.pkgId)===String(pkgId)&&String(b.car_id||b.carId)===String(carId))){toast('Already bound','error');return;}try{const r=await sbPost('package_car_bindings',{pkg_id:pkgId,car_id:carId});db.bindings.push(Array.isArray(r)?r[0]:r);closeModal('modal-bind-package');renderPackages();toast('Package bound!');}catch(e){toast(e.message,'error');}}
 
 // ============================================================
 // CUSTOMERS
