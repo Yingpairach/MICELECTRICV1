@@ -507,7 +507,7 @@
 // SUPABASE CONFIG
 // ============================================================
 const SUPABASE_URL = 'https://fmoiykmqjhlcfvzgpvvj.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtb2l5a21xamhsY2Z2emdwdnZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NjkxNzYsImV4cCI6MjA5MzM0NTE3Nn0.iMUbkUPkDJdq52Vt43ZaxXCxBFVjpDdDUaTxRZwPJk8'; // TODO: Replace with eyJ... key from Supabase Dashboard > Settings > API
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtb2l5a21xamhsY2Z2emdwdnZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NjkxNzYsImV4cCI6MjA5MzM0NTE3Nn0.iMUbkUPkDJdq52Vt43ZaxXCxBFVjpDdDUaTxRZwPJk8';
 
 const SB_H = {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'};
 async function sbGet(t,p=''){const r=await fetch(`${SUPABASE_URL}/rest/v1/${t}?${p}`,{headers:SB_H});if(!r.ok)throw new Error(`GET ${t}: ${r.status} ${await r.text()}`);return r.json();}
@@ -719,8 +719,49 @@ async function addCar(){
   const feats=document.getElementById('car-features').value.trim().split(',').map(f=>f.trim()).filter(Boolean);
   const photos=JSON.parse(document.getElementById('car-photo-data').value||'[]');
   const imgUrl=document.getElementById('car-img').value.trim();
-  const car={name:`${brand} ${model}`,brand,model,plate:document.getElementById('car-plate').value,cat:document.getElementById('car-cat').value,cat_key:document.getElementById('car-cat').value,status:document.getElementById('car-status').value,price:+document.getElementById('car-price').value||0,dtype:document.getElementById('car-dtype').value,hp:+document.getElementById('car-hp').value||0,torque:+document.getElementById('car-torque').value||0,range:+document.getElementById('car-range').value||0,ac:document.getElementById('car-ac').value,dc:document.getElementById('car-dc').value,color:document.getElementById('car-color').value,interior:document.getElementById('car-interior').value,img:photos.length?photos[0]:imgUrl,photos,features:feats,condition:document.getElementById('car-condition').value};
-  try{const r=await sbPost('cars',car);db.cars.push(Array.isArray(r)?r[0]:r);resetPhotoUpload();closeModal('modal-add-car');renderCars(carsFilter);renderDashboard();toast(`Car added with ${photos.length} photo(s)!`);}catch(e){toast('Failed: '+e.message,'error');}
+  // Build car object with only confirmed core columns
+  const car={
+    name:`${brand} ${model}`,
+    brand,
+    model,
+    cat:document.getElementById('car-cat').value,
+    cat_key:document.getElementById('car-cat').value,
+    status:document.getElementById('car-status').value,
+    price:+document.getElementById('car-price').value||0,
+    img:photos.length?photos[0]:imgUrl,
+    features:feats,
+  };
+  // Add extended columns only if they have values (avoids "column not found" if schema is minimal)
+  const plate=document.getElementById('car-plate').value.trim();if(plate)car.plate=plate;
+  const color=document.getElementById('car-color').value.trim();if(color)car.color=color;
+  const interior=document.getElementById('car-interior').value.trim();if(interior)car.interior=interior;
+  const hp=+document.getElementById('car-hp').value;if(hp)car.hp=hp;
+  const torque=+document.getElementById('car-torque').value;if(torque)car.torque=torque;
+  const range=+document.getElementById('car-range').value;if(range)car.range=range;
+  const dtype=document.getElementById('car-dtype').value;if(dtype)car.dtype=dtype;
+  const ac=document.getElementById('car-ac').value.trim();if(ac)car.ac=ac;
+  const dc=document.getElementById('car-dc').value.trim();if(dc)car.dc=dc;
+  const condition=document.getElementById('car-condition').value.trim();if(condition)car.condition=condition;
+  if(photos.length)car.photos=photos;
+  // Try full insert first; if column error, retry with minimal columns only
+  try{
+    const r=await sbPost('cars',car);
+    db.cars.push(Array.isArray(r)?r[0]:r);
+    resetPhotoUpload();closeModal('modal-add-car');renderCars(carsFilter);renderDashboard();
+    toast(`Car added with ${photos.length} photo(s)!`);
+  }catch(e){
+    if(e.message.includes('column')||e.message.includes('PGRST204')){
+      // Schema is minimal - retry with only base columns
+      const minCar={name:car.name,brand:car.brand,model:car.model,cat:car.cat,status:car.status,price:car.price,img:car.img,features:car.features};
+      if(car.cat_key)minCar.cat_key=car.cat_key;
+      try{
+        const r2=await sbPost('cars',minCar);
+        db.cars.push(Array.isArray(r2)?r2[0]:r2);
+        resetPhotoUpload();closeModal('modal-add-car');renderCars(carsFilter);renderDashboard();
+        toast('Car added! (Note: some detail fields not in your schema were skipped)','info');
+      }catch(e2){toast('Failed: '+e2.message,'error');}
+    }else{toast('Failed: '+e.message,'error');}
+  }
 }
 async function editCarStatus(id,status){if(currentAdmin?.role==='viewer'){toast('Viewer cannot edit','error');return;}try{await sbPatch('cars',`id=eq.${id}`,{status});const c=db.cars.find(x=>String(x.id)===String(id));if(c)c.status=status;renderCars(carsFilter);renderDashboard();toast('Status \u2192 '+status);}catch(e){toast(e.message,'error');}}
 async function deleteCar(id){if(currentAdmin?.role==='viewer'){toast('Viewer cannot delete','error');return;}if(!confirm('Remove this car?'))return;try{await sbPatch('cars',`id=eq.${id}`,{status:'deleted'});const c=db.cars.find(x=>String(x.id)===String(id));if(c)c.status='deleted';renderCars(carsFilter);renderDashboard();toast('Car removed');}catch(e){toast(e.message,'error');}}
