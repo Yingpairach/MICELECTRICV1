@@ -719,46 +719,89 @@ async function addCar(){
   const feats=document.getElementById('car-features').value.trim().split(',').map(f=>f.trim()).filter(Boolean);
   const photos=JSON.parse(document.getElementById('car-photo-data').value||'[]');
   const imgUrl=document.getElementById('car-img').value.trim();
-  // Build car object with only confirmed core columns
-  const car={
+
+  // Build all possible field-value pairs the form could provide
+  const candidateFields={
     name:`${brand} ${model}`,
     brand,
     model,
     cat:document.getElementById('car-cat').value,
     cat_key:document.getElementById('car-cat').value,
+    catKey:document.getElementById('car-cat').value,
+    category:document.getElementById('car-cat').value,
+    type:document.getElementById('car-cat').value,
     status:document.getElementById('car-status').value,
     price:+document.getElementById('car-price').value||0,
     img:photos.length?photos[0]:imgUrl,
+    image:photos.length?photos[0]:imgUrl,
+    image_url:photos.length?photos[0]:imgUrl,
     features:feats,
+    plate:document.getElementById('car-plate').value.trim(),
+    license_plate:document.getElementById('car-plate').value.trim(),
+    color:document.getElementById('car-color').value.trim(),
+    exterior_color:document.getElementById('car-color').value.trim(),
+    interior:document.getElementById('car-interior').value.trim(),
+    interior_color:document.getElementById('car-interior').value.trim(),
+    hp:+document.getElementById('car-hp').value||0,
+    horsepower:+document.getElementById('car-hp').value||0,
+    torque:+document.getElementById('car-torque').value||0,
+    range:+document.getElementById('car-range').value||0,
+    range_km:+document.getElementById('car-range').value||0,
+    dtype:document.getElementById('car-dtype').value,
+    drive_type:document.getElementById('car-dtype').value,
+    ac:document.getElementById('car-ac').value.trim(),
+    ac_charging:document.getElementById('car-ac').value.trim(),
+    dc:document.getElementById('car-dc').value.trim(),
+    dc_charging:document.getElementById('car-dc').value.trim(),
+    condition:document.getElementById('car-condition').value.trim(),
+    notes:document.getElementById('car-condition').value.trim(),
+    photos:photos,
+    images:photos,
   };
-  // Add extended columns only if they have values (avoids "column not found" if schema is minimal)
-  const plate=document.getElementById('car-plate').value.trim();if(plate)car.plate=plate;
-  const color=document.getElementById('car-color').value.trim();if(color)car.color=color;
-  const interior=document.getElementById('car-interior').value.trim();if(interior)car.interior=interior;
-  const hp=+document.getElementById('car-hp').value;if(hp)car.hp=hp;
-  const torque=+document.getElementById('car-torque').value;if(torque)car.torque=torque;
-  const range=+document.getElementById('car-range').value;if(range)car.range=range;
-  const dtype=document.getElementById('car-dtype').value;if(dtype)car.dtype=dtype;
-  const ac=document.getElementById('car-ac').value.trim();if(ac)car.ac=ac;
-  const dc=document.getElementById('car-dc').value.trim();if(dc)car.dc=dc;
-  const condition=document.getElementById('car-condition').value.trim();if(condition)car.condition=condition;
-  if(photos.length)car.photos=photos;
-  // Try full insert first; if column error, retry with minimal columns only
+
+  // Discover real schema by inspecting an existing car (if any)
+  let allowedColumns=null;
+  if(db.cars.length>0){
+    allowedColumns=new Set(Object.keys(db.cars[0]));
+  }else{
+    // No existing car: try to fetch any one to learn schema
+    try{
+      const sample=await sbGet('cars','select=*&limit=1');
+      if(sample&&sample.length>0)allowedColumns=new Set(Object.keys(sample[0]));
+    }catch{}
+  }
+
+  // Filter to only columns that exist (or guess minimal set if no info available)
+  let car={};
+  if(allowedColumns){
+    Object.keys(candidateFields).forEach(k=>{
+      if(allowedColumns.has(k)){
+        const v=candidateFields[k];
+        // Skip empty strings/zeros/empty arrays for optional fields, except core 4
+        if(['name','brand','model','status'].includes(k)){car[k]=v;}
+        else if(v!==''&&v!==0&&!(Array.isArray(v)&&v.length===0)){car[k]=v;}
+        else if(k==='price'){car[k]=v;} // always send price even if 0
+        else if(k==='img'||k==='image'||k==='image_url'){if(v)car[k]=v;}
+      }
+    });
+  }else{
+    // Fallback: try absolute minimum
+    car={name:candidateFields.name,brand,model,status:candidateFields.status,price:candidateFields.price};
+  }
+
   try{
     const r=await sbPost('cars',car);
     db.cars.push(Array.isArray(r)?r[0]:r);
     resetPhotoUpload();closeModal('modal-add-car');renderCars(carsFilter);renderDashboard();
     toast(`Car added with ${photos.length} photo(s)!`);
   }catch(e){
+    // Last resort: super-minimal insert
     if(e.message.includes('column')||e.message.includes('PGRST204')){
-      // Schema is minimal - retry with only base columns
-      const minCar={name:car.name,brand:car.brand,model:car.model,cat:car.cat,status:car.status,price:car.price,img:car.img,features:car.features};
-      if(car.cat_key)minCar.cat_key=car.cat_key;
       try{
-        const r2=await sbPost('cars',minCar);
+        const r2=await sbPost('cars',{name:candidateFields.name,brand,model,price:candidateFields.price,status:candidateFields.status});
         db.cars.push(Array.isArray(r2)?r2[0]:r2);
         resetPhotoUpload();closeModal('modal-add-car');renderCars(carsFilter);renderDashboard();
-        toast('Car added! (Note: some detail fields not in your schema were skipped)','info');
+        toast('Car added with basic info only. Other fields skipped because they are not in your table schema.','info');
       }catch(e2){toast('Failed: '+e2.message,'error');}
     }else{toast('Failed: '+e.message,'error');}
   }
